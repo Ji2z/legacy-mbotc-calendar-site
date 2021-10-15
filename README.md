@@ -16,7 +16,7 @@
 | test             | 테스트 코드, 리팩토링 테스트 코드 추가                       | 그외 |
 | delete           | 파일 또는 코드, 리소스 제거                                  | 그외 |
 | rename           | 파일 혹은 폴더명을 수정하거나 옮기는 작업                    | 그외 |
-| !BREAKING CHANGE | 커다란 API 변경 (API의 arguments, return 값의 변경, DB 테이블 변경, 급하게 치명적인 버그를 고쳐야 하는 경우) | 기능 |
+| !BREAKING CHANGE | 커다란 API 변경 (API의 arguments, return 값의 변경, <br>DB 테이블 변경, 급하게 치명적인 버그를 고쳐야 하는 경우) | 기능 |
 | chore            | 그 외 자잘한 수정에 대한 커밋                                | 그외 |
 
 ### Git Branch
@@ -25,7 +25,7 @@
 
 - develop : 기능
 
-- ### feature : 기능 추가 ( feature/FE-login , feature/BE-login )
+- feature : 기능 추가 ( feature/FE-login , feature/BE-login )
 
 ### Code Convention
 
