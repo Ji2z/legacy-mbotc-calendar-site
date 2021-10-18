@@ -33,9 +33,13 @@
 
 ### Team Rule
 
-- 매주 금요일 merge develop into master
-- 데일리 스크럼 (Done, Todo, Problem)
-- Pull Request Review
-    - LGTM: Looks Good To Me
+🛠 매주 금요일 merge develop into master
+
+🕙 데일리 스크럼(Done, Todo, Problem)
+
+🩺 Pull Request Review
+
+- LGTM: Looks Good To Me 😎
     
     ![cat](/uploads/099e4f271f922b3b702f32cadbbd79ab/cat.png)
+
