@@ -34,10 +34,10 @@ const routes = [
     }
 ];
 
-// const router = createRouter({
-//     history: createWebHistory(),
-//     routes,
-// });
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
 
 // const isLoggedIn = function(){
 //     return localStorage.getItem('jwt')? true:false;
