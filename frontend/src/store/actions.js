@@ -2,7 +2,7 @@ import $axios from 'axios'
 
 // custom variables
 const serverData = {
-    SERVER_URL = ""
+    SERVER_URL : ""
 }
 
 //////////////////////////////////////////

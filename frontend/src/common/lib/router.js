@@ -1,28 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+//page
+import WelcomePage from '@/views/WelcomePage.vue';
+import MainPage from '@/views/MainPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 
+//component
+import CalendarBig from '@/components/calendar/CalendarBig.vue';
+import DetailPage from '@/components/main/DetailPage.vue';
+import NoticeEditor from '@/components/notice/NoticeEditor.vue';
+import MyPage from '@/components/main/MyPage.vue';
+
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'Welcome',
-    //     component: WelcomePage,
-    //     meta:{ loginRequired: false }
-    // },
-    // {
-    //     path: '/main',
-    //     name: 'Main',
-    //     component: MainPage,
-    //     children: [
-    //         {path: ":id/:page", component: MainContent, meta:{ loginRequired: false } },
-    //         {path: "user/:id", component: UserContent , meta:{ loginRequired: true } },
-    //         {path: "tx/:id", component: TransactionContent , meta:{ loginRequired: false } },
-    //         {path: "fund/:id", component: FundingContent , meta:{ loginRequired: false } },
-    //         {path: "fund/create", component: FundingCreate , meta:{ loginRequired: true } },
-    //         {path: "fund/edit/:id", component: FundingEdit , meta:{ loginRequired: true } },
-    //         {path: "admin", component: FundingConfirm , meta:{ loginRequired: true } },
-    //     ],
-    // },
+    {
+        path: '/',
+        name: 'Welcome',
+        component: WelcomePage,
+        meta:{ loginRequired: false }
+    },
+    {
+        path: '/main',
+        name: 'Main',
+        component: MainPage,
+        children: [
+            {path: "/:date", component: CalendarBig, meta:{ loginRequired: true } },
+            {path: "detail/:date", component: DetailPage , meta:{ loginRequired: true } },
+            {path: "/notice", component: NoticeEditor , meta:{ loginRequired: true } },
+            {path: "/myPage", component: MyPage , meta:{ loginRequired: true } },
+        ],
+    },
     {
         path: '/:pathMatch(.*)*',
         redirect: "/404"

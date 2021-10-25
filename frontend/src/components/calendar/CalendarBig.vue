@@ -9,7 +9,7 @@
 // import { useRouter } from 'vue-router'
 
 export default {
-    name: 'ErrorPage',
+    name: 'CalendarBig',
     components: {
     },
 

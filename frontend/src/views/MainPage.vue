@@ -1,5 +1,7 @@
 <template>
     <div>
+        <main-sidebar/>
+        <router-view :key="$route.fullPath"/>
     </div>
 </template>
 <script>
@@ -9,7 +11,7 @@
 // import { useRouter } from 'vue-router'
 
 export default {
-    name: 'ErrorPage',
+    name: 'MainPage',
     components: {
     },
 
