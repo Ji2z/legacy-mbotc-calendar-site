@@ -39,7 +39,6 @@ export default {
             marker:[true,false,false,false,false,false],
             offset:["top","intro1","intro2","intro3","intro4","intro5","footer"],
             now:0,
-            lastScroll:0,
             reverseFlag:false,
         })
 
@@ -58,26 +57,22 @@ export default {
             let nowScroll = window.pageYOffset;
             let list = []
 
-            if(state.now !=6 || nowScroll < state.lastScroll){
-
-                state.offset.forEach(item => {
-                    const target = document.getElementById(item)
-                    const clientRect = target.getBoundingClientRect()
-                    const relativeTop = clientRect.top
-                    list.push(relativeTop + nowScroll)
-                })
-                list.push(9999)
-                //console.log(list)
-                nowScroll += 5
-                for (let index = 0; index <= 6; index++) {
-                    if(nowScroll >= list[index] && nowScroll <= list[index+1]){
-                        state.marker[state.now] = false
-                        state.now = index
-                        state.marker[state.now] = true
-                        break
-                    }
+            state.offset.forEach(item => {
+                const target = document.getElementById(item)
+                const clientRect = target.getBoundingClientRect()
+                const relativeTop = clientRect.top
+                list.push(relativeTop + nowScroll)
+            })
+            list.push(9999)
+            //console.log(list)
+            nowScroll += 5
+            for (let index = 0; index <= 6; index++) {
+                if(nowScroll >= list[index] && nowScroll <= list[index+1]){
+                    state.marker[state.now] = false
+                    state.now = index
+                    state.marker[state.now] = true
+                    break
                 }
-                state.lastScroll = nowScroll
             }
             checkMarker()
         }

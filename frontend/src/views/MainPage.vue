@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
+import MainSidebar from '@/components/main/MainSidebar.vue'
 // import { reactive } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
@@ -13,6 +13,7 @@
 export default {
     name: 'MainPage',
     components: {
+        MainSidebar
     },
 
     setup(){
