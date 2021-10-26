@@ -13,10 +13,12 @@ import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 
 @Repository
-public interface NoticeRepository extends JpaRepository<User, Long> {
+public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	
 	@Transactional
 	@Query("select * from notice where extract(year from time)= :year and extract(month from time)= :month and channel_id := channelId")
-	Optional<List<Notice>> findByYearAndMonth(@Param("year") String year, @Param("month") String month, @Param("channelId") String channelId);
-	
+	List<Notice> getNoticeByYearAndMonth(@Param("year") String year, @Param("month") String month, @Param("channelId") String channelId);
+
+	@Transactional
+	Notice findByToken(String token);
 }
