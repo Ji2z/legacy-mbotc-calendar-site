@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="bg-gray-100 flex justify-start">
+        <router-view :key="$route.fullPath" class="w-full h-screen"/>
         <main-sidebar/>
-        <router-view :key="$route.fullPath"/>
     </div>
 </template>
 <script>
