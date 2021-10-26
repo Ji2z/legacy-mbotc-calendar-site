@@ -34,11 +34,11 @@ public class NoticeController {
 		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
 		
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe("구독하고있는 채널목록");
+		result.setSubscribe("11");
 		result.setNotifications(new ArrayList<>());
 		String[] subscribeList = result.getSubscribe().split(",");
 		for(String subscribe : subscribeList) {
-			List<Notice> temp = noticeService.findAllByYearAndMonth(year, month, subscribe);
+			List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
 			for (int i = 0; i < temp.size(); i++) {
 				result.getNotifications().add(temp.get(i));
 			}	
@@ -47,7 +47,7 @@ public class NoticeController {
 	}
 	
 	// 공지 세부정보 갖고오기
-	@GetMapping(value = "/post/")
+	@GetMapping(value = "/post/{postId}")
 	public ResponseEntity<Notice> getNoticeByMonth1(@RequestHeader HashMap<String,String> header, @PathVariable String postId){
 		return ResponseEntity.status(HttpStatus.OK).body(noticeService.findByNoticeId(postId));
 	}
