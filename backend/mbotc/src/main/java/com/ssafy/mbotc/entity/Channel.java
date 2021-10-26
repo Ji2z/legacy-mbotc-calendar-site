@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Channel extends BaseEntity {
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
-	Team teamId;
+	Team team;
 	
 	@Column
 	String name;

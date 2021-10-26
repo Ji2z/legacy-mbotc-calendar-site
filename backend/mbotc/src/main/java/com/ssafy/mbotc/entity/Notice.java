@@ -18,10 +18,10 @@ import lombok.Setter;
 public class Notice extends BaseEntity {
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
-	Channel channelId;
+	Channel channel;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
-	User userId;
+	User user;
 	
 	@Column
 	Date time;
