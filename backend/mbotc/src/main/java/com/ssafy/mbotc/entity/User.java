@@ -20,6 +20,15 @@ public class User extends BaseEntity {
 	String userName;
 	
 	@Column
+	String url;
+	
+	@Column
 	String token;
 
+	@Override
+	public String toString() {
+		return "User [userEmail=" + userEmail + ", userName=" + userName + ", url=" + url + ", token=" + token + ", id="
+				+ id + "]";
+	}
+	
 }
