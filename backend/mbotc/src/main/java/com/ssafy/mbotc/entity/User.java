@@ -24,6 +24,9 @@ public class User extends BaseEntity {
 	
 	@Column
 	String token;
+	
+	@Column
+	String userId;
 
 	@Override
 	public String toString() {

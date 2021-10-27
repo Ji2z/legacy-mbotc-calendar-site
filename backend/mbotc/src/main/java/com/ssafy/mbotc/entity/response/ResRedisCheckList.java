@@ -12,7 +12,19 @@ public class ResRedisCheckList {
 	public class Post{
 		String postId;
 		boolean isDone;
+		
+		@Override
+		public String toString() {
+			return "{\"postId\":\"" + postId + "\", \"isDone\":\"" + isDone + "\"}";
+		}
 	}
 	
 	List<Post> posts;
+
+	@Override
+	public String toString() {
+		return "{\"posts\":" + posts + "\"}";
+	}
+	
+	
 }
