@@ -26,4 +26,20 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
+	@Override
+	public void delete(User user) {
+		userRepository.delete(user);
+	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
+	}
+
+	@Override
+	public Optional<User> findByToken(String token) {
+		Optional<User> user = userRepository.findByToken(token);
+		return user;
+	}
+
 }
