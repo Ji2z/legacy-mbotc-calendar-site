@@ -62,7 +62,7 @@ public class RedisService {
 				List<ResRedisChannel> channelList = new ArrayList<>();
 				for (int j = 0; j < channels.size(); j++) {
 					ResRedisChannel channel = new ResRedisChannel();
-					JSONObject channelJ = (JSONObject) channels.get(i);
+					JSONObject channelJ = (JSONObject) channels.get(j);
 					channel.setChannelId((String) channelJ.get("channelId"));
 					channel.setChannelName((String) channelJ.get("channelName"));
 					channel.setShow(((String) channelJ.get("show")).equals("true")?true:false);

@@ -15,4 +15,13 @@ public class ResRedisChannel {
 	public String toString() {
 		return "{\"channelId\":\"" + channelId + "\", \"channelName\":\"" + channelName + "\", \"show\":\"" + show + "\"}";
 	}
+
+	public ResRedisChannel() {}
+
+	public ResRedisChannel(String channelId, String channelName, boolean show) {
+		super();
+		this.channelId = channelId;
+		this.channelName = channelName;
+		this.show = show;
+	}
 }

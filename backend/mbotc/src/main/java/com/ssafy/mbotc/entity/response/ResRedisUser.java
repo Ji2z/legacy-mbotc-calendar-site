@@ -16,5 +16,13 @@ public class ResRedisUser {
 	public String toString() {
 		return "{\"teams\":" + teams + ", \"theme\":\"" + theme + "\"}";
 	}
+
+	public ResRedisUser() {}
+	
+	public ResRedisUser(List<ResRedisTeam> teams, String theme) {
+		super();
+		this.teams = teams;
+		this.theme = theme;
+	}
 	
 }

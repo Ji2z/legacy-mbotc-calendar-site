@@ -21,4 +21,12 @@ public class Team extends BaseEntity {
 	@Column
 	String token;
 
+	public Team() {}
+	
+	public Team(String name, String token) {
+		super();
+		this.name = name;
+		this.token = token;
+	}
+
 }

@@ -24,4 +24,14 @@ public class Channel extends BaseEntity {
 	@Column
 	String token;
 
+	public Channel() {}
+	
+	public Channel(Team team, String name, String token) {
+		super();
+		this.team = team;
+		this.name = name;
+		this.token = token;
+	}
+
+	
 }

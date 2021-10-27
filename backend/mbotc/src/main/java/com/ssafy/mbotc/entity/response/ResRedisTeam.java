@@ -19,4 +19,22 @@ public class ResRedisTeam {
 		return "{\"teamId\":\"" + teamId + "\", \"teamName\":\"" + teamName + "\", \"color\":\"" + color + "\", \"subscribe\":"
 				+ subscribe + "}";
 	}
+
+	public ResRedisTeam() {}
+	
+	public ResRedisTeam(String teamId, String teamName, String color, List<ResRedisChannel> subscribe) {
+		super();
+		this.teamId = teamId;
+		this.teamName = teamName;
+		this.color = color;
+		this.subscribe = subscribe;
+	}
+
+	public ResRedisTeam(String teamId, String teamName, String color) {
+		super();
+		this.teamId = teamId;
+		this.teamName = teamName;
+		this.color = color;
+	}
+	
 }
