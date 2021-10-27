@@ -1,8 +1,11 @@
 package com.ssafy.mbotc.service;
 
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +15,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
+import com.ssafy.mbotc.entity.response.ResRedisCheckList;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
 
@@ -24,9 +29,22 @@ public class RedisService {
 	
 	JSONParser parser = new JSONParser();
 	
+//	public ResRedisCheckList getUserChecklist(String keyid) {
+//		ValueOperations<String, String> value = redisTemplate.opsForValue();
+//		ResRedisCheckList userChecklist = new ResRedisCheckList();
+//		
+//		try {
+//			JSONObject content = (JSONObject) parser.parse(value.get(keyid));
+//			System.out.println(content.toString());
+//			userChecklist.setPosts((String) content.get("posts"));
+//			
+//		}
+//	}
+	
 	public ResRedisUser getUserSettings(String token) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		ResRedisUser userSetting = new ResRedisUser();
+		
 		try {
 			JSONObject content = (JSONObject) parser.parse(value.get(token));
 			System.out.println(content.toString());
@@ -62,9 +80,21 @@ public class RedisService {
 		return userSetting;
 	}
 	
+	
+	
 	public void setUserSettings(String userToken, ResRedisUser userSetting) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		System.out.println(userSetting.toString());
 		value.set(userToken, userSetting.toString());
+	}
+	
+	//user post checklist
+	public void setUserChecklists(String keyid, ResRedisCheckList userCheckList) {
+		String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+		String userkey = keyid.concat("_").concat(formatDate);		
+		System.out.println(userkey);
+		ValueOperations<String, String> value = redisTemplate.opsForValue();
+		value.set(userkey, userCheckList.toString());
+
 	}
 }
