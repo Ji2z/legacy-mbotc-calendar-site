@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.mbotc.entity.Notice;
-import com.ssafy.mbotc.entity.ResNoticeList;
+import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.service.NoticeService;
 
 @RestController
@@ -51,16 +51,6 @@ public class NoticeController {
 	public ResponseEntity<Notice> getNoticeByMonth1(@RequestHeader HashMap<String,String> header, @PathVariable String postId){
 		return ResponseEntity.status(HttpStatus.OK).body(noticeService.findByNoticeId(postId));
 	}
-	
-	// user token update
-//	@PatchMapping
-//	public ResponseEntity<User> updateUserToken(@RequestBody User user) {
-//		Optional<User> target = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
-//		if(!target.isPresent()) {
-//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
-//		}
-//		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserToken(target.get(), user.getToken()));
-//	}
 	
 	
 }
