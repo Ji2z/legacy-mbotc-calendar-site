@@ -139,7 +139,7 @@
 </template>
 <script>
 // import abc from '@/components/'
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 // import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -147,19 +147,25 @@ export default {
     name: 'MainSidebar',
     components: {
     },
-
-    setup(){
+    props:{
+        detailFlag:{
+            type: Boolean,
+            default: false,
+        }
+    },
+    setup(props, {emit}){
         const router = useRouter()
         const state = reactive({
             nav:[true,false,false,false],
-            today:"20211026"
+            today:0
         })
 
         const clickNav = (target)=>{
             switch (target) {
                 case 0:
                     state.nav = [true,false,false,false]
-                    router.push("/main/"+state.today)
+                    emit("clickOther")
+                    router.push("/main")
                     break;
                 case 1:
                     state.nav = [false,true,false,false]
@@ -167,15 +173,27 @@ export default {
                     break;
                 case 2:
                     state.nav = [false,false,true,false]
+                    emit("clickOther")
                     router.push("/main/notice")
                     break;
                 case 3:
                     state.nav = [false,false,false,true]
+                    emit("clickOther")
                     router.push("/main/myPage")
                     break;
             }
 
         }
+
+        watch(()=> props.detailFlag, (detailFlag, prevDetailFlag)=>{
+            console.log(props)
+            if(!prevDetailFlag && detailFlag){
+                state.nav = [false,true,false,false]
+            }
+        })
+
+        let today = new Date()
+        state.today = today.getFullYear().toString() + (today.getMonth()+1).toString() + today.getDate()
 
         return { state, clickNav }
     }

@@ -23,7 +23,7 @@ const routes = [
         name: 'Main',
         component: MainPage,
         children: [
-            {path: ":date", component: CalendarBig, meta:{ loginRequired: true } },
+            {path: "", component: CalendarBig, meta:{ loginRequired: true } },
             {path: "detail/:date", component: DetailPage , meta:{ loginRequired: true } },
             {path: "notice", component: NoticeEditor , meta:{ loginRequired: true } },
             {path: "myPage", component: MyPage , meta:{ loginRequired: true } },

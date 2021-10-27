@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-100 w-full h-screen px-28 pt-12">
-        <div class="bg-white rounded-xl shadow-2xl p-4">
+        <div class="bg-white w-full h-full rounded-xl shadow-2xl p-4">
             <div class="header flex justify-between py-8">
                 <div>
                     <span class="text-4xl font-bold p-8 pr-0">{{monthList[state.month]}}</span>
@@ -96,8 +96,7 @@ export default {
     name: 'CalendarBig',
     components: {
     },
-
-    setup(){
+    setup(props, {emit}){
         const router = useRouter()
         const monthList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         const state = reactive({
@@ -150,8 +149,16 @@ export default {
             initCalendar()
         }
         const goDetail = (day)=>{
-            console.log(day)
-            let target = state.year.toString() + (state.month + 1).toString() + day.toString()
+            emit('clickDetail')
+            let target =  state.year.toString()
+            if(state.month+1 < 10){
+                target+="0"
+            }
+            target += (state.month + 1).toString()
+            if(day < 10){
+                target+="0"
+            }
+            target += day.toString()
             router.push("/main/detail/"+target)
         }
         const goNotice = ()=>{

@@ -1,10 +1,13 @@
 <template>
-    <div>
+    <div class="mx-4">
+        <span class="text-6xl font-bold inline-block align-bottom mr-2">{{state.day}}</span>
+        <span class="text-4xl inline-block align-bottom mr-2">{{monthList[state.month]}}</span>
+        <span class="inline-block align-bottom">{{state.year}}</span>
     </div>
 </template>
 <script>
 // import abc from '@/components/'
-// import { reactive } from 'vue'
+import { reactive } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
@@ -12,9 +15,28 @@ export default {
     name: 'CalendarTitle',
     components: {
     },
+    props:{
+        date:{
+            type:String,
+            default:20000000
+        }
+    },
 
-    setup(){
-        return { }
+    setup(props){
+        const monthList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+        const state = reactive({
+            day:0,
+            month:0,
+            year:0
+        })
+        const init = ()=>{
+            state.year = parseInt(props.date.substring(0,4))
+            state.month = parseInt(props.date.substring(4,6))-1
+            state.day = parseInt(props.date.substring(6,8))
+            //console.log(state)
+        }
+        init()
+        return { state, monthList }
     }
 };
 </script>
