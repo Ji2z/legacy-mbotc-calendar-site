@@ -1,6 +1,8 @@
-package com.ssafy.mbotc.entity;
+package com.ssafy.mbotc.entity.response;
 
 import java.util.List;
+
+import com.ssafy.mbotc.entity.Notice;
 
 import lombok.Getter;
 import lombok.Setter;
