@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-gray-100 w-full h-screen px-32 pt-12">
-        <div class="grid grid-cols-4 gap-4 h-full">
+    <div class="bg-gray-100 w-full h-screen pt-12">
+        <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
                 <div class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap">

@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click = "submit">Take Me!</button>
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click="submit">Take Me!</button>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
 // import abc from '@/components/'
 import { reactive } from 'vue'
 // import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'WelcomeLogin',
@@ -42,6 +42,7 @@ export default {
     },
 
     setup(){
+        const router = useRouter()
         const state = reactive({
             url:"",
             email:"",
@@ -49,7 +50,10 @@ export default {
             loginToggle:false,
             clickable:false
         })
-        return { state }
+        const submit = ()=>{
+            router.push("/main")
+        }
+        return { state, submit }
     }
 };
 </script>

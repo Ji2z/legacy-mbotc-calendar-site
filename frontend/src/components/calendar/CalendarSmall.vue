@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-100 w-5/6 px-2 pt-12">
-        <div class="bg-white w-full rounded-xl shadow-xl p-2">
+        <div class="w-full rounded-xl p-2">
             <div class="header flex justify-between py-2">
                 <div>
                     <span class="text-xl font-bold p-2 pr-0">{{monthList[state.month]}}</span>
@@ -19,9 +19,9 @@
                     </button>
                 </div>
             </div>
-            <table class="w-full border-2 border-white">
+            <table class="w-full">
                 <thead>
-                    <tr class="mx-auto text-xl">
+                    <tr class="mx-auto text-md">
                         <th class="h-5 font-light text-red-600" style="width:12%">
                             <span>Sun</span>
                         </th>

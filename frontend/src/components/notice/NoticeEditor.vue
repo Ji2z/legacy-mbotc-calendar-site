@@ -23,8 +23,8 @@
                         <p class="text-xl font-bold mr-4">Date</p>
                         <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                             <div>
-                                <input type="checkbox" v-model="state.termToggle" name="termToggle" id="termToggle" :class="{'border-blue-400':state.termToggle, 'right-0':state.termToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                                <label for="termToggle" :class="{'bg-blue-400':state.termToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                                <input type="checkbox" v-model="state.termToggle" name="termToggle" id="termToggle" :class="{'border-blue-800':state.termToggle, 'right-0':state.termToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                <label for="termToggle" :class="{'bg-blue-800':state.termToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                             </div>
                         </div>
                         <p class="text-gray-500 text-sm">term</p>
