@@ -9,7 +9,7 @@ import ErrorPage from '@/views/ErrorPage.vue';
 import CalendarBig from '@/components/calendar/CalendarBig.vue';
 import DetailPage from '@/components/main/DetailPage.vue';
 import NoticeEditor from '@/components/notice/NoticeEditor.vue';
-import MyPage from '@/components/main/MyPage.vue';
+import MyPage from '@/components/my/MyPage.vue';
 
 const routes = [
     {
