@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white rounded-xl shadow-lg p-8 m-4">
         <div class="overflow-hidden">
-            <span class="w-1/3 h-8 text-3xl font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.title}}</span>
+            <span class="w-1/3 h-10 text-3xl font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.title}}</span>
             <span class="w-1/3 font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
         </div>
         <div class="text-lg overflow-hidden p-4">

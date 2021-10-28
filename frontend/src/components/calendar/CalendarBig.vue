@@ -1,12 +1,12 @@
 <template>
-    <div class="bg-gray-100 w-full h-screen px-28 pt-12">
-        <div class="bg-white w-full h-full rounded-xl shadow-2xl p-4">
-            <div class="header flex justify-between py-8">
+    <div class="bg-gray-100 w-full h-screen px-32 pt-12">
+        <div class="bg-white w-11/12 h-full rounded-xl shadow-2xl p-8">
+            <div class="header flex justify-between pb-8">
                 <div>
-                    <span class="text-4xl font-bold p-8 pr-0">{{monthList[state.month]}}</span>
+                    <span class="text-4xl font-bold">{{monthList[state.month]}}</span>
                     <span class="text-4xl p-8">{{state.year}}</span>
                 </div>
-                <div class="inline-block">
+                <div class="inline-block mr-6">
                     <button @click="beforeMonth">							
                         <svg class="h-6 w-6 text-gray-500 inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -22,25 +22,25 @@
             <table class="w-full border-2 border-white">
                 <thead>
                     <tr class="mx-auto text-3xl">
-                        <th class="h-10 font-light text-red-600" style="width:12%">
+                        <th class="h-8 font-light text-red-600" style="width:12%">
                             <span>Sun</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Mon</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Tue</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Wed</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Thu</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Fri</span>
                         </th>
-                        <th class="h-10 font-light" style="width:12%">
+                        <th class="h-8 font-light" style="width:12%">
                             <span>Sat</span>
                         </th>
                     </tr>

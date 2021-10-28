@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 w-full h-screen px-28 md:pr-4 pt-12">
+    <div class="bg-gray-100 w-full h-screen px-32 pt-12">
         <div class="grid grid-cols-4 gap-4 h-full">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>

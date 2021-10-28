@@ -19,13 +19,13 @@
                 <label for="loginToggle" class="mr-8 text-sm text-gray-700">keep me logged in.</label>
                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <div>
-                        <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                        <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                        <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                     </div>
                 </div>
             </div>
             <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':clickable, 'hover:bg-blue-700':clickable}" @click = "submit">Take Me!</button>
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click = "submit">Take Me!</button>
             </div>
         </div>
     </div>
@@ -46,7 +46,8 @@ export default {
             url:"",
             email:"",
             password:"",
-            loginToggle:false
+            loginToggle:false,
+            clickable:false
         })
         return { state }
     }
