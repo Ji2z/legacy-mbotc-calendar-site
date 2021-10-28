@@ -10,7 +10,7 @@
             </div>
             <div class="col-span-1 h-full">
                 <notice-progress class="w-3/4 h-auto mx-auto"/>
-                <calendar-small class="w-3/4 h-auto"/>
+                <calendar-small class="w-3/4 h-auto" :date="state.detailDate"/>
             </div>
         </div>
     </div>
@@ -75,6 +75,7 @@ export default {
 
         const init = ()=>{
             state.detailDate = router.currentRoute.value.params.date
+            //가져온 날짜로 공지 댕겨오는 api 위치해야됨
             if(state.notices.length > 0){
                 state.chooseNotice = state.notices[0]
             }
