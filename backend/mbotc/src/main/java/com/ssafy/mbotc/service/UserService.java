@@ -11,4 +11,5 @@ public interface UserService {
 	User save(User user);
 	void delete(User user);
 	Optional<User> findByToken(String token);
+	Optional<User> findByUserId(String userId);
 }

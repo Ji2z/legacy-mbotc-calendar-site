@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResRedisCheckList {
-
+	@Getter
+	@Setter
 	public class Post{
 		String postId;
 		boolean isDone;

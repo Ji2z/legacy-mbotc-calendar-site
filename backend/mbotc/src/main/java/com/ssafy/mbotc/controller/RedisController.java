@@ -30,21 +30,26 @@ public class RedisController {
 	UserService userService;
 	
 	@PostMapping(value = "/user")
-	public ResponseEntity<String> setUserSetting(@RequestParam String userToken, @RequestBody ResRedisUser body){
-		Optional<User> target = userService.findByToken(userToken);
-		String keyid = target.get().getUserId();
-		redisService.setUserSettings(keyid, body);
-		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
-	}
+    public ResponseEntity<String> setUserSetting(@RequestParam String userToken, @RequestBody ResRedisUser body){
+        Optional<User> target = userService.findByToken(userToken);
+        if(!target.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+        }
+        String keyid = target.get().getUserId();
+        redisService.setUserSettings(keyid, body);
+        return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
+    }
 
-	@GetMapping(value = "/user")
-	public ResponseEntity<ResRedisUser> getUserSetting(@RequestParam String userToken){
-		ResRedisUser response = redisService.getUserSettings(userToken);
-		if(response == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(response);
-	}
+    @GetMapping(value = "/user")
+    public ResponseEntity<ResRedisUser> getUserSetting(@RequestParam String userToken){
+        Optional<User> target = userService.findByToken(userToken);
+        if(!target.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+        }
+        String keyid = target.get().getUserId();
+        ResRedisUser response = redisService.getUserSettings(keyid);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 	
 	@PostMapping(value = "/checklist")
 	public ResponseEntity<String> setUserChecklist(@RequestParam String userToken, @RequestBody ResRedisCheckList body){
@@ -55,9 +60,15 @@ public class RedisController {
 		
 	}
 	
-//	@GetMapping(value = "/checklist")
-//	public ResponseEntity<ResRedisCheckList> getUserChecklist(@RequestParam String usertoken){
-//		ResRedisCheckList response = redisService.get
-//	}
+	@GetMapping(value = "/checklist")
+	public ResponseEntity<ResRedisCheckList> getUserChecklist(@RequestParam String usertoken){
+		Optional<User> target = userService.findByToken(usertoken);
+		String keyid = target.get().getUserId();
+		ResRedisCheckList response = redisService.getUserChecklist(keyid);
+		if(response == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "POSTS NOT FOUND");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 	
 }

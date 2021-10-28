@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisCheckList;
+import com.ssafy.mbotc.entity.response.ResRedisCheckList.Post;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
 
@@ -29,17 +30,32 @@ public class RedisService {
 	
 	JSONParser parser = new JSONParser();
 	
-//	public ResRedisCheckList getUserChecklist(String keyid) {
-//		ValueOperations<String, String> value = redisTemplate.opsForValue();
-//		ResRedisCheckList userChecklist = new ResRedisCheckList();
-//		
-//		try {
-//			JSONObject content = (JSONObject) parser.parse(value.get(keyid));
-//			System.out.println(content.toString());
-//			userChecklist.setPosts((String) content.get("posts"));
-//			
-//		}
-//	}
+	public ResRedisCheckList getUserChecklist(String keyid) {
+		ValueOperations<String, String> value = redisTemplate.opsForValue();
+		ResRedisCheckList userChecklist = new ResRedisCheckList();
+		
+		try {
+			JSONObject content = (JSONObject) parser.parse(value.get(keyid));
+			System.out.println(content.toString());
+			JSONArray posts = (JSONArray) content.get("posts");
+			List<Post> postList = new ArrayList<>();
+			for(int i = 0; i< posts.size(); i++) {
+				ResRedisCheckList postobj = new ResRedisCheckList();
+				Post post = postobj.new Post();
+				JSONObject postP = (JSONObject) posts.get(i);
+				post.setPostId((String) postP.get("postId"));
+				post.setDone((Boolean) postP.get("isDone"));
+				postList.add(post);
+			}
+			userChecklist.setPosts(postList);
+			
+		}catch(Exception e) {
+			System.out.println("Getting post error");
+			e.printStackTrace();
+			return null;
+		}
+		return userChecklist;
+	}
 	
 	public ResRedisUser getUserSettings(String token) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
