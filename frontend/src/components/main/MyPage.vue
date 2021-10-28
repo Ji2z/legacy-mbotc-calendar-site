@@ -39,8 +39,7 @@
                     <div class="overflow-y-auto p-4">
                         <div v-for="team in state.teams" :key="team.token" class="m-2 p-2 bg-white rounded-xl shadow-2xl border-b-2 border-r-2 border-gray-200">
                             <div class="flex justify-between">
-                                <div class="flex justify-start items-center">
-                                    <div class="w-2 h-5 cursor-pointer" :style="{background: team.color}"/>
+                                <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
                                     <p class="text-xl overflow-x-hidden ml-2 cursor-pointer" @click="selectTeam(team.token)">
                                         {{team.name}}
                                     </p>
@@ -94,6 +93,7 @@ export default {
 
     setup(){
         const state = reactive({
+            pickerOpen: false,
             teams:[
                 {
                     token:"0",
@@ -169,8 +169,11 @@ export default {
         const selectTeam = (token)=>{
             state.selectedTeam = token
         }
+        const changeColor = (token)=>{
+            state.pickerOpen = true
+        }
         init()
-        return { state, selectTeam }
+        return { state, selectTeam, changeColor }
     }
 };
 </script>
