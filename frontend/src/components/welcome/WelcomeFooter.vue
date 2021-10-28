@@ -1,5 +1,5 @@
 <template>
-    <div id="footer" class="md:flex md:justify-between p-8 w-full bg-blue-900 text-yellow-50">
+    <div id="footer" class="md:flex md:justify-between p-8 w-full h-80 bg-blue-900 text-yellow-50">
         <div clsss="text-left whitespace-nowrap">       
         </div>
         <div clsss="text-right whitespace-nowrap">
@@ -28,10 +28,7 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
 
 export default {
     name: 'WelcomeFooter',
