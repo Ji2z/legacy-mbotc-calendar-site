@@ -106,7 +106,7 @@ public class RedisService {
 	
 	//user post checklist
 	public void setUserChecklists(String keyid, ResRedisCheckList userCheckList) {
-		String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+		String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 		String userkey = keyid.concat("_").concat(formatDate);		
 		System.out.println(userkey);
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
