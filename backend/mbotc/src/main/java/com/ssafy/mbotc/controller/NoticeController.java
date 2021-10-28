@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.mbotc.dao.ChannelRepository;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
@@ -82,14 +83,19 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		result.setSubscribe(subscribeChannelidlist.toString());
+		System.out.println("TEST OF subscribeChannelidlist: " + subscribeChannelidlist.toString());
+		
 		List<Notice> total = new ArrayList<Notice>();
 		//구독 채널의 한달치 공지
 		for(String subscribe : subscribeChannelidlist) {
+			//List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
 			List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!TEST FOR TEMP: "+temp.toString());
 			for (int i = 0; i < temp.size(); i++) {
 				total.add(temp.get(i));
 			}
 		}
+		System.out.println("@@@@@@@@@@@@@@TEST for TOTAL: " + total.toString());
 		result.setNotifications(total);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
