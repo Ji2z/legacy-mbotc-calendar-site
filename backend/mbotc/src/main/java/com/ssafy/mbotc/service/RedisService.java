@@ -56,7 +56,7 @@ public class RedisService {
 		}
 		return userChecklist;
 	}
-	
+	//String token => userId 입니다
 	public ResRedisUser getUserSettings(String token) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		ResRedisUser userSetting = new ResRedisUser();
