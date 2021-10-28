@@ -28,5 +28,11 @@ public class NoticeServiceImpl implements NoticeService {
 	public Notice findByNoticeId(String postId) {
 		return noticeRepository.findByToken(postId);
 	}
+
+	@Override
+	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, String channelToken) {
+		long channelId = channelRepository.findByToken(channelToken).get().getId();
+		return noticeRepository.findAllByYearAndMonthAndDay(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), channelId);
+	}
 	
 }
