@@ -2,6 +2,8 @@ package com.ssafy.mbotc.entity.response;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +11,11 @@ import lombok.Setter;
 @Setter
 public class ResRedisUser {
 
+	@ApiParam(value = "team list to which user belongs")
 	List<ResRedisTeam> teams;
+	
+	@ApiModelProperty(example = "light")
+	@ApiParam(value = "user's site theme")
 	String theme;
 	
 	@Override

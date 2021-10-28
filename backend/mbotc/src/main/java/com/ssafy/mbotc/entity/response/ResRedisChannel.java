@@ -1,5 +1,7 @@
 package com.ssafy.mbotc.entity.response;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +9,16 @@ import lombok.Setter;
 @Setter
 public class ResRedisChannel {
 
+	@ApiModelProperty(example = "000000000")
+	@ApiParam(value = "channel's random id from mattermost API response")
 	String channelId;
+	
+	@ApiModelProperty(example = "Q&A")
+	@ApiParam(value = "channel's name\"")
 	String channelName;
+	
+	@ApiModelProperty(example = "true")
+	@ApiParam(value = "subscribe to the channel")
 	boolean show;
 	
 	@Override
