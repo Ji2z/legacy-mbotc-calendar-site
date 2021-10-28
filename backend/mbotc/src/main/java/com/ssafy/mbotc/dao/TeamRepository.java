@@ -1,20 +1,17 @@
 package com.ssafy.mbotc.dao;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.mbotc.entity.Channel;
+import com.ssafy.mbotc.entity.Team;
 
 @Repository
-public interface ChannelRepository extends JpaRepository<Channel, Long> {
+public interface TeamRepository extends JpaRepository<Team, Long> {
 	
 	@Transactional
-	Optional<Channel> findByToken(String token);
+	Optional<Team> findByToken(String token);
 	
-	@Transactional
-	List<Channel> findAllByTeamId(long teamId);
 }
