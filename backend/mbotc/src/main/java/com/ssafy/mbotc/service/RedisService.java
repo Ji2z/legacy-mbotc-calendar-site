@@ -31,7 +31,9 @@ public class RedisService {
 	public ResRedisUser getUserSettings(String token) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		ResRedisUser userSetting = new ResRedisUser();
-		
+		// 저장된 값이 없으면 null 반환 => parse할 때 null pointer exception 예방
+		if(!redisTemplate.hasKey(token))
+			return null;
 		try {
 			JSONObject content = (JSONObject) parser.parse(value.get(token));
 			System.out.println(content.toString());
