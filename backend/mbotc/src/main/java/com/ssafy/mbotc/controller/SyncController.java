@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.service.SyncService;
-import com.ssafy.mbotc.service.SyncService2;
+import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.UserService;
 
 @Controller
@@ -22,7 +22,7 @@ import com.ssafy.mbotc.service.UserService;
 public class SyncController {
 
 	@Autowired
-	SyncService2 syncService;
+	SyncService syncService;
 	
 	@Autowired
 	UserService userService;

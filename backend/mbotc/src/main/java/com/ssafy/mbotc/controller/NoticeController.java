@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.ssafy.mbotc.dao.ChannelRepository;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
@@ -43,32 +43,22 @@ public class NoticeController {
 	@GetMapping(value = "/month")
 	public ResponseEntity<ResNoticeList> getNoticeByMonth(@RequestHeader HashMap<String,String> header, @RequestParam String year, @RequestParam String month){
 		String authToken = header.get("auth");
-		
-		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
-
-		//getusersetting redisservice
-		/**0. 구독 채널아이디를 저장할 빈 리스트를 만들어 둔다. => List<String> subscribeList = new ArrayList<>() // 함수에서 반환하는 ResNoticeList는 reponse라는 변수로 만든다.
-				1. authtoken을 가지고 User 갖고온다.
-				2. redisService.getUserSetting(User.getUser_id) => ResRedisUserSetting 
-				3. List<ResRedisTeam> teams = ResRedisUserSetting.getTeams();
-				4. teams.size() 반복문을 돈다.
-				    4-1. List<ResRedisChannel> channels = teams.get(i).getSubscribe()
-				    4-2. channels.size() 반목문을 돈다.
-				        4-2-1. channels.get(i).getShow == true일 경우에만 channel_id를 갖고와서 0번 subscribeList에 add한다.
-				5. 0번 subscribeList에 구독 채널 아이디를 다 저장했다면 subscribeList.size()만큼 반복문을 돈다.
-				    5-1 . subscribeList.get(i)해서 얻을 수 있는 채널 아이디로 DB notice 테이블에서 설정된 기간 기준으로 List<Notice>를 갖고온다.
-				    5-1-1. 얻어온 List<Notice>를 반환값인 response.notifications에 add한다.
-				6. response.set함수들을 통해 구독 채널명들과, List<Notice>를 설정하고 return에 넘긴다.
-				**/
 		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
 		String keyid = target.get().getUserId();
 		
+		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
 		ResRedisUser redisUserinfo = redisService.getUserSettings(keyid);
+		
 		//구독 팀 갯수
 		int N = redisUserinfo.getTeams().size();
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
+		
 		//channel id 담기
 		List<String> subscribeChannelidlist = new ArrayList<>();
+		
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
 		for(int i = 0; i< N; i++) {
@@ -83,12 +73,10 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		System.out.println("##########TEST OF subscribeChannelidlist: " + subscribeChannelidlist.toString());
-		
 		List<Notice> total = new ArrayList<Notice>();
+		
 		//구독 채널의 한달치 공지
 		for(String subscribe : subscribeChannelidlist) {
-			//List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
 			List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
 			for (int i = 0; i < temp.size(); i++) {
 				total.add(temp.get(i));
@@ -98,21 +86,28 @@ public class NoticeController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
+	
 	//일별 알람 가져오기
 	@GetMapping(value = "/day")
 	public ResponseEntity<ResNoticeList> getNoticeByDay(@RequestHeader HashMap<String,String> header, @RequestParam String year, @RequestParam String month, @RequestParam String day){
 		String authToken = header.get("auth");
 		
-		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
 		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
 		String keyid = target.get().getUserId();
 		
+		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
 		ResRedisUser redisUserinfo = redisService.getUserSettings(keyid);
+		
 		//구독 팀 갯수
 		int N = redisUserinfo.getTeams().size();
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
+		
 		//channel id 담기
 		List<String> subscribeChannelidlist = new ArrayList<>();
+		
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
 		for(int i = 0; i< N; i++) {
@@ -127,11 +122,10 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		
 		List<Notice> total = new ArrayList<Notice>();
+		
 		//구독 채널의 한달치 공지
 		for(String subscribe : subscribeChannelidlist) {
-			//List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
 			List<Notice> temp = noticeService.getNoticeByYearAndMonthAndDay(year, month, day,subscribe);
 			for (int i = 0; i < temp.size(); i++) {
 				total.add(temp.get(i));
@@ -145,6 +139,12 @@ public class NoticeController {
 	// 공지 세부정보 갖고오기
 	@GetMapping(value = "/post/{postId}")
 	public ResponseEntity<Notice> getNoticeByMonth1(@RequestHeader HashMap<String,String> header, @PathVariable String postId){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHRIZED");
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(noticeService.findByNoticeId(postId));
 	}
 	

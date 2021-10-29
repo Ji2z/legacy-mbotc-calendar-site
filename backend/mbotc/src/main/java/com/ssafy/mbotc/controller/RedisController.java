@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.entity.User;
-import com.ssafy.mbotc.entity.response.ResRedisCheckList;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
 import com.ssafy.mbotc.service.RedisService;
 import com.ssafy.mbotc.service.UserService;
@@ -51,6 +50,7 @@ public class RedisController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 	
+    /*  ############################### CHECK LIST #######################################
 	@PostMapping(value = "/checklist")
 	public ResponseEntity<String> setUserChecklist(@RequestParam String userToken, @RequestBody ResRedisCheckList body){
 		Optional<User> target = userService.findByToken(userToken);
@@ -70,5 +70,5 @@ public class RedisController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
+	*/
 }

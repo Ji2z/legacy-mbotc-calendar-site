@@ -1,11 +1,7 @@
 package com.ssafy.mbotc.service;
 
-import java.io.PrintStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,10 +11,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
-import com.ssafy.mbotc.entity.response.ResRedisCheckList;
-import com.ssafy.mbotc.entity.response.ResRedisCheckList.Post;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
 
@@ -30,33 +23,11 @@ public class RedisService {
 	
 	JSONParser parser = new JSONParser();
 	
-	public ResRedisCheckList getUserChecklist(String keyid) {
-		ValueOperations<String, String> value = redisTemplate.opsForValue();
-		ResRedisCheckList userChecklist = new ResRedisCheckList();
-		
-		try {
-			JSONObject content = (JSONObject) parser.parse(value.get(keyid));
-			System.out.println(content.toString());
-			JSONArray posts = (JSONArray) content.get("posts");
-			List<Post> postList = new ArrayList<>();
-			for(int i = 0; i< posts.size(); i++) {
-				ResRedisCheckList postobj = new ResRedisCheckList();
-				Post post = postobj.new Post();
-				JSONObject postP = (JSONObject) posts.get(i);
-				post.setPostId((String) postP.get("postId"));
-				post.setDone((Boolean) postP.get("isDone"));
-				postList.add(post);
-			}
-			userChecklist.setPosts(postList);
-			
-		}catch(Exception e) {
-			System.out.println("Getting post error");
-			e.printStackTrace();
-			return null;
-		}
-		return userChecklist;
-	}
-	//String token => userId 입니다
+	/**
+	 * Redis에 저장되어 있는 userSetting을 갖고온다.
+	 * @param token : DB에서 user_id에 해당되는 부분
+	 * @return
+	 */
 	public ResRedisUser getUserSettings(String token) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		ResRedisUser userSetting = new ResRedisUser();
@@ -96,14 +67,13 @@ public class RedisService {
 		return userSetting;
 	}
 	
-	
-	
 	public void setUserSettings(String userToken, ResRedisUser userSetting) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
 		System.out.println(userSetting.toString());
 		value.set(userToken, userSetting.toString());
 	}
 	
+	/* ############################### CHECK LIST #######################################
 	//user post checklist
 	public void setUserChecklists(String keyid, ResRedisCheckList userCheckList) {
 		String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -113,4 +83,33 @@ public class RedisService {
 		value.set(userkey, userCheckList.toString());
 
 	}
+	
+	
+	public ResRedisCheckList getUserChecklist(String keyid) {
+		ValueOperations<String, String> value = redisTemplate.opsForValue();
+		ResRedisCheckList userChecklist = new ResRedisCheckList();
+		
+		try {
+			JSONObject content = (JSONObject) parser.parse(value.get(keyid));
+			System.out.println(content.toString());
+			JSONArray posts = (JSONArray) content.get("posts");
+			List<Post> postList = new ArrayList<>();
+			for(int i = 0; i< posts.size(); i++) {
+				ResRedisCheckList postobj = new ResRedisCheckList();
+				Post post = postobj.new Post();
+				JSONObject postP = (JSONObject) posts.get(i);
+				post.setPostId((String) postP.get("postId"));
+				post.setDone((Boolean) postP.get("isDone"));
+				postList.add(post);
+			}
+			userChecklist.setPosts(postList);
+			
+		}catch(Exception e) {
+			System.out.println("Getting post error");
+			e.printStackTrace();
+			return null;
+		}
+		return userChecklist;
+	}
+	*/
 }

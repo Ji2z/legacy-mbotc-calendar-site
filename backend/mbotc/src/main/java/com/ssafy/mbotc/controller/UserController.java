@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.ssafy.mbotc.dao.UserRepository;
 import com.ssafy.mbotc.entity.User;
-import com.ssafy.mbotc.service.SyncService2;
+import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.UserService;
 
 @RestController
@@ -28,7 +27,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private SyncService2 syncservice;
+	private SyncService syncservice;
 	
 	// user token update
 	@PatchMapping
@@ -38,7 +37,6 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
 		User userResult = userService.updateUserToken(target.get(), user.getToken());
-		
 		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
 		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
@@ -57,7 +55,7 @@ public class UserController {
 	
 	//user delete
 	@DeleteMapping
-	public ResponseEntity<User> deleteUserInfo(@RequestHeader HashMap<String,String> header, @RequestBody User user){
+	public ResponseEntity<String> deleteUserInfo(@RequestHeader HashMap<String,String> header, @RequestBody User user){
 		String authToken = header.get("auth");
 		
 		Optional<User> target = userService.findByToken(authToken);
@@ -71,7 +69,7 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "USER INFO IS NOT CORRECT");
 		}
 		userService.delete(userinfo);
-		return ResponseEntity.status(HttpStatus.OK).body(userinfo);
+		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
 	
 	
