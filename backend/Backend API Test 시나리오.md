@@ -18,8 +18,8 @@
 
 ---
 
-- [ ]  mysql workbench에서 bootdb 접속 후 select * from user을 통해 Step1에서 저장된 user PK 확인
-- [ ]  mysql workbench에서 bootdb 접속 후 select * from channel을 통해 channel PK를 확인
+- [ ]  mysql workbench에서 db 접속 후 select * from user을 통해 Step1에서 저장된 user PK 확인
+- [ ]  mysql workbench에서 db 접속 후 select * from channel을 통해 channel PK를 확인
     - [ ]  Step2에서 show의 속성이 true인 channel_id와 false인 channel_id의 PK(id) 각각 하나씩 확인
     - [ ]  notice table에서 위에서 확인한 channel PK 2개와 user PK를 사용하여 insert
         
