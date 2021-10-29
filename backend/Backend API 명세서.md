@@ -5,7 +5,7 @@
 <details>
     <summary> User </summary>
     <h2>회원</h2>
-    
+
    ```
     [POST] 회원등록 : 우리 DB에 유저 정보를 저장한다. (최초 저장)
     /user
@@ -15,12 +15,13 @@
     body : {
     	"token" : "110000000",
     	"userEmail" : "kimssafy@ssafy.com",
-    	"useNname" : "ssafy",
-    	"url" : "https://000.000.com"
+    	"userName" : "ssafy",
+    	"url" : "https://000.000.com",
+    	"userId" : "00000000"
     	} 
     				
-```
-    
+   ```
+
 ```
     [PATCH] 로그인 : mm api에 로그인 후 200이 뜨면 userid 값을 가지고 우리 DB에 유저 토큰값을 갱신한다.
     /user
@@ -29,7 +30,7 @@
     header : -
     body : { "userEmail" : "kimssafy@ssafy.com", "token" : "000000", "url" : "https://000.000.com", "userId" : "mm API에서 user_id라고 오는 것"}
 ```
-    
+
 ```
     [DELETE] 회원 탈퇴 : 우리 DB에서 유저정보를 삭제한다.
     /user
@@ -43,7 +44,7 @@
 <details>
     <summary> Notice </summary>
     <h2>공지</h2>
-    
+
 ```
 [GET] 한달 전체 공지 갖고오기 : 해당하는 연도별 + 월별 알림을 모두 가져온다.
     
@@ -72,7 +73,7 @@ response :
         }
 }
 ```
-    
+
 ```
 [GET] 하루 전체 공지 갖고오기 : 해당하는 날의 알림을 모두 가져온다.
     
@@ -101,7 +102,7 @@ response :
         }
 }
 ```
-    
+
 ```
 [GET] 공지 세부내용 갖고오기 : 공지의 세부 내용을 가져온다.
 /notification/post/{post_id}
@@ -165,7 +166,7 @@ body :
     
 response : -
 ```
-    
+
 ```
 [GET] 유저 저장 : redis 에 유저 정보를 반환한다.
 key : 유저의  userId
