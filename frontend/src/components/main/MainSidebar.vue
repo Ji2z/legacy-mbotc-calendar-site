@@ -195,6 +195,19 @@ export default {
         let today = new Date()
         state.today = today.getFullYear().toString() + (today.getMonth()+1).toString() + today.getDate()
 
+        const init = ()=>{
+            let nowLocation = router.currentRoute.value.fullPath
+            if(nowLocation === "/main"){
+                state.nav = [true,false,false,false]
+            }else if(nowLocation === "/main/myPage"){
+                state.nav = [false,false,false,true]
+            }else if(nowLocation === "/main/notice"){
+                state.nav = [false,false,true,false]
+            }else{
+                state.nav = [false,true,false,false]
+            }
+        }
+        init()
         return { state, clickNav }
     }
 };

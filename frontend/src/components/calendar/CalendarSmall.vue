@@ -47,14 +47,17 @@
                 </thead>
                 <tbody>
                     <tr v-for="week in state.weeks" :key="week.id" class="text-center">
-                        <td v-for="(day, index) in week" :key="day.id" class="p-1 w-6 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-200">
-                            <div class="flex flex-col h-12 w-6 mx-auto overflow-hidden" @click="goDetail(day)">
+                        <td v-for="(day, index) in week" :key="day.num" class="p-1 w-6 overflow-auto transition duration-500 cursor-pointer ease hover:bg-blue-100">
+                            <div class="flex flex-col h-12 w-full mx-auto overflow-hidden" @click="goDetail(day.num)">
                                 <div class="top h-2 w-full">
-                                    <span v-if="state.nowFlag && state.today == day" class="text-blue-700 font-bold">{{day}}</span>
-                                    <span v-else-if="index==0" class="text-red-500 font-bold">{{day}}</span>
-                                    <span v-else class="text-gray-400">{{day}}</span>
+                                    <span v-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
+                                    <span v-else class="text-gray-400">{{day.num}}</span>
                                 </div>
-                                <div class="bottom flex-grow h-10 py-1 w-full cursor-pointer">
+                                <div class="flex-grow h-10 py-1 w-full cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full mx-auto mt-4"
+                                    :class="{'bg-blue-100':(day.count==1),'bg-blue-200':(day.count>1 && day.count<4),'bg-blue-300':(day.count>3 && day.count<6),'bg-blue-500':(day.count>=6),}">
+
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -74,11 +77,16 @@ export default {
     name: 'CalendarSmall',
     components: {
     },
+    props:{
+        date:{
+            type:String,
+            default:20000000,
+        }
+    },
     setup(props, {emit}){
         const router = useRouter()
         const monthList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         const state = reactive({
-            nowFlag: false,
             year:0,
             month:0,
             today:0,
@@ -90,24 +98,31 @@ export default {
             let dayCount = new Date(state.year, state.month+1, 0).getDate()
             let target = 0
             for (let i = 0; i < startDay; i++) {
-                state.weeks[0].push(" ")
+                let day = {
+                    num : " ",
+                    count : 0, // 여기에 공지갯수
+                }
+                state.weeks[0].push(day)
             }
             for (let i = 1; i <= dayCount; i++) {
-                state.weeks[target].push(i)
+                //그 날의 공지갯수 새는 logic
+                let day = {
+                    num : i,
+                    count : i, // 여기에 공지갯수
+                }
+                state.weeks[target].push(day)
                 startDay++
                 if(startDay == 7){
                     startDay = 0
                     target++
                 }
             }
-            let today = new Date()
-            state.nowFlag = (state.year == today.getFullYear() && state.month == today.getMonth())? true : false
         }
         const init = ()=>{
-            let today = new Date()
-            state.year = today.getFullYear()
-            state.month = today.getMonth()
-            state.today = today.getDate()
+            
+            state.year = parseInt(props.date.substring(0,4))
+            state.month = parseInt(props.date.substring(4,6))-1
+            state.today = parseInt(props.date.substring(6,8))
             initCalendar()
         }
         const nextMonth = ()=>{

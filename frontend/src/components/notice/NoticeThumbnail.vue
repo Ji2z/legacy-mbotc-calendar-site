@@ -42,8 +42,13 @@ export default {
             },
         },
     },
-    setup(props){
+    setup(props, {emit}){
         const check = ()=>{
+            if(!props.notice.check){
+                emit("checked")
+            }else{
+                emit("unchecked")
+            }
             props.notice.check = !props.notice.check
         }
         return { check }

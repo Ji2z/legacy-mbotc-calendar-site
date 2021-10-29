@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-100 w-full h-screen px-32 pt-12">
-        <div class="bg-white w-11/12 h-full rounded-xl shadow-2xl p-8">
+        <div class="bg-white w-11/12 rounded-xl shadow-2xl p-8">
             <div class="header flex justify-between pb-8">
                 <div>
                     <span class="text-4xl font-bold">{{monthList[state.month]}}</span>
@@ -19,7 +19,7 @@
                     </button>
                 </div>
             </div>
-            <table class="w-full border-2 border-white">
+            <table class="w-full">
                 <thead>
                     <tr class="mx-auto text-3xl">
                         <th class="h-8 font-light text-red-600" style="width:12%">
@@ -46,15 +46,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="week in state.weeks" :key="week.id" class="text-center">
-                        <td v-for="(day, index) in week" :key="day.id" class="p-1 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-200 border-2 border-white">
-                            <div class="flex flex-col h-28 w-10 mx-auto overflow-hidden" @click="goDetail(day)">
+                    <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
+                        <td v-for="(day, index) in week" :key="day.num" class="w-10 overflow-auto transition cursor-pointer duration-500 hover:bg-gray-200">
+                            <div class="flex flex-col h-28 w-full overflow-hidden" @click="goDetail(day)">
                                 <div class="top h-4 w-full">
-                                    <span v-if="state.nowFlag && state.today == day" class="text-blue-700 font-bold">{{day}}</span>
-                                    <span v-else-if="index==0" class="text-red-500 font-bold">{{day}}</span>
-                                    <span v-else class="text-gray-400">{{day}}</span>
+                                    <span v-if="state.nowFlag && state.today == day" class="text-blue-700 font-bold">{{day.num}}</span>
+                                    <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
+                                    <span v-else class="text-gray-400">{{day.num}}</span>
                                 </div>
-                                <div class="bottom flex-grow h-24 py-1 w-full cursor-pointer">
+                                <div class="bottom flex-grow h-24 py-1 w-full cursor-pointer overflow-y-hidden">
+                                    <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-white opacity-70" :style="{'background':node.color}">
+                                        <p v-if="(node.startDay == day.num)" class="ml-2 font-bold">{{node.title}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -63,31 +66,12 @@
             </table>
         </div>
         <div>
-            <div class="fixed right-16 bottom-16">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
-                class="fill-current text-blue-700 cursor-pointer hover:text-blue-800" @click="goNotice">
-                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
-                    <path d="M2370 5113 c-379 -36 -661 -116 -980 -278 -378 -193 -717 -497 -965
-                    -865 -104 -156 -232 -419 -294 -605 -49 -150 -89 -321 -113 -490 -17 -118 -17
-                    -512 0 -630 42 -295 120 -553 242 -800 137 -280 272 -468 494 -691 221 -220
-                    412 -357 681 -489 188 -92 309 -137 500 -185 500 -126 1002 -102 1490 71 149
-                    53 407 182 540 271 299 199 573 480 769 788 72 113 188 353 235 486 235 662
-                    194 1372 -115 1993 -124 250 -263 447 -458 648 -216 224 -428 378 -711 518
-                    -296 146 -572 225 -900 255 -102 9 -333 11 -415 3z m304 -1253 c20 -14 49 -43
-                    64 -64 l27 -39 5 -491 5 -491 491 -5 491 -5 39 -27 c21 -15 50 -44 64 -65 21
-                    -31 25 -48 25 -113 0 -65 -4 -82 -25 -113 -14 -21 -43 -50 -64 -65 l-39 -27
-                    -491 -5 -491 -5 -5 -491 -5 -491 -27 -39 c-15 -21 -44 -50 -65 -64 -31 -21
-                    -48 -25 -113 -25 -65 0 -82 4 -113 25 -21 14 -50 43 -65 64 l-27 39 -5 491 -5
-                    491 -491 5 -491 5 -39 27 c-62 44 -88 90 -92 167 -4 82 23 141 87 186 l43 30
-                    491 5 492 5 5 492 5 491 30 43 c45 64 104 91 186 87 50 -3 75 -10 103 -28z"/>
-                    </g>
-                </svg>
-            </div>
+            <main-addon class="fixed right-16 bottom-16" @click="goEdit"/>
         </div>
     </div>
 </template>
 <script>
-// import abc from '@/components/'
+import MainAddon from '@/components/main/MainAddon.vue'
 import { reactive } from 'vue'
 // import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -95,6 +79,7 @@ import { useRouter } from 'vue-router'
 export default {
     name: 'CalendarBig',
     components: {
+        MainAddon
     },
     setup(props, {emit}){
         const router = useRouter()
@@ -107,15 +92,87 @@ export default {
             weeks: [[],[],[],[],[],[]]
         })
         const initCalendar = ()=>{
+            //선택한 달의 공지 데이터 받아오는 api
+            //팀 리스트 색깔, store같은곳에서 받아오기
+            let teamColor = {
+                "123" : "#3FA2F7",
+                "111" : "#FFCB21",
+                "555" : "#CF2A2A",
+            }
+            //noticeList는 시작 날짜순으로 정렬해야됨
+            let noticeList = [
+                {
+                    token: "a123",
+                    startDay: 1,
+                    endDay: 3,
+                    title: "교육지원비 서류 제출",
+                    team: "123",
+                    color: "#3FA2F7",
+                },
+                {
+                    token: "b123",
+                    startDay: 11,
+                    endDay: 11,
+                    title: "모의 SW 역량 평가",
+                    team: "123",
+                    color: "#3FA2F7",
+                },
+                {
+                    token: "e123",
+                    startDay: 14,
+                    endDay: 19,
+                    title: "프로젝트 제출 기간",
+                    team: "123",
+                    color: "#3FA2F7",
+                },
+                {
+                    token: "c123",
+                    startDay: 17,
+                    endDay: 17,
+                    title: "UCC 제출일",
+                    team: "111",
+                    color: "#FFCB21",
+                },
+                {
+                    token: "d123",
+                    startDay: 18,
+                    endDay: 18,
+                    title: "최종 발표",
+                    team: "555",
+                    color: "#CF2A2A",
+                },
+                {
+                    token: "f123",
+                    startDay: 23,
+                    endDay: 23,
+                    title: "팀 선정기간",
+                    team: "111",
+                    color: "#FFCB21",
+                }
+            ]
+
             state.weeks = [[],[],[],[],[],[]]
             let startDay = new Date(state.year, state.month, 1).getDay()
             let dayCount = new Date(state.year, state.month+1, 0).getDate()
             let target = 0
             for (let i = 0; i < startDay; i++) {
-                state.weeks[0].push(" ")
+                let day = {
+                    num : " ",
+                    count : [], // 여기에 공지갯수
+                }
+                state.weeks[0].push(day)
             }
             for (let i = 1; i <= dayCount; i++) {
-                state.weeks[target].push(i)
+                let day = {
+                    num : i,
+                    notice : [], // 여기에 공지넣기
+                }
+                noticeList.forEach(notice => {
+                    if(notice.startDay <= day.num && day.num <= notice.endDay){
+                        day.notice.push(notice)
+                    }
+                });
+                state.weeks[target].push(day)
                 startDay++
                 if(startDay == 7){
                     startDay = 0
@@ -164,8 +221,11 @@ export default {
         const goNotice = ()=>{
             router.push("notice")
         }
+        const goEdit = ()=>{
+            router.push("/main/notice")
+        }
         init()
-        return { state, monthList, nextMonth, beforeMonth, goDetail, goNotice }
+        return { state, monthList, nextMonth, beforeMonth, goDetail, goNotice, goEdit }
     }
 };
 </script>

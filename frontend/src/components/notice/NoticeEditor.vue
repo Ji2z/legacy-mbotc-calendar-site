@@ -36,8 +36,8 @@
                     </div>
                 </div>
             </div>
-            <div class="w-11/12 h-2/3 bg-gray-200 mx-auto mt-5">
-                <!-- md editor here -->
+            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-gray-200 mx-auto mt-5">
+                <div ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center">
                 <button class="bg-gray-200 text-white px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click = "submit">
@@ -48,25 +48,41 @@
     </div>
 </template>
 <script>
+import "@toast-ui/editor/dist/toastui-editor.css"; 
+import Editor from "@toast-ui/editor";
 // import abc from '@/components/'
-import { reactive } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
 export default {
     name: 'NoticeEditor',
     components: {
+        Editor
     },
 
     setup(){
+        const mdEditor = ref(null)
+        const mdEditorWraper = ref(null)
         const state = reactive({
-            termToggle:false,
-            clickable:false,
+            termToggle: false,
+            clickable: false,
         })
         const submit = ()=>{
 
         }
-        return { state, submit }
+        onMounted(()=>{
+            let wraperHeight = mdEditorWraper.value.clientHeight + 'px'
+            //console.log(mdEditorWraper)
+            //console.log(wraperHeight)
+            const mountEditor = new Editor({
+                el: mdEditor.value,
+                height: wraperHeight,
+                initialEditType: "markdown",
+                previewStyle: "vertical",
+            });
+        })
+        return { state, submit, mdEditor, mdEditorWraper }
     }
 };
 </script>
