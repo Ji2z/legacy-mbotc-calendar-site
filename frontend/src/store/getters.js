@@ -1,0 +1,5 @@
+//////////////////////////////////////////
+//example//
+// export function getAuthToken(state){
+//     return state.token;
+// }
