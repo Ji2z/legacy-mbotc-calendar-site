@@ -83,14 +83,17 @@ public class SyncService {
 				List<ResRedisChannel> channels = team.getSubscribe();
 				for (int j = 0; j < channels.size(); j++) {
 					ResRedisChannel rrc = channels.get(j);
+					boolean isInSavedList = false;
 					for (int k = 0; k < savedChannels.size(); k++) {
 						Channel sc = savedChannels.get(k);
 						// channel_id값이 같지 않고 반복문을 다 돌았을 때 = DB에 저장된 채널이 아닐 때
-						if(rrc.getChannelId().equals(sc.getToken())) // 이미 DB에 저장된 채널. 다음 채널 검사
+						if(rrc.getChannelId().equals(sc.getToken())) { // 이미 DB에 저장된 채널. 다음 채널 검사
+							isInSavedList = true;
 							break;
-						if(k+1==savedChannels.size()) {
-							channelRepository.save(new Channel(isTeam.get(), rrc.getChannelName(), rrc.getChannelId()));
 						}
+					}
+					if(!isInSavedList) {
+						channelRepository.save(new Channel(isTeam.get(), rrc.getChannelName(), rrc.getChannelId()));
 					}
 					
 				}

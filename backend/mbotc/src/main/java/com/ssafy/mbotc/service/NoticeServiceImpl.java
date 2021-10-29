@@ -21,7 +21,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<Notice> getNoticeByYearAndMonth(String year, String month, String channelToken) {
 		long channelId = channelRepository.findByToken(channelToken).get().getId();
-		return noticeRepository.findAllByYearAndMonth(Integer.parseInt(year), Integer.parseInt(month), channelId);
+		return noticeRepository.findAllByYearAndMonth(year+"-"+month, channelId);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, String channelToken) {
 		long channelId = channelRepository.findByToken(channelToken).get().getId();
-		return noticeRepository.findAllByYearAndMonthAndDay(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), channelId);
+		return noticeRepository.findAllByYearAndMonthAndDay(year+"-"+month+"-"+day, channelId);
 	}
 	
 }

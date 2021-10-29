@@ -13,14 +13,14 @@ import com.ssafy.mbotc.entity.Notice;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	
-	@Transactional
-	@Query(value = "select * from notice where ((now() between start_time and end_time or (extract(year from time)=:year and extract(month from time)=:month))) and channel_id = :channelId", nativeQuery = true)
-	List<Notice> findAllByYearAndMonth(@Param("year") int year, @Param("month") int month, @Param("channelId") long channelId);
+	@Transactional 
+	@Query(value = "select * from notice where (:date between date_format(start_time,'%Y-%m') and date_format(end_time,'%Y-%m')) and channel_id = :channelId", nativeQuery = true)
+	List<Notice> findAllByYearAndMonth(@Param("date") String date, @Param("channelId") long channelId);
 	
 	@Transactional
 	Notice findByToken(String token);
 	
 	@Transactional
-	@Query(value = "select * from notice where ((now() between start_time and end_time or (extract(year from time)=:year and extract(month from time)=:month and extract(day from time)=:day))) and channel_id = :channelId", nativeQuery = true)
-	List<Notice> findAllByYearAndMonthAndDay(@Param("year") int year, @Param("month") int month, @Param("day") int day, @Param("channelId") long channelId);
+	@Query(value = "select * from notice where (:date between date_format(start_time,'%Y-%m-%d') and date_format(end_time,'%Y-%m-%d')) and channel_id = :channelId", nativeQuery = true)
+	List<Notice> findAllByYearAndMonthAndDay(@Param("date") String date, @Param("channelId") long channelId);
 }
