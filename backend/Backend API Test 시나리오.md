@@ -22,7 +22,7 @@
 - [ ]  mysql workbench에서 db 접속 후 select * from channel을 통해 channel PK를 확인
     - [ ]  Step2에서 show의 속성이 true인 channel_id와 false인 channel_id의 PK(id) 각각 하나씩 확인
     - [ ]  notice table에서 위에서 확인한 channel PK 2개와 user PK를 사용하여 insert
-        
+      
         ```sql
         # userPK = Step 1에서 저장된 user 정보의 PK (id)
         # channelPK = show 속성이 true인 channel의 PK (id)
@@ -39,7 +39,6 @@
         insert into notice(start_time,end_time,channel_id,user_id,token) values ("2021-01-01","2021-12-22",channelPK,userPK,'notice9'); # 2021.01.01~2021.12.22 공지
         insert into notice(start_time,end_time,channel_id,user_id,token) values ("2021-12-01","2021-12-17",channelPK,userPK,'notice10'); # 2021.12.01~2021.12.17 공지 
         ```
-        
 
 # Step 4. Notice
 
@@ -49,18 +48,18 @@
 
 - [ ]  [GET] `/notification/day?year=2021&month=10&day=29`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice1, notice4만 나오는지 확인
-- [ ]  [GET] `/notification/day?year=2021&month=1&day=1`: header에 auth : user'token 추가
+- [ ]  [GET] `/notification/day?year=2021&month=01&day=01`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice2, notice3, notice4만 나오는지 확인
-- [ ]  [GET] `/notification/day?year=2021&month=12&day=18`: header에 auth : user'token 추가
+- [ ]  [GET] `/notification/day?year=2021&month=12&day=23`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : 아무것도 안나오는지 확인
 
 ### month
 
 - [ ]  [GET] `/notification/day?year=2021&month=10`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice1, notice4만 나오는지 확인
-- [ ]  [GET] `/notification/day?year=2021&month=1`: header에 auth : user'token 추가
+- [ ]  [GET] `/notification/day?year=2021&month=01`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice2, notice3, notice4만 나오는지 확인
-- [ ]  [GET] `/notification/day?year=2021&month=3`: header에 auth : user'token 추가
+- [ ]  [GET] `/notification/day?year=2021&month=03`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice3, notice4만 나오는지 확인
 - [ ]  [GET] `/notification/day?year=2021&month=12`: header에 auth : user'token 추가
     - [ ]  notifications>channel>token 값 확인 : notice4, notice5만 나오는지 확인
