@@ -4,7 +4,8 @@
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
                 <div class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap">
-                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer" @click="clickNotice(notice.id)"/>
+                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer"
+                    @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, true)" @unchecked="changeChecked(notice.id, false)"/>
                 </div>
                 <notice-content class="h-3/5" :notice = state.chooseNotice />
             </div>
@@ -75,7 +76,8 @@ export default {
 
         const init = ()=>{
             state.detailDate = router.currentRoute.value.params.date
-            //가져온 날짜로 공지 댕겨오는 api 위치해야됨
+            //가져온 날짜로 공지 떙겨오는 api 위치해야됨
+            //공지의 check값은 localStorage에서 가져오기
             if(state.notices.length > 0){
                 state.chooseNotice = state.notices[0]
             }
@@ -85,9 +87,34 @@ export default {
             //console.log(id)
             state.chooseNotice = state.notices[id]
         }
+        const changeChecked = (id, check)=>{
+            let data = localStorage.getItem(state.detailDate)
+            let checkList = []
+            let saveFlag = false
+            if(data){
+                checkList = JSON.parse(data)
+            }
+
+            checkList.forEach(notice => {
+                if(notice.id == id){
+                    notice.check = check
+                    saveFlag = true
+                }
+            });
+
+            if(!saveFlag){
+                let notice = {
+                    id: id,
+                    check: check,
+                }
+                checkList.push(notice)
+            }
+
+            localStorage.setItem(state.detailDate, JSON.stringify(checkList))
+        }
 
         init()
-        return { state, clickNotice }
+        return { state, clickNotice, changeChecked }
     }
 };
 </script>
