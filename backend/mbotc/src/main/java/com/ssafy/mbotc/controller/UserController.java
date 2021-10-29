@@ -19,6 +19,10 @@ import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -29,8 +33,15 @@ public class UserController {
 	@Autowired
 	private SyncService syncservice;
 	
-	// user token update
+	// after login, user token update
 	@PatchMapping
+	@ApiOperation(
+			value = "Update userToken from DB", 
+			notes = "- http://localhost:8080/api/v1/user\n - no header")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
 	public ResponseEntity<User> updateUserToken(@RequestBody User user) {
 		Optional<User> target = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(!target.isPresent()) {
@@ -41,8 +52,15 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
-	//user init
+	// for new user (register)
 	@PostMapping
+	@ApiOperation(
+			value = "Insert new User to DB (register user)", 
+			notes = "- http://localhost:8080/api/v1/user\n - no header")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 409, message = "USER ALREADY EXIST")
+	})
 	public ResponseEntity<User> saveUserInfo(@RequestBody User user) {
 		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(userInfo.isPresent()) {
@@ -53,22 +71,28 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
-	//user delete
+	// user delete
 	@DeleteMapping
+	@ApiOperation(
+			value = "Delete User from DB", 
+			notes = "- http://localhost:8080/api/v1/user\n - header : {\"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 401, message = "UNAUTHORIZED"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
 	public ResponseEntity<String> deleteUserInfo(@RequestHeader HashMap<String,String> header, @RequestBody User user){
 		String authToken = header.get("auth");
-		
 		Optional<User> target = userService.findByToken(authToken);
-		User userinfo = target.get();
 		
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER IS NOT FOUND");
 		}
 		
 		if(!target.get().getUserEmail().equals(user.getUserEmail())) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "USER INFO IS NOT CORRECT");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
 		}
-		userService.delete(userinfo);
+		userService.delete(target.get());
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
 	

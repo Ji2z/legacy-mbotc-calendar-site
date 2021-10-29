@@ -17,6 +17,10 @@ import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
 @RequestMapping("/sync")
 public class SyncController {
@@ -28,6 +32,13 @@ public class SyncController {
 	UserService userService;
 	
 	@GetMapping
+	@ApiOperation(
+			value = "Sync Redis' UserSetting and DB from mattermost API", 
+			notes = "- http://localhost:8080/api/v1/sync\n - header: { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
 	public ResponseEntity<String> setUserSetting(@RequestHeader HashMap<String,String> header){
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);

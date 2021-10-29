@@ -26,6 +26,13 @@ import com.ssafy.mbotc.service.NoticeService;
 import com.ssafy.mbotc.service.RedisService;
 import com.ssafy.mbotc.service.UserService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiKeyAuthDefinition;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/notification")
 public class NoticeController {
@@ -41,6 +48,13 @@ public class NoticeController {
 	
 	// 한달 전체 공지 갖고오기 ; 해당하는 연도별 + 월별 알림을 모두 가져온다.
 	@GetMapping(value = "/month")
+	@ApiOperation(
+			value = "Get All Notices by Year and Month", 
+			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=10\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
 	public ResponseEntity<ResNoticeList> getNoticeByMonth(@RequestHeader HashMap<String,String> header, @RequestParam String year, @RequestParam String month){
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);
@@ -89,6 +103,13 @@ public class NoticeController {
 	
 	//일별 알람 가져오기
 	@GetMapping(value = "/day")
+	@ApiOperation(
+			value = "Get All Notices by Year and Month And Day", 
+			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=10&day=8\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
 	public ResponseEntity<ResNoticeList> getNoticeByDay(@RequestHeader HashMap<String,String> header, @RequestParam String year, @RequestParam String month, @RequestParam String day){
 		String authToken = header.get("auth");
 		
@@ -138,6 +159,13 @@ public class NoticeController {
 	
 	// 공지 세부정보 갖고오기
 	@GetMapping(value = "/post/{postId}")
+	@ApiOperation(
+			value = "Get a Notice by notice Id", 
+			notes = "- http://localhost:8080/api/v1/notification/post/p1\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 401, message = "UNAUTHRIZED")
+	})
 	public ResponseEntity<Notice> getNoticeByMonth1(@RequestHeader HashMap<String,String> header, @PathVariable String postId){
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);
