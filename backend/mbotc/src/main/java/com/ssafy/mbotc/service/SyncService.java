@@ -137,7 +137,7 @@ public class SyncService {
 				for (int j = 0; j < team.getSubscribe().size(); j++) {
 					ResRedisChannel channel = team.getSubscribe().get(j);
 					// 기존에 있던 채널
-					if(channelSetting.containsKey(channel.getChannelId())) {
+					if(channelSetting!= null && channelSetting.containsKey(channel.getChannelId())) {
 						changeChannel.add(new ResRedisChannel(channel.getChannelId(),channel.getChannelName(),channelSetting.get(channel.getChannelId())));
 					}else { // 기존에 없고 새롭게 생긴 채널
 						changeChannel.add(new ResRedisChannel(channel.getChannelId(),channel.getChannelName(), true));
