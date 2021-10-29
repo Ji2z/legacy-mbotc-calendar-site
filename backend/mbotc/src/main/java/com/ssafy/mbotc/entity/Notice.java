@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,27 +19,41 @@ import lombok.Setter;
 @Table(name = "notice")
 public class Notice extends BaseEntity {
 	
+	@ApiParam(value = "channel to which notice belongs")
 	@ManyToOne(cascade = CascadeType.MERGE)
-	Channel channelId;
+	Channel channel;
 	
+	@ApiParam(value = "user who write this notice")
 	@ManyToOne(cascade = CascadeType.MERGE)
-	User userId;
+	User user;
 	
+	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
+	@ApiParam(value = "time when this notice written")
 	@Column
 	Date time;
 	
+	@ApiModelProperty(example = "hello, this is cool.")
+	@ApiParam(value = "notice's content")
 	@Column
 	String content;
 	
+	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
+	@ApiParam(value = "start period of notice")
 	@Column
 	Date startTime;
 	
+	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
+	@ApiParam(value = "end period of notice")
 	@Column
 	Date endTime;
 	
+	@ApiModelProperty(example = "0000000000")
+	@ApiParam(value = "files' id which this notice has")
 	@Column
 	String files;
 	
+	@ApiModelProperty(example = "0000000000")
+	@ApiParam(value = "notice's random id from mattermost API response")
 	@Column
 	String token;
 
