@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.dao.UserRepository;
 import com.ssafy.mbotc.entity.User;
+import com.ssafy.mbotc.service.SyncService2;
 import com.ssafy.mbotc.service.UserService;
 
 @RestController
@@ -26,6 +27,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private SyncService2 syncservice;
+	
 	// user token update
 	@PatchMapping
 	public ResponseEntity<User> updateUserToken(@RequestBody User user) {
@@ -33,7 +37,10 @@ public class UserController {
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserToken(target.get(), user.getToken()));
+		User userResult = userService.updateUserToken(target.get(), user.getToken());
+		
+		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
+		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
 	//user init
@@ -43,7 +50,9 @@ public class UserController {
 		if(userInfo.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "USER ALREADY EXIST");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
+		User userResult = userService.save(user);		
+		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
+		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
 	//user delete

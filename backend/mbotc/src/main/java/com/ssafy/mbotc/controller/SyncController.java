@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.service.SyncService;
@@ -31,7 +32,7 @@ public class SyncController {
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);
 		if(!target.isPresent()) {
-			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
 		syncService.syncWithUser(authToken, target.get().getUrl(), target.get().getUserId());
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
