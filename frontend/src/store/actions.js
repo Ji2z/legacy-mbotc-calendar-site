@@ -5,15 +5,12 @@ const serverData = {
     SERVER_URL : ""
 }
 
-//////////////////////////////////////////
-//example//
+export function login({state}, payload){
+    const url = '/api/user/login'
+    const body = payload
 
-// export function login({state}, payload){
-//     const url = '/api/user/login'
-//     const body = payload
-
-//     return $axios.post(url, body);
-// }
+    return $axios.post(url, body);
+}
 
 // export function updateUser({state}, payload){
 //     const url = '/api/user/'

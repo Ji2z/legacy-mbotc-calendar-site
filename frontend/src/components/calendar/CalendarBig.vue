@@ -48,7 +48,7 @@
                 <tbody>
                     <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
                         <td v-for="(day, index) in week" :key="day.num" class="w-10 overflow-auto transition cursor-pointer duration-500 hover:bg-gray-200">
-                            <div class="flex flex-col h-28 w-full overflow-hidden" @click="goDetail(day)">
+                            <div class="flex flex-col h-28 w-full overflow-hidden" @click="goDetail(day.num)">
                                 <div class="top h-4 w-full">
                                     <span v-if="state.nowFlag && state.today == day" class="text-blue-700 font-bold">{{day.num}}</span>
                                     <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
