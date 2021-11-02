@@ -1,5 +1,7 @@
 package com.ssafy.mbotc.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +23,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
+import com.ssafy.mbotc.entity.request.ReqNoticePost;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
+import com.ssafy.mbotc.service.BotService;
 import com.ssafy.mbotc.service.ChannelService;
 import com.ssafy.mbotc.service.NoticeService;
 import com.ssafy.mbotc.service.RedisService;
@@ -48,6 +52,9 @@ public class NoticeController {
 	private ChannelService channelService;
 	
 	@Autowired
+	private BotService botService;
+	
+	@Autowired
 	private RedisService redisService;
 	
 	// 사이트에서 공지 등록하기 -> 플러그인에 전송
@@ -58,7 +65,6 @@ public class NoticeController {
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
-		String keyid = target.get().getUserId();
 		
 		Optional<Channel> channel = channelService.findByToken(channelId);
 		if(!channel.isPresent()) {
@@ -66,6 +72,24 @@ public class NoticeController {
 		}
 		notice.setChannel(channel.get());
 		notice.setUser(target.get());
+		if(notice.getEndTime() == null) {
+			notice.setEndTime(notice.getStartTime());
+		}
+		
+		// 저장된 결과
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		
+		Notice result = noticeService.save(notice);
+		ReqNoticePost response = new ReqNoticePost();
+		response.setChannel_id(result.getChannel().getToken());
+		response.setUser_name(target.get().getUserName());
+		response.setMessage(result.getContent());
+		response.setTime(df.format(result.getTime()));
+		response.setStart_time(df.format(result.getStartTime()));
+		response.setEnd_time(df.format(result.getEndTime()));
+		if(result.getFiles()!= null)
+			response.setFile_ids(result.getFiles().split(","));
+		botService.postNoticeToMattermost(response, target.get().getUrl());
 		
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}

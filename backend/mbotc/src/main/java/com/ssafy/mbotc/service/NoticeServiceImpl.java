@@ -42,6 +42,12 @@ public class NoticeServiceImpl implements NoticeService {
 		long channelId = channelRepository.findByToken(channelToken).get().getId();
 		return noticeRepository.findAllByYearAndMonthAndDay(year+"-"+month+"-"+day, channelId);
 	}
+	
+	@Override
+	public Notice save(Notice notice) {
+		return noticeRepository.save(notice);
+	}
+
 //
 //	@Override
 //	public String uploadFileToMM(MultipartFile file, String mattermostUrl, String token, String channelId) {

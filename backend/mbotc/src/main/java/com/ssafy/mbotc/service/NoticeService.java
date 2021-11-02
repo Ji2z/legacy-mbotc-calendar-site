@@ -11,6 +11,6 @@ public interface NoticeService {
 	List<Notice> getNoticeByYearAndMonth(String year, String month, String channelToken);
 	List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, String channelToken);
 	Notice findByNoticeId(String postId);
-	//String uploadFileToMM(MultipartFile file, String url, String token, String channelId);
+	Notice save(Notice notice);
 	
 }
