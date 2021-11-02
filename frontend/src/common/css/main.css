@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-main: #163172;
+        --bg-back: #F6F6F6;
+        --bg-panel: #FFFFFF;
+
+        --border-label:  #163172;
+
+        --text-font: #000000;
+        --text-main: #163172;
+        --text-back: #F6F6F6;
+    }
+    .dark {
+        --bg-main: #6E85B2;
+        --bg-back: #261C2C;
+        --bg-panel: #5C527F;
+
+        --border-label: #5A72AC;
+
+        --text-font: #FFFFFF;
+        --text-main: #6E85B2;
+        --text-back: #261C2C;
+    }
+    .ssuk {
+        --bg-main: #6F8788;
+        --bg-back: #F6F6F6;
+        --bg-panel: #FFFFFF;
+
+        --border-label: #163172;
+
+        --text-font: #FFFFFF;
+        --text-main: #6F8788;
+        --text-back: #F6F6F6;
+    }
+}

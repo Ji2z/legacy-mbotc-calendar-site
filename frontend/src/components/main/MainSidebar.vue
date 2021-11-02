@@ -1,10 +1,10 @@
 <template>
     <div class="h-screen">
-        <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-blue-800 font-bold">
+        <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
             <div class="h-20">
 
             </div>
-            <div class="my-2 ml-2 h-20 text-gray-100 rounded-l-2xl" :class="{'bg-gray-100':state.nav[0], 'text-blue-800':state.nav[0]}" @click="clickNav(0)">
+            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[0], 'text-main':state.nav[0], 'text-back':!state.nav[0]}" @click="clickNav(0)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -36,7 +36,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 text-gray-100 rounded-l-2xl" :class="{'bg-gray-100':state.nav[1], 'text-blue-800':state.nav[1]}" @click="clickNav(1)">
+            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[1], 'text-main':state.nav[1], 'text-back':!state.nav[1]}" @click="clickNav(1)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -61,7 +61,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 text-gray-100 rounded-l-2xl" :class="{'bg-gray-100':state.nav[2], 'text-blue-800':state.nav[2]}" @click="clickNav(2)">
+            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[2], 'text-main':state.nav[2], 'text-back':!state.nav[2]}" @click="clickNav(2)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -95,7 +95,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 text-gray-100 rounded-l-2xl" :class="{'bg-gray-100':state.nav[3], 'text-blue-800':state.nav[3]}" @click="clickNav(3)">
+            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[3], 'text-main':state.nav[3], 'text-back':!state.nav[3]}" @click="clickNav(3)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -130,7 +130,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="absolute h-20 text-gray-100 bottom-0">
+            <div class="absolute h-20 text-back bottom-0">
                 <img class="w-10 h-10 ml-5 rounded-full" src="https://picsum.photos/40/40" alt="user">
                 <div class="ml-5 mt-1">User</div>
             </div>

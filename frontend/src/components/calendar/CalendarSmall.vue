@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 w-5/6 px-2 pt-12">
+    <div class="bg-back w-5/6 px-2 pt-12 text-font">
         <div class="w-full rounded-xl p-2">
             <div class="header flex justify-between py-2">
                 <div>
@@ -8,12 +8,12 @@
                 </div>
                 <div class="inline-block">
                     <button @click="beforeMonth">							
-                        <svg class="h-5 w-5 text-gray-500 inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-5 w-5 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg> 
                     </button>
                     <button @click="nextMonth">
-                        <svg class="h-5 w-5 text-gray-500 inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-5 w-5 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>	
                     </button>
@@ -47,15 +47,15 @@
                 </thead>
                 <tbody>
                     <tr v-for="week in state.weeks" :key="week.id" class="text-center">
-                        <td v-for="(day, index) in week" :key="day.num" class="p-1 w-6 overflow-auto transition duration-500 cursor-pointer ease hover:bg-blue-100">
+                        <td v-for="(day, index) in week" :key="day.num" class="p-1 w-6 overflow-auto transition duration-500 cursor-pointer ease hover:bg-panel">
                             <div class="flex flex-col h-12 w-full mx-auto overflow-hidden" @click="goDetail(day.num)">
                                 <div class="top h-2 w-full">
                                     <span v-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
-                                    <span v-else class="text-gray-400">{{day.num}}</span>
+                                    <span v-else class="text-main">{{day.num}}</span>
                                 </div>
                                 <div class="flex-grow h-10 py-1 w-full cursor-pointer">
                                     <div class="w-4 h-4 rounded-full mx-auto mt-4"
-                                    :class="{'bg-blue-100':(day.count==1),'bg-blue-200':(day.count>1 && day.count<4),'bg-blue-300':(day.count>3 && day.count<6),'bg-blue-500':(day.count>=6),}">
+                                    :class="{'bg-blue-100':(day.count==1),'bg-blue-300':(day.count>1 && day.count<4),'bg-blue-500':(day.count>3 && day.count<6),'bg-blue-800':(day.count>=6),}">
 
                                     </div>
                                 </div>

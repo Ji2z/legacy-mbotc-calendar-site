@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 flex justify-start">
+    <div class="bg-back flex justify-start">
         <router-view :key="$route.fullPath" class="w-full h-screen"
         @clickDetail="onClickDetail"/>
         <main-sidebar
