@@ -10,25 +10,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
+import com.ssafy.mbotc.service.ChannelService;
 import com.ssafy.mbotc.service.NoticeService;
 import com.ssafy.mbotc.service.RedisService;
 import com.ssafy.mbotc.service.UserService;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiKeyAuthDefinition;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -44,7 +45,30 @@ public class NoticeController {
 	private UserService userService;
 	
 	@Autowired
+	private ChannelService channelService;
+	
+	@Autowired
 	private RedisService redisService;
+	
+	// 사이트에서 공지 등록하기 -> 플러그인에 전송
+	@PostMapping
+	public ResponseEntity<String> postFromSite(@RequestHeader HashMap<String,String> header, @RequestBody Notice notice, @RequestParam String channelId){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
+		String keyid = target.get().getUserId();
+		
+		Optional<Channel> channel = channelService.findByToken(channelId);
+		if(!channel.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHANNEL NOT FOUND");
+		}
+		notice.setChannel(channel.get());
+		notice.setUser(target.get());
+		
+		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
+	}
 	
 	// 한달 전체 공지 갖고오기 ; 해당하는 연도별 + 월별 알림을 모두 가져온다.
 	@GetMapping(value = "/month")
