@@ -2,6 +2,7 @@ FROM openjdk:8-jdk-alpine as builder
 WORKDIR /backend/mbotc
 COPY . .
 RUN chmod +x ./gradlew
+RUN chmod -R 777 /backend/mbotc
 
 RUN ./gradlew clean build
 
