@@ -11,8 +11,8 @@ pipeline {
 		stage('Docker build') {
 			agent any
 			steps {
-				sh 'docker build -t frontend:latest /var/jenkins/workspace/mbotc/frontend'
-				sh 'docker build -t backend:latest /var/jenkins/workspace/mbotc/backend/mbotc'
+				sh 'docker build -t frontend:latest /var/jenkins_home/workspace/mbotc/frontend'
+				sh 'docker build -t backend:latest /var/jenkins_home/workspace/mbotc/backend/mbotc'
 			}
 		}
 		stage('Docker run') {
