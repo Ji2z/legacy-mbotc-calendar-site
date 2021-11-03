@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine as builder
-WORKDIR /backend/mbotc
+WORKDIR /mbotc
 COPY . .
 RUN chmod +x ./gradlew
 
