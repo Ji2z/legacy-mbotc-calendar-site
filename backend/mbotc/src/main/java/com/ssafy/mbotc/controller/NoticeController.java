@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +24,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
-import com.ssafy.mbotc.entity.request.ReqNoticePost;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
 import com.ssafy.mbotc.entity.response.ResRedisUser;
-import com.ssafy.mbotc.service.BotService;
 import com.ssafy.mbotc.service.ChannelService;
 import com.ssafy.mbotc.service.NoticeService;
 import com.ssafy.mbotc.service.RedisService;
@@ -52,10 +51,10 @@ public class NoticeController {
 	private ChannelService channelService;
 	
 	@Autowired
-	private BotService botService;
+	private RedisService redisService;
 	
 	@Autowired
-	private RedisService redisService;
+	private SimpMessagingTemplate template;
 	
 	// 사이트에서 공지 등록하기 -> 플러그인에 전송
 	@PostMapping
@@ -80,16 +79,24 @@ public class NoticeController {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		
 		Notice result = noticeService.save(notice);
-		ReqNoticePost response = new ReqNoticePost();
-		response.setChannel_id(result.getChannel().getToken());
-		response.setUser_name(target.get().getUserName());
-		response.setMessage(result.getContent());
-		response.setTime(df.format(result.getTime()));
-		response.setStart_time(df.format(result.getStartTime()));
-		response.setEnd_time(df.format(result.getEndTime()));
-		if(result.getFiles()!= null)
-			response.setFile_ids(result.getFiles().split(","));
-		botService.postNoticeToMattermost(response, target.get().getUrl());
+		try {
+			template.convertAndSend("/sub/notification/" + authToken, result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("소켓 통신 에러!!");
+		}
+		
+		// mm plugin에 보내는 request
+//		ReqNoticePost response = new ReqNoticePost();
+//		response.setChannel_id(result.getChannel().getToken());
+//		response.setUser_name(target.get().getUserName());
+//		response.setMessage(result.getContent());
+//		response.setTime(df.format(result.getTime()));
+//		response.setStart_time(df.format(result.getStartTime()));
+//		response.setEnd_time(df.format(result.getEndTime()));
+//		if(result.getFiles()!= null)
+//			response.setFile_ids(result.getFiles().split(","));
+		//botService.postNoticeToMattermost(response, target.get().getUrl());
 		
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
