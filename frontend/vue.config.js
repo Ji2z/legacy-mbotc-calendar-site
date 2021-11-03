@@ -2,6 +2,7 @@
 // const backendAPI = 'https://localhost:8080/'
 // const backendAPI = 'https://j5a506.p.ssafy.io/'
 
+const path = require('path')
 module.exports = {
     devServer: {
         https: true,
@@ -21,7 +22,8 @@ module.exports = {
         //     },
         // },
         historyApiFallback: true,
-        hot: true
+        hot: true,
+        contentBase: path.join(__dirname,'')
     },
     lintOnSave: false, 
 }

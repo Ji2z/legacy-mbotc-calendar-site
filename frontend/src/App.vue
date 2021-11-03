@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="[state.theme, state.bgOpacity]">
+  <div v-bind:class="state.theme">
     <router-view/>
   </div>
 </template>
@@ -33,11 +33,6 @@ export default {
 body {
   padding: 0;
   margin: 0;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-body::-webkit-scrollbar{
-    display: none;
 }
 </style>
 

@@ -39,27 +39,22 @@ export default {
                 {
                     id: 0,
                     theme: "default",
-                    opacity: ""
                 },
                 {                    
                     id: 1,
                     theme: "dark",
-                    opacity: ""
                 },
                 {
                     id: 2,
                     theme: "ssuk",
-                    opacity: "opacity-0"
                 },
                 {
                     id: 3,
-                    theme: "snow",
-                    opacity: "opacity-0"
+                    theme: "blue",
                 },
                 {
                     id: 4,
                     theme: "orange",
-                    opacity: "opacity-0"
                 },
             ],
         })
@@ -67,7 +62,7 @@ export default {
             store.commit('root/setTheme',state.themes[state.selected])
         }
         const clickTheme = (id)=>{
-            console.log(id)
+            //console.log(id)
             state.selected = id
         }
         return { state, save, clickTheme }
