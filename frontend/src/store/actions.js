@@ -1,14 +1,10 @@
 import $axios from 'axios'
-
-// custom variables
-const serverData = {
-    SERVER_URL : ""
-}
+const serverData = require('../common/lib/function.js')
 
 // user API
 export function userLoginMM({state}, payload){
-    const url = serverData.SERVER_URL + '/api/v4/users/login'
-    const body = payload
+    const url =  '/api/v4/users/login'
+    const body = payload.loginData
     //수정해야됨
 
     return $axios.post(url, body);
@@ -20,7 +16,7 @@ export function userLogin({state}, payload){
         "token" : payload.token,
         "userEmail" : payload.email,
         "userName" : payload.userName,
-        "url" : serverData.SERVER_URL,
+        "url" : serverData.getServerURL(),
         "userId" : payload.userId
     }
     return $axios.post(url, body);
@@ -35,7 +31,7 @@ export function userTokenRefresh({state}, payload){
         data:{
             "userEmail" : payload.email, 
             "token" : payload.token, 
-            "url" : serverData.SERVER_URL, 
+            "url" : serverData.getServerURL(),
             "userId" : payload.userId
         }
     })

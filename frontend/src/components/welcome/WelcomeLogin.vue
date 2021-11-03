@@ -10,9 +10,9 @@
             </div>
         </div>
         <div>
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url">
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email">
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password">
+            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url" @change="validationCheck">
+            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
+            <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
         </div>
         <div class="flex justify-between p-8">
             <div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click="submit">Take Me!</button>
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded cursor-not-allowed" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-pointer':state.clickable}" @click="submit">Take Me!</button>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
 <script>
 // import abc from '@/components/'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -42,6 +42,7 @@ export default {
     },
 
     setup(){
+        const store = useStore()
         const router = useRouter()
         const state = reactive({
             url:"",
@@ -51,9 +52,49 @@ export default {
             clickable:false
         })
         const submit = ()=>{
-            router.push("/main")
+            if(state.clickable){
+                let payload = {
+                    url: state.url,
+                    loginData:{
+                        "device_id": "",
+                        "login_id": state.email,
+                        "password": state.password,
+                        "token": ""
+                    }
+                }
+                store.dispatch('root/userLoginMM',payload)
+                .then((result)=>{
+                    console.log(result)
+                    //router.push("/main")
+                })
+                .catch((err)=>{
+
+                })
+            }
         }
-        return { state, submit }
+        const validationCheck = ()=>{
+            var urlRegExp = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+            var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            
+            if(!state.url.match(urlRegExp)){
+                state.clickable = false
+            }else if(!state.email.match(emailRegExp)){
+                state.clickable = false
+            }else if(state.password.length == 0){
+                state.clickable = false
+            }else{
+                state.clickable = true
+            }
+
+        }
+        const init = ()=>{
+            let loginStatus = localStorage.getItem("loginStatus")
+            if(loginStatus){
+
+            }
+        }
+        init()
+        return { state, submit, validationCheck }
     }
 };
 </script>
