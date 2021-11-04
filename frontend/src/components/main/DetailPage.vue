@@ -1,9 +1,9 @@
 <template>
-    <div class="bg-gray-100 w-full h-screen pt-12">
+    <div class="w-full h-screen pt-12">
         <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
-                <div class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap">
+                <div class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap no-scrollbar">
                     <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer"
                     @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, true)" @unchecked="changeChecked(notice.id, false)"/>
                 </div>

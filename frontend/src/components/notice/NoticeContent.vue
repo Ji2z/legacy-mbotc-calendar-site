@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-xl shadow-lg p-8 m-4">
+    <div class="bg-panel rounded-xl shadow-lg p-8 m-4 text-font">
         <div class="overflow-hidden">
             <span class="w-1/3 h-10 text-3xl font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.title}}</span>
             <span class="w-1/3 font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>

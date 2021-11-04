@@ -1,5 +1,5 @@
 <template>
-    <div class="relative inline-block h-5/6 w-48 bg-white rounded-lg p-2 mr-2">
+    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2">
         <div class="overflow-hidden">
             <span class="w-1/2 font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.title}}</span>
             <span class="w-1/2 text-sm inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
@@ -7,7 +7,7 @@
         <div class="text-xs overflow-hidden p-2">
             {{notice.content}}
         </div>
-        <div class="absolute bottom-2 right-2 w-5 h-5 border-4 border-gray-700 cursor-pointer" @click="check">
+        <div class="absolute bottom-2 right-2 w-5 h-5 border-4 border-label cursor-pointer" @click="check">
             <img v-if="notice.check" class="transform scale-150" src="@/assets/check.png" alt="check">
         </div>
     </div>

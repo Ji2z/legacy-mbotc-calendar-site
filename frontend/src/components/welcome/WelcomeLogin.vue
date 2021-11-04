@@ -10,9 +10,9 @@
             </div>
         </div>
         <div>
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url">
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email">
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password">
+            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck">
+            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
+            <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
         </div>
         <div class="flex justify-between p-8">
             <div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable}" @click="submit">Take Me!</button>
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
             </div>
         </div>
     </div>
@@ -33,8 +33,9 @@
 <script>
 // import abc from '@/components/'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getServerURL } from '../../common/lib/function.js'
 
 export default {
     name: 'WelcomeLogin',
@@ -42,6 +43,7 @@ export default {
     },
 
     setup(){
+        const store = useStore()
         const router = useRouter()
         const state = reactive({
             url:"",
@@ -51,9 +53,68 @@ export default {
             clickable:false
         })
         const submit = ()=>{
-            router.push("/main")
+            if(state.clickable){
+                let payload = {
+                    url: state.url,
+                    loginData:{
+                        "device_id": "",
+                        "login_id": state.email,
+                        "password": state.password,
+                        "token": ""
+                    }
+                }
+                store.dispatch('root/userLoginMM',payload)
+                .then((result)=>{
+                    console.log("MM login")
+                    console.log(result)
+                    store.commit('root/setToken', result.headers.token)
+                    register(result.headers.token, result.data.email, result.data.id, result.data.username)
+                })
+                .catch((err)=>{
+
+                })
+            }
         }
-        return { state, submit }
+        const register = (token, email, id,  userName)=>{
+            console.log("MbotC login start")
+            let payload = {
+                "token": token,
+                "userEmail" :email,
+                "userId": id,
+                "userName" : userName,
+            }
+            store.dispatch('root/userLogin', payload)
+            .then((result)=>{
+                console.log("MbotC login")
+                console.log(result)
+                if(result.status == 200 ||  result.status == 201 || result.status == 409){
+                    router.push("/main")
+                }
+            })
+            .catch((err)=>{
+            })
+        }
+        const validationCheck = ()=>{
+            var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+            
+            if(!state.email.match(emailRegExp)){
+                state.clickable = false
+            }else if(state.password.length == 0){
+                state.clickable = false
+            }else{
+                state.clickable = true
+            }
+
+        }
+        const init = ()=>{
+            state.url = "  " + getServerURL()
+            let loginStatus = localStorage.getItem("loginStatus")
+            if(loginStatus){
+
+            }
+        }
+        init()
+        return { state, submit, validationCheck }
     }
 };
 </script>
