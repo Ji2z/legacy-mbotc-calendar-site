@@ -105,7 +105,7 @@ public class NoticeController {
 	@GetMapping(value = "/month")
 	@ApiOperation(
 			value = "Get All Notices by Year and Month", 
-			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=05\n- header : { \"auth\" : \"user's token\" }")
+			notes = "- http://localhost:8080/api/v1/notification/month?year=2021&month=05\n- header : { \"auth\" : \"user's token\" }")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 404, message = "USER NOT FOUND")
@@ -160,7 +160,7 @@ public class NoticeController {
 	@GetMapping(value = "/day")
 	@ApiOperation(
 			value = "Get All Notices by Year and Month And Day", 
-			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=10&day=08\n- header : { \"auth\" : \"user's token\" }")
+			notes = "- http://localhost:8080/api/v1/notification/day?year=2021&month=10&day=08\n- header : { \"auth\" : \"user's token\" }")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 404, message = "USER NOT FOUND")
