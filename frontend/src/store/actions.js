@@ -11,18 +11,20 @@ export function userLoginMM({state}, payload){
 }
 
 export function userLogin({state}, payload){
-    const url = '/user'
+    console.log("userLogin")
+    const url = '/api/v1/user'
     const body = {
         "token" : payload.token,
         "userEmail" : payload.email,
         "userName" : payload.userName,
+        "userId": payload.userId,
         "url" : serverData.getServerURL(),
     }
     return $axios.post(url, body);
 }
 
 export function userTokenRefresh({state}, payload){
-    const url = '/user'
+    const url = '/api/v1/user'
 
     return $axios({
         method: 'patch',
@@ -36,7 +38,7 @@ export function userTokenRefresh({state}, payload){
     })
 }
 export function deleteUser({state}, payload){
-    const url = '/user'
+    const url = '/api/v1/user'
 
     return $axios({
         method: 'delete',
@@ -50,7 +52,7 @@ export function deleteUser({state}, payload){
     })
 }
 export function userSync({state}, payload){
-    const url = '/sync'
+    const url = '/api/v1/sync'
     const headers = { "auth": payload.token }
     //수정해야됨
 
@@ -58,7 +60,7 @@ export function userSync({state}, payload){
 }
 
 export function setUserSetting({state}, payload){
-    const url = '/redis/user'
+    const url = '/api/v1/redis/user'
     const headers = {
         'auth' : payload.token
     }
@@ -70,7 +72,7 @@ export function setUserSetting({state}, payload){
 }
 
 export function getUserSetting({state}, payload){
-    const url = '/redis/user'
+    const url = '/api/v1/redis/user'
     const headers = {
         'auth' : payload.token
     }
@@ -81,24 +83,33 @@ export function getUserSetting({state}, payload){
 // notice API
 
 export function getMonthNotice({state}, payload){
-    const url = '/notification/month?year=' + payload.year + '&month=' + payload.month
+    const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month
     const headers = { "auth": payload.token }
 
     return $axios.get(url, {headers});
 }
 
 export function getDayNotice({state}, payload){
-    const url = '/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
+    const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
     const headers = { "auth": payload.token }
     
     return $axios.get(url, {headers});
 }
 
 export function getNoticeDetail({state}, payload){
-    const url = '/notification/post/' + payload.postId
+    const url = '/api/v1/notification/post/' + payload.postId
     const headers = { "auth": payload.token }
     
     return $axios.get(url, {headers});
+}
+
+export function uploadNotice({state}, payload){
+    const url = '/api/v1/notification'
+    const headers = {
+        'auth' : payload.token
+    }
+    const body = payload.notice
+    return $axios.post(url, {headers}, body);
 }
 
 // bot API

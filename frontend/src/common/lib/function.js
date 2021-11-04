@@ -9,5 +9,10 @@ const getServerURL = () =>{
     return serverData.SERVER_URL
 }
 
+const getMbotcURL = () =>{
+    return serverData.MBOTC_URL
+}
+
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
+exports.getMbotcURL = getMbotcURL;

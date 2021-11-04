@@ -67,26 +67,27 @@ export default {
                 .then((result)=>{
                     console.log("MM login")
                     console.log(result)
-                    store.commit('root/setToken', result.data.id)
-                    register(result.data.id, result.data.username)
+                    store.commit('root/setToken', result.headers.token)
+                    register(result.headers.token, result.data.email, result.data.id, result.data.username)
                 })
                 .catch((err)=>{
 
                 })
             }
         }
-        const register = (token, userName)=>{
+        const register = (token, email, id,  userName)=>{
             console.log("MbotC login start")
             let payload = {
                 "token": token,
-                "userEmail" :state.email,
+                "userEmail" :email,
+                "userId": id,
                 "userName" : userName,
             }
             store.dispatch('root/userLogin', payload)
             .then((result)=>{
                 console.log("MbotC login")
                 console.log(result)
-                if(result.status == 200){
+                if(result.status == 200 ||  result.status == 201 || result.status == 409){
                     router.push("/main")
                 }
             })

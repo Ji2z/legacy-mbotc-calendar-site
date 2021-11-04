@@ -11,6 +11,10 @@ module.exports = {
                 target: serverData.getServerURL(),
                 changeOrigin: true
             },
+            '/api/v1': {
+                target: serverData.getMbotcURL(),
+                changeOrigin: true
+            },
         },
         historyApiFallback: true,
         hot: true,
