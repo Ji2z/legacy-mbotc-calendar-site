@@ -1,9 +1,27 @@
 <template>
-  <div>
+  <div v-bind:class="state.theme">
     <router-view/>
   </div>
 </template>
+<script>
+import { reactive, computed } from 'vue'
+import { useStore } from 'vuex'
 
+export default {
+    name: 'app',
+    setup(){
+      const store = useStore()
+      store.commit('root/settingInit')
+      const state = reactive({
+          sideDetailFlag: false,
+          theme: computed(() => store.getters['root/getTheme']),
+          bgOpacity: computed(() => store.getters['root/getOpacity']),
+      })
+
+      return { state }
+    }
+};
+</script>
 <style src="./common/css/main.css">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
