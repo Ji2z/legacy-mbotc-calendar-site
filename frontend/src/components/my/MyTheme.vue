@@ -34,7 +34,7 @@ export default {
     setup(){
         const store = useStore()
         const state = reactive({
-            selected:store.getters['root/getThemeId'],
+            selected: store.getters['root/getThemeId'],
             themes:[
                 {
                     id: 0,

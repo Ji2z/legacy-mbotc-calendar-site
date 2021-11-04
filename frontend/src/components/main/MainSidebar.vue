@@ -1,5 +1,8 @@
 <template>
     <div class="h-screen">
+        <div class="h-1/5 fixed left-0 top-0">
+            <img :src="state.logo[state.theme]" alt="logo" class="h-16 w-16 ml-4 mt-4">
+        </div>
         <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
             <div class="h-20">
 
@@ -139,9 +142,15 @@
 </template>
 <script>
 // import abc from '@/components/'
-import { reactive, watch } from 'vue'
-// import { useStore } from 'vuex'
+import { reactive, watch, computed } from 'vue'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+
+import logo_0 from '@/assets/logo/logo_0.png'
+import logo_1 from '@/assets/logo/logo_1.png'
+import logo_2 from '@/assets/logo/logo_2.png'
+import logo_3 from '@/assets/logo/logo_3.png'
+import logo_4 from '@/assets/logo/logo_4.png'
 
 export default {
     name: 'MainSidebar',
@@ -155,9 +164,12 @@ export default {
     },
     setup(props, {emit}){
         const router = useRouter()
+        const store = useStore()
         const state = reactive({
-            nav:[true,false,false,false],
-            today:0
+            nav: [true,false,false,false],
+            theme: computed(() => store.getters['root/getThemeId']),
+            logo: [logo_0, logo_1, logo_2, logo_3, logo_4],
+            today: 0
         })
 
         const clickNav = (target)=>{
