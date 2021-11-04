@@ -29,7 +29,7 @@ public class Notice extends BaseEntity {
 	
 	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
 	@ApiParam(value = "time when this notice written")
-	@Column
+	@Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date time;
 	
 	@ApiModelProperty(example = "hello, this is cool.")
