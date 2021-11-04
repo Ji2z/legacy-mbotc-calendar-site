@@ -16,19 +16,30 @@ public class ReqNoticePost {
     @ApiModelProperty(name = "notice's content")
     String message;
 
-    @ApiModelProperty(name = "current time")
-    String time;
-
     @ApiModelProperty(name = "schedule start date&time (YYYY-MM-DD hh:mm)")
     String start_time;
 
     @ApiModelProperty(name = "schedule end date&time (YYYY-MM-DD hh:mm)")
     String end_time;
 
-    @ApiModelProperty(name = "file id array which this notice has")
-    String[] file_ids;
+    @ApiModelProperty(name = "team name to notice")
+    String team_name;
+    
+    @ApiModelProperty(name = "channel name to notice")
+    String channel_name;
 
-    @ApiModelProperty(name = "channel id to notice")
-    String channel_id;
+    public ReqNoticePost() {}
+    
+	public ReqNoticePost(String user_name, String message, String start_time, String end_time, String team_name,
+			String channel_name) {
+		super();
+		this.user_name = user_name;
+		this.message = message;
+		this.start_time = start_time;
+		this.end_time = end_time;
+		this.team_name = team_name;
+		this.channel_name = channel_name;
+	}
 
+    
 }
