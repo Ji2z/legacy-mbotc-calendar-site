@@ -1,5 +1,5 @@
 import $axios from 'axios'
-const serverData = require('../common/lib/function.js')
+//import { getServerData, getServerURL } from './src/common/lib/function.js';
 
 // user API
 export function userLoginMM({state}, payload){
@@ -17,7 +17,6 @@ export function userLogin({state}, payload){
         "userEmail" : payload.email,
         "userName" : payload.userName,
         "url" : serverData.getServerURL(),
-        "userId" : payload.userId
     }
     return $axios.post(url, body);
 }

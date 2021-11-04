@@ -59,7 +59,7 @@ export default {
             ],
         })
         const save = ()=>{
-            store.commit('root/setTheme',state.themes[state.selected])
+            store.commit('root/setTheme', state.themes[state.selected])
         }
         const clickTheme = (id)=>{
             //console.log(id)

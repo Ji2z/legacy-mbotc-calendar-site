@@ -1,7 +1,5 @@
-let serverData = {
-    SERVER_URL : "http://k5a103.p.ssafy.io:8065/",
-    //SERVER_URL : "https://meeting.ssafy.com/"
-}
+let serverData = require("./serverData.json");
+// 추후 json 위치 변경해줘야 함
 
 const getServerData = () =>{
     return serverData

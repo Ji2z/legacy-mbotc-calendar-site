@@ -10,7 +10,7 @@
             </div>
         </div>
         <div>
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url" @change="validationCheck">
+            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck">
             <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
             <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
         </div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded cursor-not-allowed" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-pointer':state.clickable}" @click="submit">Take Me!</button>
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
             </div>
         </div>
     </div>
@@ -35,6 +35,7 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getServerURL } from '../../common/lib/function.js'
 
 export default {
     name: 'WelcomeLogin',
@@ -64,21 +65,38 @@ export default {
                 }
                 store.dispatch('root/userLoginMM',payload)
                 .then((result)=>{
+                    console.log("MM login")
                     console.log(result)
-                    //router.push("/main")
+                    store.commit('root/setToken', result.data.id)
+                    register(result.data.id, result.data.username)
                 })
                 .catch((err)=>{
 
                 })
             }
         }
+        const register = (token, userName)=>{
+            console.log("MbotC login start")
+            let payload = {
+                "token": token,
+                "userEmail" :state.email,
+                "userName" : userName,
+            }
+            store.dispatch('root/userLogin', payload)
+            .then((result)=>{
+                console.log("MbotC login")
+                console.log(result)
+                if(result.status == 200){
+                    router.push("/main")
+                }
+            })
+            .catch((err)=>{
+            })
+        }
         const validationCheck = ()=>{
-            var urlRegExp = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
             var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
             
-            if(!state.url.match(urlRegExp)){
-                state.clickable = false
-            }else if(!state.email.match(emailRegExp)){
+            if(!state.email.match(emailRegExp)){
                 state.clickable = false
             }else if(state.password.length == 0){
                 state.clickable = false
@@ -88,6 +106,7 @@ export default {
 
         }
         const init = ()=>{
+            state.url = "  " + getServerURL()
             let loginStatus = localStorage.getItem("loginStatus")
             if(loginStatus){
 

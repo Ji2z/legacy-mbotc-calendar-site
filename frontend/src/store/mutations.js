@@ -23,3 +23,18 @@ export function setTheme(state, data){
     settings.theme = data.theme
     localStorage.setItem("settings",JSON.stringify(settings))
 }
+
+export function setToken(state, token){
+    state.token = token
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.token = token
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+
+export function deleteToken(state){
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.token = ""
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
