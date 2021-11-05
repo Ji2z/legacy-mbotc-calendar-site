@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 flex justify-start">
+    <div class="flex justify-start myPage">
         <router-view :key="$route.fullPath" class="w-full h-screen"
         @clickDetail="onClickDetail"/>
         <main-sidebar
@@ -37,4 +37,7 @@ export default {
 </script>
 
 <style scoped>
+.myPage{
+    background-color: rgba(0, 0, 0, 0);
+}
 </style>

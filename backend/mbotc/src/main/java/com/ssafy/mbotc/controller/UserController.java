@@ -55,7 +55,7 @@ public class UserController {
 	// for new user (register)
 	@PostMapping
 	@ApiOperation(
-			value = "Insert new User to DB (register user)", 
+			value = "Insert new User to DB (register user) & if user is already exist, change token and username", 
 			notes = "- http://localhost:8080/api/v1/user\n - no header")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
@@ -64,7 +64,10 @@ public class UserController {
 	public ResponseEntity<User> saveUserInfo(@RequestBody User user) {
 		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(userInfo.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "USER ALREADY EXIST");
+			//throw new ResponseStatusException(HttpStatus.CONFLICT, "USER ALREADY EXIST");
+			userInfo.get().setToken(user.getToken());
+			userInfo.get().setUserName(user.getUserName());
+			return ResponseEntity.status(HttpStatus.OK).body(userInfo.get());
 		}
 		User userResult = userService.save(user);		
 		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
