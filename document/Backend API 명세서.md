@@ -1,4 +1,4 @@
-![head](/uploads/9d1089fe6475df47938d5782daa59d34/head.png)
+![head](/uploads/db4d854ed1e2d48eb6ef35e8e5ecda64/backend-api-header-2.png)
 
 ## Contents
 
@@ -233,4 +233,4 @@ response :
 
 </details>
 
-![foot](/uploads/41f6f84580e18cc6e297ce915bc23087/foot.png)
+![foot](/uploads/793e00d239703e139beaeefc2d6425f8/backend-api-footer-2.png)
