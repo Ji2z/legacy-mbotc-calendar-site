@@ -11,7 +11,7 @@ export function userLoginMM({state}, payload){
 }
 
 export function userLogin({state}, payload){
-    console.log("userLogin")
+    //console.log("userLogin")
     const url = '/api/v1/user'
     const body = {
         "token" : payload.token,

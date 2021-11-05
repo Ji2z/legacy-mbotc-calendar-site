@@ -5,11 +5,13 @@ export function settingInit(state){
         state.themeId = settings.id
         state.theme = settings.theme
         state.token = settings.token
+        state.email = settings.email
     }else{
         settings = {
             id: 0,
             theme: "default",
             token: "",
+            email: "",
         }
         localStorage.setItem("settings",JSON.stringify(settings))
     }
@@ -21,7 +23,7 @@ export function setTheme(state, data){
     let settings = JSON.parse(localStorage.getItem("settings"))
     settings.id = data.id
     settings.theme = data.theme
-    localStorage.setItem("settings",JSON.stringify(settings))
+    localStorage.setItem("settings", JSON.stringify(settings))
 }
 
 export function setToken(state, token){
@@ -36,5 +38,13 @@ export function deleteToken(state){
     let settings = JSON.parse(localStorage.getItem("settings"))
 
     settings.token = ""
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+
+export function setEmail(state, email){
+    state.email = email
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.email = email
     localStorage.setItem("settings",JSON.stringify(settings))
 }

@@ -10,3 +10,7 @@ export function getTheme(state){
 export function getThemeId(state){
     return state.themeId;
 }
+
+export function getEmail(state){
+    return state.email;
+}

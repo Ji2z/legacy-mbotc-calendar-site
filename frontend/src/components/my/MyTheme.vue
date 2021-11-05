@@ -65,6 +65,10 @@ export default {
             //console.log(id)
             state.selected = id
         }
+        const init = ()=>{
+
+        }
+        init()
         return { state, save, clickTheme }
     }
 };

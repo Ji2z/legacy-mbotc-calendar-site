@@ -205,7 +205,12 @@ export default {
         })
 
         let today = new Date()
-        state.today = today.getFullYear().toString() + (today.getMonth()+1).toString() + today.getDate()
+        state.today = today.getFullYear().toString() + (today.getMonth()+1).toString()
+        if(today.getDate < 10){
+            state.today = state.today + "0" + today.getDate().toString()
+        }else{
+            state.today = state.today + today.getDate().toString()
+        }
 
         const init = ()=>{
             let nowLocation = router.currentRoute.value.fullPath
