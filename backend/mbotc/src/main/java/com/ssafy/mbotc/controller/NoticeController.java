@@ -73,8 +73,8 @@ public class NoticeController {
 	})
 	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
 		try {
-			String authToken = notice.getUser_token();
-			Optional<User> user = userService.findByToken(authToken);
+			String userId = notice.getUser_id();
+			Optional<User> user = userService.findByUserId(userId);
 			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
 			
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -103,7 +103,7 @@ public class NoticeController {
 			Notice result = noticeService.save(saveNotice);
 			
 			try {
-				template.convertAndSend("/sub/notification/" + authToken, result);
+				template.convertAndSend("/sub/notification/" + user.get().getToken(), result);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("소켓 통신 에러!!");

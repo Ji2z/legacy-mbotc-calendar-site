@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReqPluginNotice {
-	String user_token;
+	String user_id;
 	String message;
 	String start_time;
 	String end_time;
