@@ -2,10 +2,10 @@
 
 Contents
 
-- [User](#Notice)
-  
-  > [swagger로 확인하기](http://localhost:8080/api/v1/swagger-ui.html#/)  
-  > prefix : `http://localhost:8080/api/v1`
+[User](#Notice)
+
+> [swagger로 확인하기](http://localhost:8080/api/v1/swagger-ui.html#/)  
+> prefix : `http://localhost:8080/api/v1`
 
 #user
 
@@ -49,7 +49,7 @@ Contents
 
 </details>
 
-#Notice
+# Notice
 
 <details>
     <summary> Notice </summary>
