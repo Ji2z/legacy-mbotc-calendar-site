@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
+import com.ssafy.mbotc.entity.request.ReqNoticePost;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
@@ -105,7 +106,7 @@ public class NoticeController {
 	@GetMapping(value = "/month")
 	@ApiOperation(
 			value = "Get All Notices by Year and Month", 
-			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=05\n- header : { \"auth\" : \"user's token\" }")
+			notes = "- http://localhost:8080/api/v1/notification/month?year=2021&month=05\n- header : { \"auth\" : \"user's token\" }")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 404, message = "USER NOT FOUND")
@@ -160,7 +161,7 @@ public class NoticeController {
 	@GetMapping(value = "/day")
 	@ApiOperation(
 			value = "Get All Notices by Year and Month And Day", 
-			notes = "- http://localhost:8080/api/v1/notification?year=2021&month=10&day=08\n- header : { \"auth\" : \"user's token\" }")
+			notes = "- http://localhost:8080/api/v1/notification/day?year=2021&month=10&day=08\n- header : { \"auth\" : \"user's token\" }")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 404, message = "USER NOT FOUND")
@@ -209,6 +210,58 @@ public class NoticeController {
 		}
 		result.setNotifications(total);
 
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
+	//일별 알람 가져오기
+	@GetMapping(value = "/today")
+	@ApiOperation(
+			value = "Get All today's Notices for plugin", 
+			notes = "- http://localhost:8080/api/v1/notification/today\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
+	public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
+		String authToken = header.get("auth");
+		
+		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
+		String keyid = target.get().getUserId();
+			
+		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
+		ResRedisUser redisUserinfo = redisService.getUserSettings(keyid);
+			
+		//구독 팀 갯수
+		int N = redisUserinfo.getTeams().size();
+		List<ResRedisTeam> teams = redisUserinfo.getTeams();
+			
+		//channel id 담기
+		List<String> subscribeChannelidlist = new ArrayList<>();
+			
+		//channel list
+		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
+		for(int i = 0; i< N; i++) {
+			channelsList= teams.get(i).getSubscribe();
+			int K = channelsList.size();
+			for(int j = 0; j < K; j++) {
+				if(channelsList.get(j).isShow() == true) {
+					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+				}
+			}
+		}
+			
+		List<ReqNoticePost> result = new ArrayList<>();
+			
+		//구독 채널의 오늘 공지
+		for(String subscribe : subscribeChannelidlist) {
+			List<ReqNoticePost> temp = noticeService.getTodayNoticeList(subscribe);
+			for (int i = 0; i < temp.size(); i++) {
+				result.add(temp.get(i));
+			}
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	

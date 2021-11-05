@@ -1,21 +1,19 @@
 package com.ssafy.mbotc.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.mbotc.dao.ChannelRepository;
 import com.ssafy.mbotc.dao.NoticeRepository;
 import com.ssafy.mbotc.entity.Notice;
+import com.ssafy.mbotc.entity.request.ReqNoticePost;
 
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -46,6 +44,25 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public Notice save(Notice notice) {
 		return noticeRepository.save(notice);
+	}
+
+	@Override
+	public List<ReqNoticePost> getTodayNoticeList(String channelToken) {
+		long channelId = channelRepository.findByToken(channelToken).get().getId();
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String formatedNow = now.format(formatter);
+		List<Notice> notices = noticeRepository.findAllByYearAndMonthAndDay(formatedNow, channelId);
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		List<ReqNoticePost> response = new ArrayList<>();
+		for (int i = 0; i < notices.size(); i++) {
+			Notice n = notices.get(i);
+			String startT = df.format(n.getStartTime());
+			String endT = df.format(n.getEndTime());
+			response.add(new ReqNoticePost(n.getUser().getUserName(), n.getContent(), startT, endT, n.getChannel().getName(),n.getChannel().getTeam().getName()));
+		}
+		return response;
 	}
 
 //
