@@ -4,14 +4,18 @@ export function settingInit(state){
     if(settings){
         state.themeId = settings.id
         state.theme = settings.theme
-        state.token = settings.token
-        state.email = settings.email
+        state.userData = settings.userData
     }else{
         settings = {
             id: 0,
             theme: "default",
-            token: "",
-            email: "",
+            userData:{
+                token: "",
+                url: "",
+                userEmail: "",
+                userId: "",
+                userName: "",
+            }
         }
         localStorage.setItem("settings",JSON.stringify(settings))
     }
@@ -26,25 +30,55 @@ export function setTheme(state, data){
     localStorage.setItem("settings", JSON.stringify(settings))
 }
 
-export function setToken(state, token){
-    state.token = token
+export function setUserData(state, userData){
+    state.userData = userData
     let settings = JSON.parse(localStorage.getItem("settings"))
 
-    settings.token = token
+    settings.userData = userData
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+
+export function setToken(state, token){
+    state.userData.token = token
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.userData.token = token
     localStorage.setItem("settings",JSON.stringify(settings))
 }
 
 export function deleteToken(state){
     let settings = JSON.parse(localStorage.getItem("settings"))
 
-    settings.token = ""
+    settings.userData.token = ""
+    state.userData.token = ""
     localStorage.setItem("settings",JSON.stringify(settings))
 }
 
-export function setEmail(state, email){
-    state.email = email
+export function setURL(state, url){
+    state.userData.url = url
     let settings = JSON.parse(localStorage.getItem("settings"))
 
-    settings.email = email
+    settings.userData.url = url
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+export function setUserEmail(state, userEmail){
+    state.userData.userEmail = userEmail
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.userData.userEmail = userEmail
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+export function setUserId(state, userId){
+    state.userData.userId = userId
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.userData.userId = userId
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+export function setUserName(state, userName){
+    state.userData.userName = userName
+    let settings = JSON.parse(localStorage.getItem("settings"))
+
+    settings.userData.userName = userName
     localStorage.setItem("settings",JSON.stringify(settings))
 }

@@ -67,24 +67,24 @@ export default {
                 .then((result)=>{
                     // console.log("MM login")
                     // console.log(result)
-                    store.commit('root/setToken', result.headers.token)
-                    store.commit('root/setEmail', result.data.email)
-                    register(result.headers.token, result.data.email, result.data.id, result.data.username)
+                    let userData = {
+                        token: result.headers.token,
+                        url: getServerURL(),
+                        userEmail: result.data.email,
+                        userId: result.data.id,
+                        userName: result.data.username,
+                    }
+                    store.commit('root/setUserData', userData)
+                    register(userData)
                 })
                 .catch((err)=>{
 
                 })
             }
         }
-        const register = (token, email, id,  userName)=>{
+        const register = (userData)=>{
             //console.log("MbotC login start")
-            let payload = {
-                "token": token,
-                "userEmail" :email,
-                "userId": id,
-                "userName" : userName,
-            }
-            store.dispatch('root/userLogin', payload)
+            store.dispatch('root/userLogin', userData)
             .then((result)=>{
                 //console.log("MbotC login")
                 //console.log(result)

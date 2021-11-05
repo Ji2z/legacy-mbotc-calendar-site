@@ -15,7 +15,7 @@ export function userLogin({state}, payload){
     const url = '/api/v1/user'
     const body = {
         "token" : payload.token,
-        "userEmail" : payload.email,
+        "userEmail" : payload.userEmail,
         "userName" : payload.userName,
         "userId": payload.userId,
         "url" : getServerURL(),
@@ -43,11 +43,12 @@ export function deleteUser({state}, payload){
     return $axios({
         method: 'delete',
         url: url,
-        headers:{
-            'auth':  payload.token
-        },
         data:{
-            "userEmail" : payload.email, 
+            "token": payload.token,
+            "url": payload.url,
+            "userEmail": payload.userEmail,
+            "userId": payload.userId,
+            "userName": payload.userName,
         }
     })
 }
