@@ -1,20 +1,23 @@
-# Backend API 명세서
+![head](/uploads/9d1089fe6475df47938d5782daa59d34/head.png)
 
-Contents
+## Contents
 
-[User](#notice)
+- [User](#user)
+- [Notice](#notice)
+- [SYNC](#sync)
+- [Redis](#redis)
 
 > [swagger로 확인하기](http://localhost:8080/api/v1/swagger-ui.html#/)  
 > prefix : `http://localhost:8080/api/v1`
 
-#user
+### User
 
 <details>
     <summary> User </summary>
     <h2>회원</h2>
 
 ```
- [POST] 회원등록 : 우리 DB에 유저 정보를 저장한다. (최초 저장)
+ [POST] 회원등록 & 로그인 : 우리 DB에 유저 정보를 저장한다. (최초 저장, 이미 저장되어 있다면 토큰값 갱신)
  /user
 
  parameter : -
@@ -49,7 +52,7 @@ Contents
 
 </details>
 
-# Notice
+### Notice
 
 <details>
     <summary> Notice </summary>
@@ -114,6 +117,26 @@ response :
 ```
 
 ```
+[GET] 오늘의 공지만 갖고오기 : 프론트가 아닌 플러그인에서 사용하는 기능
+/notification/today
+
+parameter : -
+header :  { "auth" : token }
+
+response :
+[
+  {
+    "channel_name": "string",
+    "end_time": "string",
+    "message": "string",
+    "start_time": "string",
+    "team_name": "string",
+    "user_name": "string"
+  }
+]
+```
+
+```
 [GET] 공지 세부내용 갖고오기 : 공지의 세부 내용을 가져온다.
 /notification/post/{post_id}
 
@@ -134,6 +157,8 @@ response :
 
 </details>
 
+### SYNC
+
 <details>
     <summary> SYNC </summary>
     <h2>동기화</h2>
@@ -149,7 +174,9 @@ response : -
 ```
 
 </details>
-    
+
+### Redis
+
 <details>
     <summary> Redis </summary>
     <h2>Redis</h2>
@@ -205,3 +232,5 @@ response :
 ```
 
 </details>
+
+![foot](/uploads/41f6f84580e18cc6e297ce915bc23087/foot.png)
