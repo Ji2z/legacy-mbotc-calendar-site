@@ -8,11 +8,10 @@
 - [Redis](#redis)
 
 > [swagger로 확인하기](http://localhost:8080/api/v1/swagger-ui.html#/)  
-> prefix : `http://localhost:8080/api/v1`
+> prefix : `http://k5a103.p.ssafy.io:8080/api/v1/`
 
 ### User
 
-<details>
     <summary> User </summary>
     <h2>회원</h2>
 
@@ -50,11 +49,8 @@
     body : { "userEmail" :"kimssafy@ssafy.com" }
 ```
 
-</details>
-
 ### Notice
 
-<details>
     <summary> Notice </summary>
     <h2>공지</h2>
 
@@ -155,11 +151,8 @@ response :
 }
 ```
 
-</details>
-
 ### SYNC
 
-<details>
     <summary> SYNC </summary>
     <h2>동기화</h2>
 
@@ -173,11 +166,8 @@ body : -
 response : -
 ```
 
-</details>
-
 ### Redis
 
-<details>
     <summary> Redis </summary>
     <h2>Redis</h2>
 
@@ -230,7 +220,5 @@ response :
     "theme" : "mugwort",
 }
 ```
-
-</details>
 
 ![foot](/uploads/793e00d239703e139beaeefc2d6425f8/backend-api-footer-2.png)
