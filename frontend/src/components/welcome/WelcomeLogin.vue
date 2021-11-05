@@ -87,12 +87,13 @@ export default {
             .then((result)=>{
                 console.log("MbotC login")
                 console.log(result)
-                if(result.status == 200 ||  result.status == 201 || result.status == 409){
+                if(result.status == 200 ||  result.status == 201){
                     router.push("/main")
                 }
             })
             .catch((err)=>{
                 console.log(err)
+                // status 409 핸들링
             })
         }
         const validationCheck = ()=>{

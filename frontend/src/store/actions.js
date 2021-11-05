@@ -84,14 +84,18 @@ export function getUserSetting({state}, payload){
 
 export function getMonthNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month
-    const headers = { "auth": payload.token }
+    const headers = { 
+        'auth': payload.token 
+    }
 
     return $axios.get(url, {headers});
 }
 
 export function getDayNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    const headers = { "auth": payload.token }
+    const headers = { 
+        'auth': payload.token 
+    }
     
     return $axios.get(url, {headers});
 }

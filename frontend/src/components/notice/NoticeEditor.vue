@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-screen px-32 pt-12">
-        <div class="bg-panel w-11/12 h-full rounded-xl shadow-2xl p-8">
+        <div class="bg-panel h-5/6 rounded-xl shadow-2xl p-8">
             <div class="header pb-8">
                 <span class="text-4xl font-bold text-main ">Create Alert</span>
             </div>
