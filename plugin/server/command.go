@@ -1,11 +1,7 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"strings"
 
 	"github.com/mattermost/mattermost-plugin-api/experimental/command"
@@ -25,7 +21,7 @@ func (p *Plugin) getCommand() (*model.Command, error) {
 		DisplayName:          "mbotc",
 		Description:          "Integration with MBotC.",
 		AutoComplete:         true,
-		AutoCompleteDesc:     "Available commands: help, term, date",
+		AutoCompleteDesc:     "Available commands: help, create",
 		AutoCompleteHint:     "[command]",
 		AutocompleteData:     getAutocompleteData(),
 		AutocompleteIconData: iconData,
@@ -34,18 +30,9 @@ func (p *Plugin) getCommand() (*model.Command, error) {
 
 const helpText = "###### Mattermost MBotC Plugin - Slash Command Help\n" +
 	"* `/mbotc help` - help text\n" +
-	"* `/mbotc term` - Register your Term Notice.\n" +
-	"	```\n" +
-	"	[Template]\n" +
-	"	<write here what you want to notice with markdown format>\n" +
-	"	`date YYYY-MM-DD hh:mm - YYYY-MM-DD hh:mm\n" +
-	"	```\n" +
-	"* `/mbotc date` - Register your Date Notice.\n" +
-	"	```\n" +
-	"	[Template]\n" +
-	"	<write here what you want to notice with markdown format>\n" +
-	"	`date YYYY-MM-DD hh:mm\n" +
-	"	```\n"
+	"* `/mbotc create` - Create your Notice.\n" +
+	" File Upload is not supported\n" +
+	" If you want to upload file, please visit [here](https://k5a103.p.ssafy.io/)\n"
 
 type CommandHandlerFunc func(p *Plugin, c *plugin.Context, header *model.CommandArgs, args ...string) *model.CommandResponse
 
@@ -60,9 +47,8 @@ type CommandHandler struct {
 //===================================================
 var mbotcCommandHandler = CommandHandler{
 	handlers: map[string]CommandHandlerFunc{
-		"help": executeHelp,
-		"term": executeTerm,
-		"date": executeDate,
+		"help":   executeHelp,
+		"create": executeCreate,
 	},
 	defaultHandler: executeHelp,
 }
@@ -86,35 +72,9 @@ func (p *Plugin) help(header *model.CommandArgs) *model.CommandResponse {
 	return &model.CommandResponse{}
 }
 
-func executeTerm(p *Plugin, c *plugin.Context, header *model.CommandArgs, args ...string) *model.CommandResponse {
-	p.postCommandResponse(header, "###### Successfully registered your term notice:\n"+header.Command)
-	p.registerNotice(header)
+func executeCreate(p *Plugin, c *plugin.Context, header *model.CommandArgs, args ...string) *model.CommandResponse {
+	p.openCreateDialog(header)
 	return &model.CommandResponse{}
-}
-
-func executeDate(p *Plugin, c *plugin.Context, header *model.CommandArgs, args ...string) *model.CommandResponse {
-	p.postCommandResponse(header, "###### Successfully registered your term notice:\n"+header.Command)
-	p.registerNotice(header)
-	return &model.CommandResponse{}
-}
-
-// Send Post Request to our Bot server
-func (p *Plugin) registerNotice(commandArgs *model.CommandArgs) {
-	pbytes, _ := json.Marshal(commandArgs)
-	buff := bytes.NewBuffer(pbytes)
-	// http.Post(url, request body MIME type, data)
-	resp, err := http.Post("http://httpbin.org/post", "application/json", buff)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer resp.Body.Close()
-
-	// Check Response
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		str := string(respBody)
-		fmt.Println(str)
-	}
 }
 
 func (p *Plugin) ExecuteCommand(c *plugin.Context, commandArgs *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
@@ -132,11 +92,8 @@ func getAutocompleteData() *model.AutocompleteData {
 	help := model.NewAutocompleteData("help", "", "Guide for mbotc")
 	mbotcAutocomplete.AddCommand(help)
 
-	term := model.NewAutocompleteData("term", "[text]", "Register your Term Notice (Please refer to /help)")
-	mbotcAutocomplete.AddCommand(term)
-
-	date := model.NewAutocompleteData("date", "[text]", "Register your Date Notice (Please refer to /help)")
-	mbotcAutocomplete.AddCommand(date)
+	create := model.NewAutocompleteData("create", "", "Register your Notice")
+	mbotcAutocomplete.AddCommand(create)
 
 	return mbotcAutocomplete
 }
@@ -149,4 +106,45 @@ func (p *Plugin) postCommandResponse(args *model.CommandArgs, text string) {
 		Message:   text,
 	}
 	_ = p.API.SendEphemeralPost(args.UserId, post)
+}
+
+func (p *Plugin) openCreateDialog(args *model.CommandArgs) {
+	siteURL := *p.API.GetConfig().ServiceSettings.SiteURL
+	listenAddress := *p.API.GetConfig().ServiceSettings.ListenAddress
+	dialogRequest := model.OpenDialogRequest{
+		TriggerId: args.TriggerId,
+		URL:       fmt.Sprintf("%s/plugins/%s/mm", siteURL+listenAddress, "com.mattermost.plugin-mbotc"),
+		Dialog:    getDialog(),
+	}
+
+	p.API.OpenInteractiveDialog(dialogRequest)
+}
+
+func getDialog() model.Dialog {
+	return model.Dialog{
+		CallbackId: "somecallbackid",
+		Title:      "Create Notice",
+		Elements: []model.DialogElement{{
+			DisplayName: "Date",
+			Name:        "start_time",
+			Type:        "text",
+			Placeholder: "YYYY-MM-DD hh:mm",
+			HelpText:    "e.g. 2021-11-05 09:00",
+		}, {
+			DisplayName: "End date",
+			Name:        "end_time",
+			Type:        "text",
+			Optional:    true,
+			Placeholder: "YYYY-MM-DD hh:mm",
+			HelpText:    "e.g. 2021-11-05 18:00",
+		}, {
+			DisplayName: "Content",
+			Name:        "content",
+			Type:        "textarea",
+			Placeholder: "Write what you want to notice",
+			HelpText:    "Write in Markdown syntax.",
+		}},
+		SubmitLabel:    "Submit",
+		NotifyOnCancel: false,
+	}
 }
