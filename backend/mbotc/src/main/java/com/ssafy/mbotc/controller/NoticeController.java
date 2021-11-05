@@ -2,7 +2,11 @@ package com.ssafy.mbotc.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,7 @@ import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.request.ReqNoticePost;
+import com.ssafy.mbotc.entity.request.ReqPluginNotice;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
@@ -57,48 +62,41 @@ public class NoticeController {
 	@Autowired
 	private SimpMessagingTemplate template;
 	
-	// 사이트에서 공지 등록하기 -> 플러그인에 전송
+	// 플러그인에서 전송되는 공지를 db에 저장
 	@PostMapping
-	public ResponseEntity<String> postFromSite(@RequestHeader HashMap<String,String> header, @RequestBody Notice notice, @RequestParam String channelId){
-		String authToken = header.get("auth");
-		Optional<User> target = userService.findByToken(authToken);
-		if(!target.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
-		}
-		
-		Optional<Channel> channel = channelService.findByToken(channelId);
-		if(!channel.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHANNEL NOT FOUND");
-		}
-		notice.setChannel(channel.get());
-		notice.setUser(target.get());
-		if(notice.getEndTime() == null) {
-			notice.setEndTime(notice.getStartTime());
-		}
-		
-		// 저장된 결과
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		
-		Notice result = noticeService.save(notice);
+	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
 		try {
-			template.convertAndSend("/sub/notification/" + authToken, result);
-		} catch (Exception e) {
+			String authToken = notice.getUser_token();
+			Optional<User> user = userService.findByToken(authToken);
+			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			
+			Notice saveNotice = new Notice();
+			String fileIds = Arrays.toString(notice.getFile_ids().toArray());
+			saveNotice.setChannel(channel.get());
+			saveNotice.setContent(notice.getMessage());
+			saveNotice.setEndTime(df.parse(notice.getEnd_time()));
+			saveNotice.setFiles(fileIds.substring(1, fileIds.length()-1));
+			saveNotice.setStartTime(df.parse(notice.getStart_time()));
+			saveNotice.setToken(notice.getPost_id());
+			saveNotice.setUser(user.get());
+			saveNotice.setTime(new Date());
+			
+			Notice result = noticeService.save(saveNotice);
+			
+			try {
+				template.convertAndSend("/sub/notification/" + authToken, result);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("소켓 통신 에러!!");
+			}
+			
+		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("소켓 통신 에러!!");
+			return ResponseEntity.status(500).body("Fail");
 		}
-		
-		// mm plugin에 보내는 request
-//		ReqNoticePost response = new ReqNoticePost();
-//		response.setChannel_id(result.getChannel().getToken());
-//		response.setUser_name(target.get().getUserName());
-//		response.setMessage(result.getContent());
-//		response.setTime(df.format(result.getTime()));
-//		response.setStart_time(df.format(result.getStartTime()));
-//		response.setEnd_time(df.format(result.getEndTime()));
-//		if(result.getFiles()!= null)
-//			response.setFile_ids(result.getFiles().split(","));
-		//botService.postNoticeToMattermost(response, target.get().getUrl());
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
 	
