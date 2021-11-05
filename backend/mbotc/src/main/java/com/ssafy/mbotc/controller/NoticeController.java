@@ -228,19 +228,17 @@ public class NoticeController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
-	//일별 알람 가져오기
-	@GetMapping(value = "/today")
-	@ApiOperation(
-			value = "Get All today's Notices for plugin", 
-			notes = "- http://localhost:8080/api/v1/notification/today\n- header : { \"auth\" : \"user's token\" }")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "SUCCESS"),
-		@ApiResponse(code = 404, message = "USER NOT FOUND")
-	})
-	public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
-		String authToken = header.get("auth");
-		
-		Optional<User> target = userService.findByToken(authToken);
+    //일별 알람 가져오기
+    @GetMapping(value = "/today")
+    @ApiOperation(
+            value = "Get All today's Notices for plugin",
+            notes = "- http://localhost:8080/api/v1/notification/today\n- header : { \"userId\" : \"user's id\" }")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 404, message = "USER NOT FOUND")
+    })
+    public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
+        Optional<User> target = userService.findByUserId(header.get("userId"));
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
