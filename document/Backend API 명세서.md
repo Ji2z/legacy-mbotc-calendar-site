@@ -2,7 +2,7 @@
 
 Contents
 
-[User](#Notice)
+[User](#notice)
 
 > [swagger로 확인하기](http://localhost:8080/api/v1/swagger-ui.html#/)  
 > prefix : `http://localhost:8080/api/v1`
