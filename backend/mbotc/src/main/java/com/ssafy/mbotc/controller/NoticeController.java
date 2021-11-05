@@ -64,6 +64,13 @@ public class NoticeController {
 	
 	// 플러그인에서 전송되는 공지를 db에 저장
 	@PostMapping
+	@ApiOperation(
+			value = "Post notice from plugin to DB", 
+			notes = "- http://localhost:8080/api/v1/notification\n- header : -")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 500, message = "FAIL")
+	})
 	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
 		try {
 			String authToken = notice.getUser_token();
@@ -73,11 +80,21 @@ public class NoticeController {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			
 			Notice saveNotice = new Notice();
-			String fileIds = Arrays.toString(notice.getFile_ids().toArray());
+			
+			// file이 있으면
+			if(notice.getFile_ids() != null) {
+				StringBuilder sb = new StringBuilder();
+				for (String s : notice.getFile_ids()) {
+					sb.append(s).append(",");
+				}
+				String files = sb.toString();
+				files = files.substring(0, files.length()-1);
+				saveNotice.setFiles(files);
+			}
+			
 			saveNotice.setChannel(channel.get());
 			saveNotice.setContent(notice.getMessage());
 			saveNotice.setEndTime(df.parse(notice.getEnd_time()));
-			saveNotice.setFiles(fileIds.substring(1, fileIds.length()-1));
 			saveNotice.setStartTime(df.parse(notice.getStart_time()));
 			saveNotice.setToken(notice.getPost_id());
 			saveNotice.setUser(user.get());
