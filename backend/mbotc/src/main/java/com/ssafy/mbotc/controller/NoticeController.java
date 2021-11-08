@@ -2,7 +2,11 @@ package com.ssafy.mbotc.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,7 @@ import com.ssafy.mbotc.entity.Channel;
 import com.ssafy.mbotc.entity.Notice;
 import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.request.ReqNoticePost;
+import com.ssafy.mbotc.entity.request.ReqPluginNotice;
 import com.ssafy.mbotc.entity.response.ResNoticeList;
 import com.ssafy.mbotc.entity.response.ResRedisChannel;
 import com.ssafy.mbotc.entity.response.ResRedisTeam;
@@ -57,48 +62,58 @@ public class NoticeController {
 	@Autowired
 	private SimpMessagingTemplate template;
 	
-	// 사이트에서 공지 등록하기 -> 플러그인에 전송
+	// 플러그인에서 전송되는 공지를 db에 저장
 	@PostMapping
-	public ResponseEntity<String> postFromSite(@RequestHeader HashMap<String,String> header, @RequestBody Notice notice, @RequestParam String channelId){
-		String authToken = header.get("auth");
-		Optional<User> target = userService.findByToken(authToken);
-		if(!target.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
-		}
-		
-		Optional<Channel> channel = channelService.findByToken(channelId);
-		if(!channel.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHANNEL NOT FOUND");
-		}
-		notice.setChannel(channel.get());
-		notice.setUser(target.get());
-		if(notice.getEndTime() == null) {
-			notice.setEndTime(notice.getStartTime());
-		}
-		
-		// 저장된 결과
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		
-		Notice result = noticeService.save(notice);
+	@ApiOperation(
+			value = "Post notice from plugin to DB", 
+			notes = "- http://localhost:8080/api/v1/notification\n- header : -")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 500, message = "FAIL")
+	})
+	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
 		try {
-			template.convertAndSend("/sub/notification/" + authToken, result);
-		} catch (Exception e) {
+			String userId = notice.getUser_id();
+			Optional<User> user = userService.findByUserId(userId);
+			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			
+			Notice saveNotice = new Notice();
+			
+			// file이 있으면
+			if(notice.getFile_ids() != null) {
+				StringBuilder sb = new StringBuilder();
+				for (String s : notice.getFile_ids()) {
+					sb.append(s).append(",");
+				}
+				String files = sb.toString();
+				files = files.substring(0, files.length()-1);
+				saveNotice.setFiles(files);
+			}
+			
+			saveNotice.setChannel(channel.get());
+			saveNotice.setContent(notice.getMessage());
+			saveNotice.setEndTime(df.parse(notice.getEnd_time()));
+			saveNotice.setStartTime(df.parse(notice.getStart_time()));
+			saveNotice.setToken(notice.getPost_id());
+			saveNotice.setUser(user.get());
+			saveNotice.setTime(new Date());
+			
+			Notice result = noticeService.save(saveNotice);
+			
+			try {
+				template.convertAndSend("/sub/notification/" + user.get().getToken(), result);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("소켓 통신 에러!!");
+			}
+			
+		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("소켓 통신 에러!!");
+			return ResponseEntity.status(500).body("Fail");
 		}
-		
-		// mm plugin에 보내는 request
-//		ReqNoticePost response = new ReqNoticePost();
-//		response.setChannel_id(result.getChannel().getToken());
-//		response.setUser_name(target.get().getUserName());
-//		response.setMessage(result.getContent());
-//		response.setTime(df.format(result.getTime()));
-//		response.setStart_time(df.format(result.getStartTime()));
-//		response.setEnd_time(df.format(result.getEndTime()));
-//		if(result.getFiles()!= null)
-//			response.setFile_ids(result.getFiles().split(","));
-		//botService.postNoticeToMattermost(response, target.get().getUrl());
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
 	
@@ -213,19 +228,17 @@ public class NoticeController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
-	//일별 알람 가져오기
-	@GetMapping(value = "/today")
-	@ApiOperation(
-			value = "Get All today's Notices for plugin", 
-			notes = "- http://localhost:8080/api/v1/notification/today\n- header : { \"auth\" : \"user's token\" }")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "SUCCESS"),
-		@ApiResponse(code = 404, message = "USER NOT FOUND")
-	})
-	public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
-		String authToken = header.get("auth");
-		
-		Optional<User> target = userService.findByToken(authToken);
+    //일별 알람 가져오기
+    @GetMapping(value = "/today")
+    @ApiOperation(
+            value = "Get All today's Notices for plugin",
+            notes = "- http://localhost:8080/api/v1/notification/today\n- header : { \"userId\" : \"user's id\" }")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 404, message = "USER NOT FOUND")
+    })
+    public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
+        Optional<User> target = userService.findByUserId(header.get("userid"));
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
