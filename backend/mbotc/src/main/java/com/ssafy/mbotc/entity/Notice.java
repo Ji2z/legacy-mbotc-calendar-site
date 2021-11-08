@@ -34,7 +34,7 @@ public class Notice extends BaseEntity {
 	
 	@ApiModelProperty(example = "hello, this is cool.")
 	@ApiParam(value = "notice's content")
-	@Column
+	@Column(columnDefinition = "TEXT")
 	String content;
 	
 	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
