@@ -238,7 +238,7 @@ public class NoticeController {
         @ApiResponse(code = 404, message = "USER NOT FOUND")
     })
     public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
-        Optional<User> target = userService.findByUserId(header.get("userId"));
+        Optional<User> target = userService.findByUserId(header.get("userid"));
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
