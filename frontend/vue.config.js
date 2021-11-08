@@ -14,7 +14,7 @@ module.exports = {
             '/api/v1': {
                 target: serverData.getMbotcURL(),
                 changeOrigin: true,
-                logLevel: "debug",
+                //logLevel: "debug",
             },
         },
         headers: {
