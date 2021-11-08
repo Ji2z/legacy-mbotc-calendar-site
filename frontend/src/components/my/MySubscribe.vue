@@ -9,15 +9,15 @@
             </div>
             <div class="grid grid-cols-2 gap-4 w-full">
                 <div class="overflow-y-auto p-4">
-                    <div v-for="team in state.teams" :key="team.token" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label">
+                    <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label">
                         <div class="flex justify-between">
                             <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
-                                <p class="text-xl overflow-x-hidden ml-2 cursor-pointer" @click="selectTeam(team.token)">
-                                    {{team.name}}
+                                <p class="text-xl overflow-x-hidden ml-2 cursor-pointer" @click="selectTeam(team.id)">
+                                    {{team.teamName}}
                                 </p>
                             </div>
                             <div class="flex justify-end items-center">
-                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click="changeColor(team.token)"/>
+                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click="changeColor(team.id)"/>
                                 <div>
                                     <svg class="h-5 w-5 bg-panel" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -32,15 +32,15 @@
                         <p class="bg-panel">{{state.teams[state.selectedTeam].name}}</p><br/>
                     </div>
                     <div class="bg-back overflow-y-auto rounded-xl shadow-inner p-4">
-                        <div v-for="channel in state.teams[state.selectedTeam].channel" :key="channel.token" class="m-2 p-2 bg-panel text-font rounded-xl">
+                        <div v-for="channel in state.teams[state.selectedTeam].subscribe" :key="channel.channelId" class="m-2 p-2 bg-panel text-font rounded-xl">
                             <div class="flex justify-between">
                                 <p class="text-xl overflow-x-hidden">
                                     {{channel.channelName}}
                                 </p>
                                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                                     <div>
-                                        <input type="checkbox" v-model="channel.toggle" name="toggle" :id="channel.token" :class="{'border-label':channel.toggle, 'right-0':channel.toggle}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
-                                        <label :for="channel.token" :class="{'bg-main':channel.toggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                                        <input type="checkbox" v-model="channel.show" name="show" :id="channel.token" :class="{'border-label':channel.show, 'right-0':channel.show}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
+                                        <label :for="channel.token" :class="{'bg-main':channel.show}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                                     </div>
                                 </div>
                             </div>
@@ -74,9 +74,15 @@ export default {
             let payload = store.getters['root/getUserData']
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
+                state.teams = []
                 console.log(result)
-                //state.teams 에 넣고 위의 v-for와 매칭
-                //theme 받아온거 set해서 적용
+                let index = 0;
+                result.forEach(data => {
+                    let team = data
+                    team.id = index
+                    index++
+                    state.teams.push(team)
+                }); 
             })
             .catch((err)=>{
                 console.log(err)

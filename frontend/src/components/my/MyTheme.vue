@@ -14,9 +14,6 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">Change</button>
-                </div>
             </div>
         </div>
     </div>
@@ -58,18 +55,16 @@ export default {
                 },
             ],
         })
-        const save = ()=>{
-            store.commit('root/setTheme', state.themes[state.selected])
-        }
         const clickTheme = (id)=>{
             //console.log(id)
             state.selected = id
+            store.commit('root/setTheme', state.themes[state.selected])
         }
         const init = ()=>{
 
         }
         init()
-        return { state, save, clickTheme }
+        return { state, clickTheme }
     }
 };
 </script>

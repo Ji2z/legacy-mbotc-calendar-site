@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="flex-grow h-10 py-1 w-full cursor-pointer">
                                     <div class="w-4 h-4 rounded-full mx-auto mt-4"
-                                    :class="{'bg-blue-100':(day.count==1),'bg-blue-300':(day.count>1 && day.count<4),'bg-blue-500':(day.count>3 && day.count<6),'bg-blue-800':(day.count>=6),}">
+                                    :class="{'bg-first':(day.count==1),'bg-second':(day.count>1 && day.count<4),'bg-third':(day.count>3 && day.count<6),'bg-most':(day.count>=6),}">
 
                                     </div>
                                 </div>
@@ -104,6 +104,16 @@ export default {
             .then((result)=>{
                 console.log("month list")
                 console.log(result)
+                result.data.notifications.forEach(node => {
+                    let notice = {
+                        title: node.content.subString(0,10),
+                        color: "#808080",
+                        startDay: getDayPicker(node.startTime),
+                        endDay: getDayPicker(node.endTime),
+                        token: node.team.token
+                    }
+                    noticeList.push(notice)
+                });
             })
             .catch((err)=>{
                 console.log(err)

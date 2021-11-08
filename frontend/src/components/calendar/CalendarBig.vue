@@ -75,6 +75,7 @@ import MainAddon from '@/components/main/MainAddon.vue'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getDayPicker } from '../../common/lib/function.js';
 
 export default {
     name: 'CalendarBig',
@@ -90,7 +91,8 @@ export default {
             year:0,
             month:0,
             today:0,
-            weeks: [[],[],[],[],[],[]]
+            weeks: [[],[],[],[],[],[]],
+            teamColor: []
         })
         const initCalendar = ()=>{
             let payload = {
@@ -99,25 +101,35 @@ export default {
                 token: store.getters['root/getToken']
             }
             let noticeList = []
-            let teamColor = []
-
-            store.dispatch('root/getUserSetting', payload)
-            .then((result)=>{
-                console.log("month list")
-                console.log(result)
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
                 console.log("month list")
                 console.log(result)
+                result.data.notifications.forEach(node => {
+                    let notice = {
+                        title: node.content.subString(0,10),
+                        color: "#808080",
+                        startDay: getDayPicker(node.startTime),
+                        endDay: getDayPicker(node.endTime),
+                        token: node.team.token
+                    }
+
+                    state.teamColor.forEach(team => {
+                        if(team.id == notice.token){
+                            notice.color = team.color
+                            return
+                        }
+                    });
+                    noticeList.push(notice)
+                });
+                //noticeList는 시작 날짜순으로 정렬해야됨
+                noticeList.sort(function(a,b){
+                    return a.startDay - b.startDay
+                })
             })
             .catch((err)=>{
                 console.log(err)
             })
-            //noticeList는 시작 날짜순으로 정렬해야됨
 
             state.weeks = [[],[],[],[],[],[]]
             let startDay = new Date(state.year, state.month, 1).getDay()
@@ -154,6 +166,28 @@ export default {
             state.year = today.getFullYear()
             state.month = today.getMonth()
             state.today = today.getDate()
+            let payload = {
+                year: state.year,
+                month: state.month+1,
+                token: store.getters['root/getToken']
+            }
+            //color setting 받아오기
+            store.dispatch('root/getUserSetting', payload)
+            .then((result)=>{
+                console.log("user setting")
+                console.log(result)
+                store.commit('root/setTheme', result.data.theme)
+                result.data.teams.forEach(team=> {
+                    let color = {
+                        color: team.color,
+                        id: team.teamId
+                    }
+                    state.teamColor.push(color)
+                });
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
             initCalendar()
         }
         const nextMonth = ()=>{
