@@ -79,7 +79,7 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
-    .orange {
+    .eclipse {
         --bg-main: #FF8243;
         --bg-back: #F6F6F6;
         --bg-panel: #FFFFFF;
@@ -95,7 +95,7 @@
         --bg-third:;
         --bg-most:;
 
-        background-image: url('../../assets/bg/orange_day.png');
+        background-image: url('../../assets/bg/eclipse.gif');
         background-repeat: no-repeat;
         background-size: cover;
     }

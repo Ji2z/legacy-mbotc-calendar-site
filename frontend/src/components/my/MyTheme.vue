@@ -51,7 +51,7 @@ export default {
                 },
                 {
                     id: 4,
-                    theme: "orange",
+                    theme: "eclipse",
                 },
             ],
         })
