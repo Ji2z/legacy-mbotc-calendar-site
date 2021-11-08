@@ -21,6 +21,19 @@ export function settingInit(state){
     }
 }
 
+export function logout(state){
+    let settings = JSON.parse(localStorage.getItem("settings"))
+    settings.userData = {
+        token: "",
+        url: "",
+        userEmail: "",
+        userId: "",
+        userName: "",
+    }
+    state.userData = settings.userData
+    localStorage.setItem("settings",JSON.stringify(settings))
+}
+
 export function setTheme(state, data){
     state.themeId = data.id
     state.theme = data.theme
