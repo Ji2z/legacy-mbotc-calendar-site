@@ -67,7 +67,8 @@ public class UserController {
 			//throw new ResponseStatusException(HttpStatus.CONFLICT, "USER ALREADY EXIST");
 			userInfo.get().setToken(user.getToken());
 			userInfo.get().setUserName(user.getUserName());
-			return ResponseEntity.status(HttpStatus.OK).body(userInfo.get());
+			syncservice.syncWithUser(userInfo.get().getToken(), userInfo.get().getUrl(), userInfo.get().getUserId());
+			return ResponseEntity.status(HttpStatus.OK).body(userService.save(userInfo.get()));
 		}
 		User userResult = userService.save(user);		
 		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
