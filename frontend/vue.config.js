@@ -1,5 +1,5 @@
 const path = require('path')
-const serverData = require('./src/common/lib/function.js')
+const serverData = require('../preference/function.js')
 
 module.exports = {
     devServer: {
@@ -14,7 +14,7 @@ module.exports = {
             '/api/v1': {
                 target: serverData.getMbotcURL(),
                 changeOrigin: true,
-                //logLevel: "debug",
+                logLevel: "debug",
             },
         },
         headers: {

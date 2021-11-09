@@ -1,5 +1,5 @@
 import $axios from 'axios'
-import { getServerURL } from '../common/lib/function.js';
+import { getServerURL } from '../../../preference/function.js';
 
 // user API
 export function userLoginMM({state}, payload){
@@ -32,7 +32,7 @@ export function userTokenRefresh({state}, payload){
         data:{
             "userEmail" : payload.email, 
             "token" : payload.token, 
-            "url" : serverData.getServerURL(),
+            "url" : getServerURL(),
             "userId" : payload.userId
         }
     })
