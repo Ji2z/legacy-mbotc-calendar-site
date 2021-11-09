@@ -21,13 +21,6 @@
     "settings_schema": {
         "header": "",
         "footer": "",
-        "settings": [
-            {
-                "key": "MbotcClientUrl",
-                "display_name": "Your MBotC URL:",
-                "type": "text",
-                "placeholder": "http://your-mbotc-url"
-            }
-        ]
+        "settings": []
     }
 }

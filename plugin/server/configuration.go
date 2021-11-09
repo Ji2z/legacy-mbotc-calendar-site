@@ -19,6 +19,7 @@ import (
 // copy appropriate for your types.
 type configuration struct {
 	MbotcClientUrl string
+	MbotcServerUrl string
 }
 
 // Clone shallow copies the configuration. Your implementation may require a deep copy if
