@@ -33,7 +33,6 @@ class Plugin {
         );
         registry.registerPostDropdownMenuAction(
             <div>
-                <Icon/>
                 {'Create MBotC Notice'}
             </div>,
             (postId) => {
