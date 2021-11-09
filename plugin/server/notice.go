@@ -61,12 +61,10 @@ func (p *Plugin) httpCreateNoticeWithEditor(w http.ResponseWriter, r *http.Reque
 }
 
 func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("@@@@@@@@@@@@@@@@@@@@@@@들어옴")
 	var request struct {
 		PostId string `json:"post_id"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&request)
-	fmt.Printf("@@@@@@@@@request.PostId : %s", request.PostId)
 	if err != nil {
 		fmt.Print("err", err)
 	}
@@ -74,19 +72,12 @@ func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Reque
 
 	var notice Notice
 	notice.UserId = post.UserId
-	fmt.Printf("@@@@@@@@@UserId : %s", post.UserId)
 	notice.Message = post.Message
-	fmt.Printf("@@@@@@@@@Message : %s", post.Message)
-	notice.StartTime = time.Unix(post.CreateAt, 0).Format("2006-01-02 15:04")
-	fmt.Printf("@@@@@@@@@StartTime : %s", notice.StartTime)
-	notice.EndTime = time.Now().Format("2016-01-02") + " 23:59"
-	fmt.Printf("@@@@@@@@@EndTime : %s", notice.EndTime)
+	notice.StartTime = time.Now().Format("2006-01-02 15:04")
+	notice.EndTime = time.Now().Format("2006-01-02") + " 23:59"
 	notice.FileIds = post.FileIds
-	fmt.Printf("@@@@@@@@@FileIds : %s", post.FileIds)
 	notice.ChannelId = post.ChannelId
-	fmt.Printf("@@@@@@@@@ChannelId : %s", post.ChannelId)
 	notice.PostId = post.Id
-	fmt.Printf("@@@@@@@@@PostId : %s", post.Id)
 
 	postRequestToNotificationAPI(notice)
 }
@@ -97,7 +88,6 @@ func convertDialogForm(p *Plugin, r *http.Request) (Notice, error) {
 
 	err := json.NewDecoder(r.Body).Decode(&dialogForm)
 	if err != nil {
-		fmt.Println("ConvertDialogForm Error : ", err)
 		panic(err)
 	}
 
@@ -169,16 +159,13 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notice Notice) {
 }
 
 func postRequestToNotificationAPI(notice Notice) {
-	fmt.Print("@@@@@@@@@@@@@@@@@@@@@@@ postRequestToNotificationAPI")
 	requestUrl := serverUrl + "/api/v1/notification"
-	fmt.Print("requestUrl", requestUrl)
 	noticeJSON, err := json.Marshal(notice)
 	if err != nil {
 		fmt.Println(err)
 	}
 	resp, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(noticeJSON))
 	if err != nil {
-		fmt.Print("@@@@@@@@@@@@@@@@@@@@@@@ http POST err", err)
 		panic(err)
 	}
 	defer resp.Body.Close()
