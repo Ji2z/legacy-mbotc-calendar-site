@@ -10,6 +10,12 @@ export function userLoginMM({state}, payload){
     return $axios.post(url, body);
 }
 
+export function getUserMM({state}){
+    const url =  '/api/v4/users/me'
+
+    return $axios.get(url);
+}
+
 export function userLogin({state}, payload){
     //console.log("userLogin")
     const url = '/api/v1/user'

@@ -106,6 +106,7 @@ export default {
                 console.log("month list")
                 console.log(result)
                 result.data.notifications.forEach(node => {
+                    console.log(node.content)
                     let notice = {
                         title: node.content.subString(0,10),
                         color: "#808080",
