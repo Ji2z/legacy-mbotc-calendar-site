@@ -75,6 +75,7 @@ export function setUserSetting({state}, payload){
         "teams" : payload.teams,
         "theme" : payload.theme
     }
+    console.log(body)
     return $axios.post(url, {headers}, body);
 }
 

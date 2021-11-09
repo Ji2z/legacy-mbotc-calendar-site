@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-span-1">
                     <div>
-                        <p class="bg-panel">{{state.teams[state.selectedTeam].name}}</p><br/>
+                        <p class="bg-panel">{{state.teams[state.selectedTeam].teamName}}</p><br/>
                     </div>
                     <div class="bg-back overflow-y-auto rounded-xl shadow-inner p-4">
                         <div v-for="channel in state.teams[state.selectedTeam].subscribe" :key="channel.channelId" class="m-2 p-2 bg-panel text-font rounded-xl">
@@ -39,8 +39,8 @@
                                 </p>
                                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                                     <div>
-                                        <input type="checkbox" v-model="channel.show" name="show" :id="channel.token" :class="{'border-label':channel.show, 'right-0':channel.show}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
-                                        <label :for="channel.token" :class="{'bg-main':channel.show}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                                        <input type="checkbox" v-model="channel.show" name="show" :id="channel.channelId" :class="{'border-label':channel.show, 'right-0':channel.show}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
+                                        <label :for="channel.channelId" :class="{'bg-main':channel.show}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,13 @@ export default {
         const store = useStore()
         const state = reactive({
             pickerOpen: false,
-            teams:[],
+            teams:[{
+                color: "#FFFFFF",
+                id: 0,
+                subscribe: [
+                    {channelId: '123', channelName: ' ', show: true},
+                ],
+            }],
             selectedTeam: 0
         })
         const init = ()=>{
@@ -75,20 +81,21 @@ export default {
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
                 state.teams = []
-                console.log(result)
+                //console.log(result)
                 let index = 0;
-                result.forEach(data => {
+                result.data.teams.forEach(data => {
                     let team = data
                     team.id = index
                     index++
                     state.teams.push(team)
                 }); 
+                //console.log(state.teams)
             })
             .catch((err)=>{
-                console.log(err)
             })
         }
         const selectTeam = (id)=>{
+            console.log(id)
             state.selectedTeam = id
         }
         const changeColor = (token)=>{

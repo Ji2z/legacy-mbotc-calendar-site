@@ -8,7 +8,7 @@ export function settingInit(state){
     }else{
         settings = {
             id: 0,
-            theme: "default",
+            theme: "light",
             userData:{
                 token: "",
                 url: "",

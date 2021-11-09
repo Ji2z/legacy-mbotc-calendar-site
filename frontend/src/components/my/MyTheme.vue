@@ -35,7 +35,7 @@ export default {
             themes:[
                 {
                     id: 0,
-                    theme: "default",
+                    theme: "light",
                 },
                 {                    
                     id: 1,
