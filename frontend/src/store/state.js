@@ -1,5 +1,11 @@
 export default{
+    userData:{
+        token: "",
+        url: "",
+        userEmail: "",
+        userId: "",
+        userName: "",
+    },
     theme: "",
-    token: "",
     themeId: 0,
 }

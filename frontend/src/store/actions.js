@@ -1,5 +1,5 @@
 import $axios from 'axios'
-//import { getServerData, getServerURL } from './src/common/lib/function.js';
+import { getServerURL } from '../common/lib/function.js';
 
 // user API
 export function userLoginMM({state}, payload){
@@ -11,14 +11,14 @@ export function userLoginMM({state}, payload){
 }
 
 export function userLogin({state}, payload){
-    console.log("userLogin")
+    //console.log("userLogin")
     const url = '/api/v1/user'
     const body = {
         "token" : payload.token,
-        "userEmail" : payload.email,
+        "userEmail" : payload.userEmail,
         "userName" : payload.userName,
         "userId": payload.userId,
-        "url" : serverData.getServerURL(),
+        "url" : getServerURL(),
     }
     return $axios.post(url, body);
 }
@@ -43,11 +43,12 @@ export function deleteUser({state}, payload){
     return $axios({
         method: 'delete',
         url: url,
-        headers:{
-            'auth':  payload.token
-        },
         data:{
-            "userEmail" : payload.email, 
+            "token": payload.token,
+            "url": payload.url,
+            "userEmail": payload.userEmail,
+            "userId": payload.userId,
+            "userName": payload.userName,
         }
     })
 }
@@ -84,14 +85,18 @@ export function getUserSetting({state}, payload){
 
 export function getMonthNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month
-    const headers = { "auth": payload.token }
+    const headers = { 
+        'auth': payload.token 
+    }
 
     return $axios.get(url, {headers});
 }
 
 export function getDayNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    const headers = { "auth": payload.token }
+    const headers = { 
+        'auth': payload.token 
+    }
     
     return $axios.get(url, {headers});
 }

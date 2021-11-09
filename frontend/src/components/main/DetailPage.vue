@@ -24,7 +24,7 @@ import NoticeProgress from '@/components/notice/NoticeProgress.vue'
 import NoticeThumbnail from '@/components/notice/NoticeThumbnail.vue'
 
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -38,38 +38,18 @@ export default {
     },
 
     setup(){
+        const store = useStore()
         const router = useRouter()
         const state = reactive({
             detailDate: 0,
             notices:[
-                {
-                    id:0,
-                    title : "테스트 공지",
-                    channel : "테스트 채널",
-                    content : "공지 내용",
-                    check : false,
-                },
-                {
-                    id:1,
-                    title : "테스트 공지",
-                    channel : "기이이이이이인 테스트 채널",
-                    content : "공지 내용",
-                    check : true,
-                },
-                {
-                    id:2,
-                    title : "기이이이이이이인 테스트 공지",
-                    channel : "테스트 채널",
-                    content : "공지 내용",
-                    check : false,
-                },
-                {
-                    id:3,
-                    title : "테스트 공지",
-                    channel : "테스트 채널",
-                    content : "공지 내용",
-                    check : false,
-                }
+                // {
+                //     id:0,
+                //     title : "테스트 공지",
+                //     channel : "테스트 채널",
+                //     content : "공지 내용",
+                //     check : false,
+                // },
             ],
             chooseNotice: {},
         })
@@ -77,7 +57,23 @@ export default {
         const init = ()=>{
             state.detailDate = router.currentRoute.value.params.date
             //가져온 날짜로 공지 떙겨오는 api 위치해야됨
-            //공지의 check값은 localStorage에서 가져오기
+            let payload = {
+                year: parseInt(state.detailDate.substring(0,4)),
+                month: parseInt(state.detailDate.substring(4,6))-1,
+                day: parseInt(state.detailDate.substring(6,8)),
+                token: store.getters['root/getToken']
+            }
+            let noticeList = []
+            let teamColor = []
+
+            store.dispatch('root/getDayNotice', payload)
+            .then((result)=>{
+                console.log("month list")
+                console.log(result)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
             if(state.notices.length > 0){
                 state.chooseNotice = state.notices[0]
             }

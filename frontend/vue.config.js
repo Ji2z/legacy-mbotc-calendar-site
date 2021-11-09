@@ -13,12 +13,17 @@ module.exports = {
             },
             '/api/v1': {
                 target: serverData.getMbotcURL(),
-                changeOrigin: true
+                changeOrigin: true,
+                //logLevel: "debug",
             },
+        },
+        headers: {
+            Connection: 'keep-alive'
         },
         historyApiFallback: true,
         hot: true,
         contentBase: path.join(__dirname,'')
     },
     lintOnSave: false, 
+
 }

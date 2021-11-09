@@ -65,33 +65,36 @@ export default {
                 }
                 store.dispatch('root/userLoginMM',payload)
                 .then((result)=>{
-                    console.log("MM login")
-                    console.log(result)
-                    store.commit('root/setToken', result.headers.token)
-                    register(result.headers.token, result.data.email, result.data.id, result.data.username)
+                    // console.log("MM login")
+                    // console.log(result)
+                    let userData = {
+                        token: result.headers.token,
+                        url: getServerURL(),
+                        userEmail: result.data.email,
+                        userId: result.data.id,
+                        userName: result.data.username,
+                    }
+                    store.commit('root/setUserData', userData)
+                    register(userData)
                 })
                 .catch((err)=>{
 
                 })
             }
         }
-        const register = (token, email, id,  userName)=>{
-            console.log("MbotC login start")
-            let payload = {
-                "token": token,
-                "userEmail" :email,
-                "userId": id,
-                "userName" : userName,
-            }
-            store.dispatch('root/userLogin', payload)
+        const register = (userData)=>{
+            //console.log("MbotC login start")
+            store.dispatch('root/userLogin', userData)
             .then((result)=>{
-                console.log("MbotC login")
-                console.log(result)
-                if(result.status == 200 ||  result.status == 201 || result.status == 409){
+                //console.log("MbotC login")
+                //console.log(result)
+                if(result.status == 200 ||  result.status == 201){
                     router.push("/main")
                 }
             })
             .catch((err)=>{
+                console.log(err)
+                // status 409 핸들링
             })
         }
         const validationCheck = ()=>{
