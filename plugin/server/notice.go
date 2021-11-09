@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -37,6 +38,48 @@ type Sub struct {
 	StartTime string `json:"start_time"`
 	EndTime   string `json:"end_time"`
 	Content   string `json:"content"`
+}
+
+// =================================================================================
+// http Create Notice
+// =================================================================================
+func (p *Plugin) httpCreateNoticeWithCommand(w http.ResponseWriter, r *http.Request) {
+	var err error
+	notice, err := convertDialogForm(p, r)
+	if err != nil {
+		fmt.Print(err)
+		post := getConvertErrorPost(p, notice)
+		p.API.SendEphemeralPost(notice.UserId, post)
+		return
+	}
+	p.httpCreatePost(w, notice)
+}
+
+func (p *Plugin) httpCreateNoticeWithEditor(w http.ResponseWriter, r *http.Request) {
+	notice := convertRequest(p, r)
+	p.httpCreatePost(w, notice)
+}
+
+func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		PostId string `json:"post_id"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		fmt.Print("err", err)
+	}
+	post, err := p.API.GetPost(request.PostId)
+
+	var notice Notice
+	notice.UserId = post.UserId
+	notice.Message = post.Message
+	notice.StartTime = time.Unix(post.CreateAt, 0).Format("2006-01-02 15:04")
+	notice.EndTime = time.Now().Format("2016-01-02") + " 23:59"
+	notice.FileIds = post.FileIds
+	notice.ChannelId = post.ChannelId
+	notice.PostId = post.Id
+
+	postRequestToNotificationAPI(notice)
 }
 
 func convertDialogForm(p *Plugin, r *http.Request) (Notice, error) {
@@ -95,23 +138,6 @@ func convertRequest(p *Plugin, r *http.Request) Notice {
 	return notice
 }
 
-func (p *Plugin) httpCreateNoticeWithCommand(w http.ResponseWriter, r *http.Request) {
-	var err error
-	notice, err := convertDialogForm(p, r)
-	if err != nil {
-		fmt.Print(err)
-		post := getConvertErrorPost(p, notice)
-		p.API.SendEphemeralPost(notice.UserId, post)
-		return
-	}
-	p.httpCreatePost(w, notice)
-}
-
-func (p *Plugin) httpCreateNoticeWithEditor(w http.ResponseWriter, r *http.Request) {
-	notice := convertRequest(p, r)
-	p.httpCreatePost(w, notice)
-}
-
 func (p *Plugin) httpCreatePost(w http.ResponseWriter, notice Notice) {
 	post := &model.Post{
 		UserId:    p.botUserID,
@@ -130,7 +156,10 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notice Notice) {
 		return
 	}
 	notice.PostId = resPost.Id
+	postRequestToNotificationAPI(notice)
+}
 
+func postRequestToNotificationAPI(notice Notice) {
 	requestUrl := serverUrl + "/api/v1/notification"
 	noticeJSON, err := json.Marshal(notice)
 	if err != nil {
