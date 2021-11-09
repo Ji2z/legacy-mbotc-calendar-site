@@ -13,8 +13,16 @@ class Plugin {
     sendRequest(postId) {
         var requestUrl = getServerURL() + "/plugins/com.mattermost.plugin-mbotc/api/v1/create-notice-with-button";
 
-        const response = await axios.post(requestUrl,{post_id :postId})
-        console.log(response);
+        axios.post({
+            url: requestUrl,
+            data: {post_id : postId}
+        })
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     initialize(registry, store) {
