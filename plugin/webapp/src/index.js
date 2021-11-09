@@ -2,6 +2,7 @@
 // See License for license information.
 
 import React from 'react';
+import axios from 'axios';
 import {getServerURL,getClientURL} from '../../../preference/function.js';
 
 import {id as pluginId} from './manifest';
@@ -13,10 +14,7 @@ class Plugin {
     sendRequest(postId) {
         var requestUrl = getServerURL() + "/plugins/com.mattermost.plugin-mbotc/api/v1/create-notice-with-button";
 
-        axios.post({
-            url: requestUrl,
-            data: {post_id : postId}
-        })
+        axios.post(requestUrl, {post_id: postId})
         .then(res => {
             console.log(res)
         })
@@ -34,10 +32,14 @@ class Plugin {
             'MBotC',
         );
         registry.registerPostDropdownMenuAction(
-            <div onClick={this.sendRequest(postId)}>
+            <div>
                 <Icon/>
                 {'Create MBotC Notice'}
             </div>,
+            (postId) => {
+                console.log(postId)
+                this.sendRequest(postId)
+            }
         );
     }
 }
