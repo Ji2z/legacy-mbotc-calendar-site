@@ -1,5 +1,5 @@
 import $axios from 'axios'
-import { getServerURL } from '../../../preference/function.js';
+import { getServerURL } from '../common/lib/function.js';
 
 // user API
 export function userLoginMM({state}, payload){

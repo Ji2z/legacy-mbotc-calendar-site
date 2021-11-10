@@ -43,13 +43,13 @@ export default {
         const state = reactive({
             detailDate: 0,
             notices:[
-                // {
-                //     id:0,
-                //     title : "테스트 공지",
-                //     channel : "테스트 채널",
-                //     content : "공지 내용",
-                //     check : false,
-                // },
+                {
+                    id:0,
+                    title : "테스트 공지",
+                    channel : "테스트 채널",
+                    content : "공지 내용",
+                    check : false, 
+                },
             ],
             chooseNotice: {},
         })

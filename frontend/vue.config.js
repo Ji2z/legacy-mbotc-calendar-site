@@ -1,5 +1,5 @@
 const path = require('path')
-const serverData = require('../preference/function.js')
+const serverData = require('./src/common/lib/function.js')
 
 module.exports = {
     devServer: {
