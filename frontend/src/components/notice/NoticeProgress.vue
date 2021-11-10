@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DoughnutChart ref="chartRef" :chartData="testData" :options="options"></DoughnutChart>
+        <DoughnutChart ref="chartRef" :chartData="state" :options="options"></DoughnutChart>
         <div class="relative left-1/2">
             {{progress}}%
         </div>
@@ -33,33 +33,24 @@ export default defineComponent({
     setup(props){
         const chartRef = ref();
         const state = reactive({
-            data: [props.data[0], props.data[1]]
+            labels: ['Complete', 'Task'],
+            datasets: [
+                {
+                    data: computed(() => props.data),
+                    backgroundColor: ['#163172','#F6F6F6',],
+                },
+            ],
         })
 
         const options = ref({
             responsive: true,
             plugins: {
-                legend: {
-                position: 'top',
-                },
-                title: {
-                display: true,
-                text: '진행도',
-                },
+                legend: { position: 'top', },
+                title: { display: true, text: '진행도', },
             },
         });
 
-        const testData = computed(() => ({
-        labels: ['Complete', 'Task'],
-        datasets: [
-            {
-            data: state.data,
-            backgroundColor: ['#163172','#F6F6F6',],
-            },
-        ],
-        }));
-
-        return { testData, chartRef, options };
+        return { chartRef, options, state };
     },
 })
 </script>
