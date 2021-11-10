@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="flex-grow h-10 py-1 w-full cursor-pointer">
                                     <div class="w-4 h-4 rounded-full mx-auto mt-4"
-                                    :class="{'bg-blue-100':(day.count==1),'bg-blue-300':(day.count>1 && day.count<4),'bg-blue-500':(day.count>3 && day.count<6),'bg-blue-800':(day.count>=6),}">
+                                    :class="{'bg-first':(day.count==1),'bg-second':(day.count>1 && day.count<4),'bg-third':(day.count>3 && day.count<6),'bg-most':(day.count>=6),}">
 
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
 <script>
 // import abc from '@/components/'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -84,6 +84,7 @@ export default {
         }
     },
     setup(props, {emit}){
+        const store = useStore()
         const router = useRouter()
         const monthList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         const state = reactive({
@@ -93,6 +94,30 @@ export default {
             weeks: [[],[],[],[],[],[]]
         })
         const initCalendar = ()=>{
+            let payload = {
+                year: state.year,
+                month: state.month+1,
+                token: store.getters['root/getToken']
+            }
+            let noticeList = []
+            store.dispatch('root/getMonthNotice', payload)
+            .then((result)=>{
+                console.log("month list")
+                console.log(result)
+                result.data.notifications.forEach(node => {
+                    let notice = {
+                        title: node.content.subString(0,10),
+                        color: "#808080",
+                        startDay: getDayPicker(node.startTime),
+                        endDay: getDayPicker(node.endTime),
+                        token: node.team.token
+                    }
+                    noticeList.push(notice)
+                });
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
             state.weeks = [[],[],[],[],[],[]]
             let startDay = new Date(state.year, state.month, 1).getDay()
             let dayCount = new Date(state.year, state.month+1, 0).getDate()
@@ -100,7 +125,7 @@ export default {
             for (let i = 0; i < startDay; i++) {
                 let day = {
                     num : " ",
-                    count : 0, // 여기에 공지갯수
+                    count : 0
                 }
                 state.weeks[0].push(day)
             }
@@ -108,8 +133,15 @@ export default {
                 //그 날의 공지갯수 새는 logic
                 let day = {
                     num : i,
-                    count : i, // 여기에 공지갯수
+                    count : 0, // 여기에 공지갯수
                 }
+
+                noticeList.forEach(notice => {
+                    if(notice.startDay <= day.num && day.num <= notice.endDay){
+                        day.count++;
+                    }
+                });
+
                 state.weeks[target].push(day)
                 startDay++
                 if(startDay == 7){

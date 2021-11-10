@@ -9,23 +9,35 @@
                 <img class="w-16 h-16" src="@/assets/mattermost.png" alt="mattermost">
             </div>
         </div>
-        <div>
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck">
-            <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
-            <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
-        </div>
-        <div class="flex justify-between p-8">
+        <div v-if="!state.hasCookie">
             <div>
-                <label for="loginToggle" class="mr-8 text-sm text-gray-700">keep me logged in.</label>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <div>
-                        <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                        <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck">
+                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
+                <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
+            </div>
+            <div class="flex justify-between p-8">
+                <div>
+                    <label for="loginToggle" class="mr-8 text-sm text-gray-700">keep me logged in.</label>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <div>
+                            <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
                     </div>
                 </div>
+                <div>
+                    <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
+                </div>
             </div>
-            <div>
-                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
+        </div>
+        <div v-else>
+            <div class="mx-auto h-16 w-4/5 items-center">
+                <p class="text-xl">Welcome Back</p> 
+                <p class="font-bold text-2xl">{{state.userData.userName}}</p>
+                <br/>
+            </div>
+            <div class="m-5">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="comeBack">Take Me!</button>
             </div>
         </div>
     </div>
@@ -50,7 +62,15 @@ export default {
             email:"",
             password:"",
             loginToggle:false,
-            clickable:false
+            clickable:false,
+            hasCookie:false,
+            userData:{
+                token: "",
+                url: getServerURL(),
+                userEmail: "",
+                userId: "",
+                userName: "",
+            }
         })
         const submit = ()=>{
             if(state.clickable){
@@ -65,33 +85,36 @@ export default {
                 }
                 store.dispatch('root/userLoginMM',payload)
                 .then((result)=>{
-                    console.log("MM login")
-                    console.log(result)
-                    store.commit('root/setToken', result.headers.token)
-                    register(result.headers.token, result.data.email, result.data.id, result.data.username)
+                    // console.log("MM login")
+                    // console.log(result)
+                    let userData = {
+                        token: result.headers.token,
+                        url: getServerURL(),
+                        userEmail: result.data.email,
+                        userId: result.data.id,
+                        userName: result.data.username,
+                    }
+                    store.commit('root/setUserData', userData)
+                    register(userData)
                 })
                 .catch((err)=>{
 
                 })
             }
         }
-        const register = (token, email, id,  userName)=>{
-            console.log("MbotC login start")
-            let payload = {
-                "token": token,
-                "userEmail" :email,
-                "userId": id,
-                "userName" : userName,
-            }
-            store.dispatch('root/userLogin', payload)
+        const register = (userData)=>{
+            //console.log("MbotC login start")
+            store.dispatch('root/userLogin', userData)
             .then((result)=>{
-                console.log("MbotC login")
-                console.log(result)
-                if(result.status == 200 ||  result.status == 201 || result.status == 409){
+                //console.log("MbotC login")
+                //console.log(result)
+                if(result.status == 200 ||  result.status == 201){
                     router.push("/main")
                 }
             })
             .catch((err)=>{
+                console.log(err)
+                // status 409 핸들링
             })
         }
         const validationCheck = ()=>{
@@ -106,15 +129,34 @@ export default {
             }
 
         }
+        const comeBack = ()=>{
+            router.push("/main")
+        }
         const init = ()=>{
             state.url = "  " + getServerURL()
-            let loginStatus = localStorage.getItem("loginStatus")
-            if(loginStatus){
-
+            //console.log(document.cookie)
+            if(document.cookie){
+                state.hasCookie = true
+                store.dispatch('root/getUserMM')
+                .then((result)=>{
+                    //console.log("MbotC login")
+                    //console.log(result)
+                    state.userData = {
+                        token: "cookie",
+                        url: getServerURL(),
+                        userEmail: result.data.email,
+                        userId: result.data.id,
+                        userName: result.data.username,
+                    }
+                    store.commit('root/setUserData', state.userData)
+                    register(userData)
+                })
+                .catch((err)=>{
+                })
             }
         }
         init()
-        return { state, submit, validationCheck }
+        return { state, submit, validationCheck, comeBack }
     }
 };
 </script>

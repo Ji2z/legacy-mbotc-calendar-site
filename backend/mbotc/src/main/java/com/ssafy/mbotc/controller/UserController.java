@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,17 +62,27 @@ public class UserController {
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 409, message = "USER ALREADY EXIST")
 	})
-	public ResponseEntity<User> saveUserInfo(@RequestBody User user) {
+	public ResponseEntity<User> saveUserInfo(@RequestBody User user, @CookieValue(name="MMAUTHTOKEN", required = false) String mmAuthToken) {
+		User u = new User();
+		if(user.getToken() != null && user.getToken().equals("cookie")) {
+			user.setToken(mmAuthToken);
+			u = userService.save(user);
+			syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+			return ResponseEntity.status(HttpStatus.OK).body(u);
+		}
+		
 		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(userInfo.isPresent()) {
-			//throw new ResponseStatusException(HttpStatus.CONFLICT, "USER ALREADY EXIST");
 			userInfo.get().setToken(user.getToken());
 			userInfo.get().setUserName(user.getUserName());
-			return ResponseEntity.status(HttpStatus.OK).body(userInfo.get());
+			u = userService.save(userInfo.get());
+			syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+			return ResponseEntity.status(HttpStatus.OK).body(u);
 		}
-		User userResult = userService.save(user);		
-		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
-		return ResponseEntity.status(HttpStatus.OK).body(userResult);
+		
+		u = userService.save(user);		
+		syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+		return ResponseEntity.status(HttpStatus.OK).body(u);
 	}
 	
 	// user delete

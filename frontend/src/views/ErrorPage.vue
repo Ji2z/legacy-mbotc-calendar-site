@@ -1,21 +1,21 @@
 <template>
-    <div class="h-screen w-full p-10 bg-gray-100 font-bold text-center">
-        <div class="w-1/2 mx-auto bg-white">
+    <div class="h-screen w-full p-10 bg-main text-font font-bold text-center">
+        <div class="w-1/2 mx-auto bg-panel rounded-full">
             <p class="text-9xl">OOPS!</p>
             <p class="text-4xl">Something wrong</p>
             <br>
             <br>
-            <p class="text-4xl">404</p>
-            <p class="text-2xl">Page Not Found</p>
+                <img :src="src" alt="404" class="h-56 w-auto mx-auto">
             <br>
         </div>
-        <button class="bg-blue-500 text-white font-bold py-2 px-4 m-2 rounded" @click="goBack">Previous Page</button>
+        <button class="bg-back text-font font-bold py-2 px-4 m-2 rounded" @click="goBack">Previous Page</button>
     </div>
 </template>
 <script>
 // import abc from '@/components/'
-//import { reactive } from 'vue'
+// import { reactive } from 'vue'
 // import { useStore } from 'vuex'
+import error404 from '@/assets/404ERROR.png'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -25,10 +25,11 @@ export default {
 
     setup(){
         const router = useRouter()
+        const src = error404;
         const goBack = () =>{
             router.go(-1)
         }
-        return { goBack }
+        return { src, goBack }
 
     }
 };

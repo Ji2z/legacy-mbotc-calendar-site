@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,13 +78,13 @@ public class NoticeController {
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 500, message = "FAIL")
 	})
-	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
+	public ResponseEntity<String> postFromPlugin(@RequestBody ReqPluginNotice notice){
 		try {
 			String userId = notice.getUser_id();
 			Optional<User> user = userService.findByUserId(userId);
 			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
 			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 			
 			Notice saveNotice = new Notice();
 			
@@ -243,7 +244,7 @@ public class NoticeController {
         @ApiResponse(code = 200, message = "SUCCESS"),
         @ApiResponse(code = 404, message = "USER NOT FOUND")
     })
-    public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
+    public ResponseEntity<List<ReqNoticePost>> getTodayNoticeForPlugin(@RequestHeader HashMap<String,String> header){
         Optional<User> target = userService.findByUserId(header.get("userid"));
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
