@@ -23,7 +23,7 @@
                     <span class="text-2xl">{{id}}</span>
                 </div>
                 <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click = "leave">Leave</button>
+                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="leave">Leave</button>
                 </div>
             </div>
         </div>
@@ -32,8 +32,8 @@
 <script>
 // import abc from '@/components/'
 // import { reactive } from 'vue'
-// import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'MyInfo',
@@ -50,7 +50,25 @@ export default {
         }
     },
     setup(){
-        return { }
+        const store = useStore()
+        const router = useRouter()
+        const leave = ()=>{
+            let payload = store.getters['root/getUserData']
+
+            store.dispatch('root/deleteUser', payload)
+            .then((result)=>{
+                //console.log("MbotC login")
+                console.log(result)
+                // if(result.status == 200){
+                //     router.push("/main")
+                // }
+            })
+            .catch((err)=>{
+                console.log(err)
+                // status 409 핸들링
+            })
+        }
+        return { leave }
     }
 };
 </script>

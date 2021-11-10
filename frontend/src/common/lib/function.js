@@ -13,6 +13,11 @@ const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
 
+const getDayPicker = (date)=>{
+    return parseInt(date.substring(8,10))
+}
+
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
 exports.getMbotcURL = getMbotcURL;
+exports.getDayPicker = getDayPicker;

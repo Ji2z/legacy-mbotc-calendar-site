@@ -257,9 +257,9 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 
 	// 3. Send Request to BackEnd if successfully create Post(mattermost)
 	siteURL := *p.API.GetConfig().ServiceSettings.SiteURL
-	listenAddress := *p.API.GetConfig().ServiceSettings.ListenAddress
+	// listenAddress := *p.API.GetConfig().ServiceSettings.ListenAddress
 
-	requestUrl := siteURL + listenAddress + "/api/v1/notification"
+	requestUrl := siteURL + ":8080/api/v1/notification"
 	noticeJSON, err := json.Marshal(notice)
 	if err != nil {
 		fmt.Println(err)
@@ -273,7 +273,6 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 }
 
 // See https://developers.mattermost.com/extend/plugins/server/reference/
-
 func asSlackAttachment(p *Plugin, notice Notice) ([]*model.SlackAttachment, error) {
 	var text = notice.Message
 	var fields []*model.SlackAttachmentField

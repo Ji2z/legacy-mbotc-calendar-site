@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-screen px-32 pt-12">
-        <div class="bg-panel w-11/12 rounded-xl shadow-2xl p-8">
+        <div class="bg-panel rounded-xl shadow-2xl p-8">
             <div class="header flex justify-between pb-8">
                 <div class="text-font">
                     <span class="text-4xl font-bold">{{monthList[state.month]}}</span>
@@ -47,16 +47,17 @@
                 </thead>
                 <tbody>
                     <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
-                        <td v-for="(day, index) in week" :key="day.num" class="w-10 overflow-auto transition cursor-pointer duration-500 hover:bg-back">
-                            <div class="flex flex-col h-28 w-full overflow-hidden" @click="goDetail(day.num)">
+                        <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
+                            <div class="flex flex-col w-full h-32" @click="goDetail(day.num)">
                                 <div class="top h-4 w-full mb-2">
-                                    <span v-if="state.nowFlag && state.today == day" class="text-blue-700 font-bold">{{day.num}}</span>
+                                    <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-bold">{{day.num}}</span>
                                     <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
                                     <span v-else class="text-gray-400">{{day.num}}</span>
                                 </div>
-                                <div class="bottom flex-grow h-24 py-1 w-full cursor-pointer overflow-y-hidden">
+                                <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
                                     <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
-                                        <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p>
+                                        <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
+                                        <p class="ml-2 font-bold opacity-100">{{node.title}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -73,8 +74,9 @@
 <script>
 import MainAddon from '@/components/main/MainAddon.vue'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getDayPicker } from '../../common/lib/function.js';
 
 export default {
     name: 'CalendarBig',
@@ -82,6 +84,7 @@ export default {
         MainAddon
     },
     setup(props, {emit}){
+        const store = useStore()
         const router = useRouter()
         const monthList = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         const state = reactive({
@@ -89,68 +92,49 @@ export default {
             year:0,
             month:0,
             today:0,
-            weeks: [[],[],[],[],[],[]]
+            weeks: [[],[],[],[],[],[]],
+            teamColor: []
         })
         const initCalendar = ()=>{
-            //선택한 달의 공지 데이터 받아오는 api
-            //팀 리스트 색깔, store같은곳에서 받아오기
-            let teamColor = {
-                "123" : "#3FA2F7",
-                "111" : "#FFCB21",
-                "555" : "#CF2A2A",
+            let payload = {
+                year: state.year,
+                month: state.month+1,
+                token: store.getters['root/getToken']
             }
-            //noticeList는 시작 날짜순으로 정렬해야됨
-            let noticeList = [
-                {
-                    token: "a123",
-                    startDay: 1,
-                    endDay: 3,
-                    title: "교육지원비 서류 제출",
-                    team: "123",
-                    color: "#3FA2F7",
-                },
-                {
-                    token: "b123",
-                    startDay: 11,
-                    endDay: 11,
-                    title: "모의 SW 역량 평가",
-                    team: "123",
-                    color: "#3FA2F7",
-                },
-                {
-                    token: "e123",
-                    startDay: 14,
-                    endDay: 19,
-                    title: "프로젝트 제출 기간",
-                    team: "123",
-                    color: "#3FA2F7",
-                },
-                {
-                    token: "c123",
-                    startDay: 17,
-                    endDay: 17,
-                    title: "UCC 제출일",
-                    team: "111",
-                    color: "#FFCB21",
-                },
-                {
-                    token: "d123",
-                    startDay: 18,
-                    endDay: 18,
-                    title: "최종 발표",
-                    team: "555",
-                    color: "#CF2A2A",
-                },
-                {
-                    token: "f123",
-                    startDay: 23,
-                    endDay: 23,
-                    title: "팀 선정기간",
-                    team: "111",
-                    color: "#FFCB21",
-                }
-            ]
+            let noticeList = []
+            store.dispatch('root/getMonthNotice', payload)
+            .then((result)=>{
+                // console.log("month list")
+                // console.log(result)
+                result.data.notifications.forEach(node => {
+                    //console.log(node.content)
+                    let notice = {
+                        title: node.channel.team.name,
+                        color: "#808080",
+                        startDay: getDayPicker(node.startTime),
+                        endDay: getDayPicker(node.endTime),
+                        token: node.channel.team.token
+                    }
 
+                    state.teamColor.forEach(team => {
+                        if(team.id == notice.token){
+                            notice.color = team.color
+                            return
+                        }
+                    });
+                    noticeList.push(notice)
+                });
+                //noticeList는 시작 날짜순으로 정렬해야됨
+                noticeList.sort(function(a,b){
+                    return a.startDay - b.startDay
+                })
+                setNotice(noticeList)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+        const setNotice = (noticeList)=>{
             state.weeks = [[],[],[],[],[],[]]
             let startDay = new Date(state.year, state.month, 1).getDay()
             let dayCount = new Date(state.year, state.month+1, 0).getDate()
@@ -158,7 +142,6 @@ export default {
             for (let i = 0; i < startDay; i++) {
                 let day = {
                     num : " ",
-                    count : [], // 여기에 공지갯수
                 }
                 state.weeks[0].push(day)
             }
@@ -187,6 +170,28 @@ export default {
             state.year = today.getFullYear()
             state.month = today.getMonth()
             state.today = today.getDate()
+            let payload = {
+                year: state.year,
+                month: state.month+1,
+                token: store.getters['root/getToken']
+            }
+            //color setting 받아오기
+            store.dispatch('root/getUserSetting', payload)
+            .then((result)=>{
+                // console.log("user setting")
+                console.log(result)
+                store.commit('root/setTheme', result.data.theme)
+                result.data.teams.forEach(team=> {
+                    let color = {
+                        color: team.color,
+                        id: team.teamId
+                    }
+                    state.teamColor.push(color)
+                });
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
             initCalendar()
         }
         const nextMonth = ()=>{
