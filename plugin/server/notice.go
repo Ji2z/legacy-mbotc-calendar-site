@@ -90,6 +90,12 @@ func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Reque
 		p.API.SendEphemeralPost(notice.UserId, resPost)
 	} else {
 		resPost.Message = "Registration success"
+		reaction := &model.Reaction{
+			UserId:    p.botUserID,
+			PostId:    notice.PostId,
+			EmojiName: "ok_hand",
+		}
+		p.API.AddReaction(reaction)
 		p.API.SendEphemeralPost(notice.UserId, resPost)
 	}
 	return resp, err
