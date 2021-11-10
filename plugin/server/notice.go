@@ -79,7 +79,20 @@ func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Reque
 	notice.ChannelId = post.ChannelId
 	notice.PostId = post.Id
 
-	return postRequestToNotificationAPI(notice)
+	resPost := &model.Post{
+		UserId:    p.botUserID,
+		ChannelId: notice.ChannelId,
+	}
+
+	resp, err := postRequestToNotificationAPI(notice)
+	if err != nil || resp.StatusCode != 200 {
+		resPost.Message = "Registration failed"
+		p.API.SendEphemeralPost(notice.UserId, resPost)
+	} else {
+		resPost.Message = "Registration success"
+		p.API.SendEphemeralPost(notice.UserId, resPost)
+	}
+	return resp, err
 }
 
 func convertDialogForm(p *Plugin, r *http.Request) (Notice, error) {

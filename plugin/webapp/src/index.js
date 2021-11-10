@@ -4,10 +4,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import {NotificationManager} from 'react-notifications';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-
-import NotificationAlert from 'components/notification';
 
 import {id as pluginId} from './manifest';
 
@@ -33,11 +30,9 @@ class Plugin {
     sendRequest(postId, requestUrl) {
         axios.post(requestUrl, {post_id: postId})
         .then((res) => {
-            NotificationManager.success('Registered Successfully');
             console.log(res);
         })
         .catch((err) => {
-            NotificationManager.error('Failed');
             console.log(err);
         })
     }
@@ -58,7 +53,6 @@ class Plugin {
                 this.sendRequest(postId, requestUrl);
             },
         );
-        registry.registerRootComponent(NotificationAlert);
     }
 }
 
