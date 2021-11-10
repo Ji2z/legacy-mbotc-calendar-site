@@ -2,15 +2,12 @@
 export function getTheme(state){
     return state.theme;
 }
-
 export function getThemeId(state){
     return state.themeId;
 }
-
 export function getUserData(state){
     return state.userData;
 }
-
 export function getToken(state){
     return state.userData.token;
 }
@@ -25,4 +22,7 @@ export function getUserId(state){
 }
 export function getUserName(state){
     return state.userData.userName;
+}
+export function getColor(state){
+    return state.colorPick;
 }
