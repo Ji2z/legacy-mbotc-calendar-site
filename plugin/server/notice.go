@@ -60,7 +60,7 @@ func (p *Plugin) httpCreateNoticeWithEditor(w http.ResponseWriter, r *http.Reque
 	p.httpCreatePost(w, notice)
 }
 
-func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Request) {
+func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Request) (*http.Response, error) {
 	var request struct {
 		PostId string `json:"post_id"`
 	}
@@ -79,7 +79,7 @@ func (p *Plugin) httpCreateNoticeWithButton(w http.ResponseWriter, r *http.Reque
 	notice.ChannelId = post.ChannelId
 	notice.PostId = post.Id
 
-	postRequestToNotificationAPI(notice)
+	return postRequestToNotificationAPI(notice)
 }
 
 func convertDialogForm(p *Plugin, r *http.Request) (Notice, error) {
@@ -158,7 +158,7 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notice Notice) {
 	postRequestToNotificationAPI(notice)
 }
 
-func postRequestToNotificationAPI(notice Notice) {
+func postRequestToNotificationAPI(notice Notice) (*http.Response, error) {
 	requestUrl := serviceAPIUrl + "/api/v1/notification"
 	noticeJSON, err := json.Marshal(notice)
 	if err != nil {
@@ -169,6 +169,7 @@ func postRequestToNotificationAPI(notice Notice) {
 		panic(err)
 	}
 	defer resp.Body.Close()
+	return resp, err
 }
 
 func getConvertErrorPost(p *Plugin, notice Notice) *model.Post {

@@ -3,6 +3,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
@@ -30,9 +31,11 @@ class Plugin {
     sendRequest(postId, requestUrl) {
         axios.post(requestUrl, {post_id: postId})
         .then((res) => {
+            NotificationManager.success('Registered Successfully');
             console.log(res);
         })
         .catch((err) => {
+            NotificationManager.success('Failed');
             console.log(err);
         })
     }
@@ -50,9 +53,11 @@ class Plugin {
             </div>,
             (postId) => {
                 var requestUrl = getPluginServerRoute(store.getState()) + '/api/v1/create-notice-with-button';
-                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@requestUrl : ', requestUrl);
                 this.sendRequest(postId, requestUrl);
             },
+        );
+        registry.registerRootComponent(
+            <NotificationContainer/>,
         );
     }
 }
