@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class NoticeController {
 			Optional<User> user = userService.findByUserId(userId);
 			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
 			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 			
 			Notice saveNotice = new Notice();
 			

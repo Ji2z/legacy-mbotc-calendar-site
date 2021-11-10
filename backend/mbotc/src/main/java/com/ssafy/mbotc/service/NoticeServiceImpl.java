@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,12 +51,12 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<ReqNoticePost> getTodayNoticeList(String channelToken) {
 		long channelId = channelRepository.findByToken(channelToken).get().getId();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 		String formatedNow = df.format(new Date());
 		//System.out.println(formatedNow);
 		List<Notice> notices = noticeRepository.findAllByYearAndMonthAndDay(formatedNow, channelId);
 		
-		df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 		List<ReqNoticePost> response = new ArrayList<>();
 		for (int i = 0; i < notices.size(); i++) {
 			Notice n = notices.get(i);
