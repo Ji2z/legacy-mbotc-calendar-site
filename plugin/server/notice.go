@@ -159,7 +159,7 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notice Notice) {
 }
 
 func postRequestToNotificationAPI(notice Notice) {
-	requestUrl := serverUrl + "/api/v1/notification"
+	requestUrl := serviceAPIUrl + "/api/v1/notification"
 	noticeJSON, err := json.Marshal(notice)
 	if err != nil {
 		fmt.Println(err)

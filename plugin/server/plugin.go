@@ -17,7 +17,7 @@ const (
 	botDisplayName = "MBotC"
 	botDescription = "Created by the MBotC plugin."
 	clientUrl      = "https://k5a103.p.ssafy.io"
-	serverUrl      = "http://k5a103.p.ssafy.io:8080"
+	serviceAPIUrl  = "http://k5a103.p.ssafy.io:8080"
 )
 
 // Plugin implements the interface expected by the Mattermost server to communicate between the server and plugin processes.
