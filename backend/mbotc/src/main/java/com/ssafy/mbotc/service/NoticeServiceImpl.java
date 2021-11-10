@@ -51,10 +51,8 @@ public class NoticeServiceImpl implements NoticeService {
 	public List<ReqNoticePost> getTodayNoticeList(String channelToken) {
 		long channelId = channelRepository.findByToken(channelToken).get().getId();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		//LocalDate now = LocalDate.now();
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String formatedNow = df.format(new Date());
-		System.out.println(formatedNow);
+		//System.out.println(formatedNow);
 		List<Notice> notices = noticeRepository.findAllByYearAndMonthAndDay(formatedNow, channelId);
 		
 		df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
