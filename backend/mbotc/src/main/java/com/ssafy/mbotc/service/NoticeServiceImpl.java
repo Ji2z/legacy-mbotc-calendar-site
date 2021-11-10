@@ -67,6 +67,13 @@ public class NoticeServiceImpl implements NoticeService {
 		return response;
 	}
 
+	@Override
+	public void deleteByToken(String postId) {
+		Notice notice = noticeRepository.findByToken(postId);
+		noticeRepository.delete(notice);
+
+	}
+
 //
 //	@Override
 //	public String uploadFileToMM(MultipartFile file, String mattermostUrl, String token, String channelId) {

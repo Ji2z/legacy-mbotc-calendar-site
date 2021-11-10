@@ -1,5 +1,10 @@
 package com.ssafy.mbotc.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -298,5 +304,42 @@ public class NoticeController {
 		return ResponseEntity.status(HttpStatus.OK).body(noticeService.findByNoticeId(postId));
 	}
 	
+	@DeleteMapping(value = "/delete/{postId}")
+	@ApiOperation(
+			value = "Delete a Post by post Id",
+			notes = "- http://localhost:8080/api/v1/notification/delete/p1\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "POST NOT FOUND, DELETE FAIL")
+	})
+	public ResponseEntity<String> deletePost(@RequestHeader HashMap<String, String> header, @PathVariable String postId){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		String mattermostUrl = target.get().getUrl();
+
+		String DELETE_URL= mattermostUrl + "/api/v4/posts/"+ postId;
+		
+		try {
+			URL url = new URL(DELETE_URL);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("DELETE");
+			conn.setRequestProperty("Authorization", "bearer "+target.get().getToken());
+			conn.setRequestProperty("Content-Type", "application/json");
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			if(conn.getResponseCode() != 200) {
+				System.out.println("Failed: HTTP error code : " + conn.getResponseCode());
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "POST NOT FOUND, DELETE FAIL");
+			}
+			br.close();
+			conn.disconnect();
+			noticeService.deleteByToken(postId);
+		}
+		catch(IOException e) {
+			System.out.println("Delete Fail : " + e.getMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
+	}
 	
 }
