@@ -3,7 +3,7 @@
 
 import React from 'react';
 import axios from 'axios';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+// import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
@@ -31,11 +31,13 @@ class Plugin {
     sendRequest(postId, requestUrl) {
         axios.post(requestUrl, {post_id: postId})
         .then((res) => {
-            NotificationManager.success('Registered Successfully');
+            alert('Registered Successfully')
+            // NotificationManager.success('Registered Successfully');
             console.log(res);
         })
         .catch((err) => {
-            NotificationManager.success('Failed');
+            alert('Failed')
+            // NotificationManager.success('Failed');
             console.log(err);
         })
     }
@@ -56,9 +58,9 @@ class Plugin {
                 this.sendRequest(postId, requestUrl);
             },
         );
-        registry.registerRootComponent(
-            <NotificationContainer/>,
-        );
+        // registry.registerRootComponent(
+        //     <NotificationContainer/>,
+        // );
     }
 }
 
