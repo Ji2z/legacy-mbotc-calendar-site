@@ -56,7 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
 		//System.out.println(formatedNow);
 		List<Notice> notices = noticeRepository.findAllByYearAndMonthAndDay(formatedNow, channelId);
 		
-		df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+		df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 		List<ReqNoticePost> response = new ArrayList<>();
 		for (int i = 0; i < notices.size(); i++) {
 			Notice n = notices.get(i);

@@ -78,7 +78,7 @@ public class NoticeController {
 			Optional<User> user = userService.findByUserId(userId);
 			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
 			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 			
 			Notice saveNotice = new Notice();
 			
