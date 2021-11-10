@@ -79,6 +79,8 @@ public class NoticeController {
 		@ApiResponse(code = 500, message = "FAIL")
 	})
 	public ResponseEntity<String> postFromPlugin(@RequestBody ReqPluginNotice notice){
+		if(noticeService.findByNoticeId(notice.getPost_id()) != null) // 이미 있는 공지
+			return ResponseEntity.status(500).body("Fail");
 		try {
 			String userId = notice.getUser_id();
 			Optional<User> user = userService.findByUserId(userId);
