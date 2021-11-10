@@ -1,8 +1,11 @@
 <template>
     <div class="bg-panel rounded-xl shadow-lg p-8 m-4 text-font">
-        <div class="overflow-hidden">
-            <span class="w-5/6 h-10 text-3xl font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
-            <!-- 파일리스트 넣쟈 -->
+        <div class="overflow-hidden flex justify-between">
+            <span class="w-5/6 h-10 text-3xl font-bold inline-block align-bottom overflow-hidden">{{notice.channel}}</span>
+            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">:{{notice.user}}</span>
+        </div>
+        <div>
+            <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}}   {{notice.endTime}}</span>
         </div>
         <div ref="mdViewerWraper" class="text-lg overflow-hidden p-4">
             <div id="editor" ref="mdViewer"></div>
@@ -42,6 +45,18 @@ export default {
             check : {
                 type: Boolean,
                 default: false
+            },
+            user : {
+                type: String,
+                default: " ",
+            },
+            startTime : {
+                type: String,
+                default: " ",
+            },
+            endTime : {
+                type: String,
+                default: " ",
             },
         },
     },

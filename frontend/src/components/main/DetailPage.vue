@@ -10,8 +10,8 @@
                 <notice-content class="h-3/5" :notice = state.chooseNotice />
             </div>
             <div class="col-span-1 h-full">
-                <notice-progress class="w-3/4 h-auto mx-auto"/>
-                <!-- <calendar-small class="w-3/4 h-auto" :date="state.detailDate"/> -->
+                <notice-progress class="w-3/4 h-auto mx-auto" :data="state.data"/>
+                <calendar-small class="w-3/4 h-auto" :date="state.detailDate" :progress="state.progress"/>
             </div>
         </div>
     </div>
@@ -46,13 +46,18 @@ export default {
                 {
                     id:0,
                     title : "테스트 공지",
-                    channel : "테스트 채널",
-                    content : "공지 내용1234",
+                    channel : " ",
+                    content : " ",
                     files: "",
                     check : false, 
+                    user: "",
+                    startTime: "",
+                    endTime: "",
                 },
             ],
             chooseNotice: {},
+            data:[0,1],
+            progress: 0,
         })
 
         const init = ()=>{
@@ -66,18 +71,21 @@ export default {
             }
             store.dispatch('root/getDayNotice', payload)
             .then((result)=>{
-                // console.log("month list")
-                // console.log(result)
+                // console.log("Day list")
+                //console.log(result)
                 state.notices = []
                 let index = 0
                 result.data.notifications.forEach(node => {
                     let notice = {
                         id: index,
-                        title :node.content.substring(0, 10),
-                        channel : node.channel.team.name + "/" + node.channel.name,
-                        content : node.content,
+                        title: node.content.substring(0, 10),
+                        channel: node.channel.team.name + "/" + node.channel.name,
+                        content: node.content,
                         files: node.files,
-                        check : false, 
+                        check: false, 
+                        user: node.user.userName,
+                        startTime: node.startTime,
+                        endTime: node.endTime,
                     }
                     index ++
                     let data = localStorage.getItem(state.detailDate)
@@ -91,6 +99,7 @@ export default {
                     }
                     state.notices.push(notice)
                 });
+                countChecked()
             })
             .catch((err)=>{
                 console.log(err)
@@ -128,6 +137,23 @@ export default {
             }
 
             localStorage.setItem(state.detailDate, JSON.stringify(checkList))
+            countChecked()
+        }
+        const countChecked = ()=>{
+            let count = 0
+            if(state.notices.length > 0){
+                state.notices.forEach(node => {
+                    if(node.check){
+                        count++
+                    }
+                });
+                state.data[0] = count
+                state.data[1] = state.notices.length - count
+                state.progress = Math.floor((parseInt(count)/parseInt(state.notices.length)) * 100)
+            }else{
+                state.data = [0,1]
+                state.progress = 0
+            }
         }
 
         init()
