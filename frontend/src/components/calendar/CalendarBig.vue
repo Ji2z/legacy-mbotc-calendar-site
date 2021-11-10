@@ -179,7 +179,7 @@ export default {
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
                 // console.log("user setting")
-                console.log(result)
+                //console.log(result)
                 store.commit('root/setTheme', result.data.theme)
                 result.data.teams.forEach(team=> {
                     let color = {

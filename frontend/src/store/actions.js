@@ -101,10 +101,10 @@ export function getMonthNotice({state}, payload){
 
 export function getDayNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    const headers = { 
+    //console.log(url)
+    const headers = {
         'auth': payload.token 
     }
-    
     return $axios.get(url, {headers});
 }
 
