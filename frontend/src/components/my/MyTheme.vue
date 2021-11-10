@@ -35,7 +35,7 @@ export default {
             themes:[
                 {
                     id: 0,
-                    theme: "default",
+                    theme: "light",
                 },
                 {                    
                     id: 1,
@@ -58,7 +58,7 @@ export default {
         const clickTheme = (id)=>{
             //console.log(id)
             state.selected = id
-            store.commit('root/setTheme', state.themes[state.selected])
+            store.commit('root/setTheme', state.themes[state.selected].theme)
         }
         const init = ()=>{
 

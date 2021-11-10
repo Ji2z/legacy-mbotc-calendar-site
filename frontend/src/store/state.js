@@ -6,6 +6,7 @@ export default{
         userId: "",
         userName: "",
     },
-    theme: "",
+    theme: "light",
     themeId: 0,
+    colorPick: "",
 }

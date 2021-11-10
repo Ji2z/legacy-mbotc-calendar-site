@@ -47,16 +47,17 @@
                 </thead>
                 <tbody>
                     <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
-                        <td v-for="(day, index) in week" :key="day.num" class="w-10 overflow-auto transition cursor-pointer duration-500 hover:bg-back">
-                            <div class="flex flex-col h-28 w-full overflow-hidden" @click="goDetail(day.num)">
+                        <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
+                            <div class="flex flex-col w-full h-32" @click="goDetail(day.num)">
                                 <div class="top h-4 w-full mb-2">
                                     <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-bold">{{day.num}}</span>
                                     <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
                                     <span v-else class="text-gray-400">{{day.num}}</span>
                                 </div>
-                                <div class="bottom flex-grow h-24 py-1 w-full cursor-pointer overflow-y-hidden">
+                                <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
                                     <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
-                                        <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p>
+                                        <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
+                                        <p class="ml-2 font-bold opacity-100">{{node.title}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -103,15 +104,16 @@ export default {
             let noticeList = []
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
-                console.log("month list")
-                console.log(result)
+                // console.log("month list")
+                // console.log(result)
                 result.data.notifications.forEach(node => {
+                    //console.log(node.content)
                     let notice = {
-                        title: node.content.subString(0,10),
+                        title: node.channel.team.name,
                         color: "#808080",
                         startDay: getDayPicker(node.startTime),
                         endDay: getDayPicker(node.endTime),
-                        token: node.team.token
+                        token: node.channel.team.token
                     }
 
                     state.teamColor.forEach(team => {
@@ -126,11 +128,13 @@ export default {
                 noticeList.sort(function(a,b){
                     return a.startDay - b.startDay
                 })
+                setNotice(noticeList)
             })
             .catch((err)=>{
                 console.log(err)
             })
-
+        }
+        const setNotice = (noticeList)=>{
             state.weeks = [[],[],[],[],[],[]]
             let startDay = new Date(state.year, state.month, 1).getDay()
             let dayCount = new Date(state.year, state.month+1, 0).getDate()
@@ -174,7 +178,7 @@ export default {
             //color setting 받아오기
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
-                console.log("user setting")
+                // console.log("user setting")
                 console.log(result)
                 store.commit('root/setTheme', result.data.theme)
                 result.data.teams.forEach(team=> {

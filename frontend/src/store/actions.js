@@ -1,5 +1,5 @@
 import $axios from 'axios'
-import { getServerURL } from '../../../preference/function.js';
+import { getServerURL } from '../common/lib/function.js';
 
 // user API
 export function userLoginMM({state}, payload){
@@ -8,6 +8,12 @@ export function userLoginMM({state}, payload){
     //수정해야됨
 
     return $axios.post(url, body);
+}
+
+export function getUserMM({state}){
+    const url =  '/api/v4/users/me'
+
+    return $axios.get(url);
 }
 
 export function userLogin({state}, payload){
@@ -69,6 +75,7 @@ export function setUserSetting({state}, payload){
         "teams" : payload.teams,
         "theme" : payload.theme
     }
+    console.log(body)
     return $axios.post(url, {headers}, body);
 }
 
