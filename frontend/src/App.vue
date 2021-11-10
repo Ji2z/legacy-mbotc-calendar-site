@@ -13,10 +13,9 @@ export default {
       const store = useStore()
       store.commit('root/settingInit')
       const state = reactive({
-          sideDetailFlag: false,
           theme: computed(() => store.getters['root/getTheme']),
-          bgOpacity: computed(() => store.getters['root/getOpacity']),
       })
+      console.log(new Date())
 
       return { state }
     }

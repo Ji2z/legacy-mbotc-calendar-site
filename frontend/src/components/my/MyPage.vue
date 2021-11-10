@@ -33,7 +33,7 @@ export default {
             },
         })
         const init = ()=>{
-            state.myInfo.id = store.getters['root/getEmail']
+            state.myInfo.id = store.getters['root/getUserEmail']
         }
         init()
         return { state }

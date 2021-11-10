@@ -1,3 +1,11 @@
+const idList = {
+    "light": 0,
+    "dark": 1,
+    "ssuk": 2,
+    "blue": 3,
+    "eclipse": 4,
+}
+
 export function settingInit(state){
     let settings = JSON.parse(localStorage.getItem("settings"))
 
@@ -34,12 +42,12 @@ export function logout(state){
     localStorage.setItem("settings",JSON.stringify(settings))
 }
 
-export function setTheme(state, data){
-    state.themeId = data.id
-    state.theme = data.theme
+export function setTheme(state, theme){
+    state.themeId = idList[theme]
+    state.theme = theme 
     let settings = JSON.parse(localStorage.getItem("settings"))
-    settings.id = data.id
-    settings.theme = data.theme
+    settings.id = state.themeId
+    settings.theme = theme
     localStorage.setItem("settings", JSON.stringify(settings))
 }
 
@@ -94,4 +102,8 @@ export function setUserName(state, userName){
 
     settings.userData.userName = userName
     localStorage.setItem("settings",JSON.stringify(settings))
+}
+
+export function setColor(state, color){
+    state.colorPick = color
 }

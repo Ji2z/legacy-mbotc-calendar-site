@@ -81,7 +81,7 @@ export default {
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
                 state.teams = []
-                //console.log(result)
+                console.log(result)
                 let index = 0;
                 result.data.teams.forEach(data => {
                     let team = data
