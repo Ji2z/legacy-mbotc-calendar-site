@@ -86,7 +86,7 @@ func (p *Plugin) help(commandArgs *model.CommandArgs) *model.CommandResponse {
 	return &model.CommandResponse{}
 }
 
-func hamsumyungmotjitgaeta(p *Plugin, commandArgs *model.CommandArgs) error {
+func checkAuthentication(p *Plugin, commandArgs *model.CommandArgs) error {
 	resp, err := checkUserExists(p, commandArgs.UserId)
 	if err != nil {
 		p.postCommandResponse(commandArgs, "Oops! Something wrong")
@@ -102,7 +102,7 @@ func hamsumyungmotjitgaeta(p *Plugin, commandArgs *model.CommandArgs) error {
 }
 
 func executeCreate(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs, args ...string) *model.CommandResponse {
-	err := hamsumyungmotjitgaeta(p, commandArgs)
+	err := checkAuthentication(p, commandArgs)
 	if err == nil {
 		p.openCreateDialog(commandArgs)
 	}
@@ -110,7 +110,7 @@ func executeCreate(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs,
 }
 
 func executeToday(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs, args ...string) *model.CommandResponse {
-	err := hamsumyungmotjitgaeta(p, commandArgs)
+	err := checkAuthentication(p, commandArgs)
 	if err == nil {
 		getNoticeList(p, commandArgs)
 	}
