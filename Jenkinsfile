@@ -33,9 +33,10 @@ pipeline {
 				sh 'docker run -d --name frontend \
 				-p 80:80 \
 				-p 443:443 \
+				-e TZ=Asia/Seoul \
 				-v /etc/letsencrypt/:/var/jenkins_home/workspace/mbotc/sslkey/ \
 				frontend:latest'
-				sh 'docker run -d --name backend -p 8080:8080 backend:latest'
+				sh 'docker run -d --name backend -p 8080:8080 -e TZ=Asia/Seoul backend:latest'
 		    }
 	    }
     }
