@@ -84,15 +84,15 @@
         background-size: cover;
     }
     .eclipse {
-        --bg-main: #FF8243;
+        --bg-main: #1C0C5B;
         --bg-back: #F6F6F6;
         --bg-panel: #FFFFFF;
         --bg-side: #F6F6F6;
         
-        --border-label: #FF8243;
+        --border-label: #1C0C5B;
 
-        --text-font: #FF8243;
-        --text-main: #FF8243;
+        --text-font: #1C0C5B;
+        --text-main: #1C0C5B;
         --text-back: #F6F6F6;
 
         --bg-first: #E2E5ED;
