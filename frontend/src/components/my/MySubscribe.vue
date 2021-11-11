@@ -9,10 +9,10 @@
             </div>
             <div class="grid grid-cols-2 gap-4 w-full">
                 <div class="overflow-y-auto p-4">
-                    <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label">
+                    <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label cursor-pointer" @click="selectTeam(team.id)">
                         <div class="flex justify-between">
                             <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
-                                <p class="text-xl overflow-x-hidden ml-2 cursor-pointer" @click="selectTeam(team.id)">
+                                <p class="text-xl overflow-x-hidden ml-2">
                                     {{team.teamName}}
                                 </p>
                             </div>

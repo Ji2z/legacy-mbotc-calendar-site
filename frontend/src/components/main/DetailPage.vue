@@ -72,7 +72,7 @@ export default {
             store.dispatch('root/getDayNotice', payload)
             .then((result)=>{
                 // console.log("Day list")
-                console.log(result)
+                // console.log(result)
                 state.notices = []
                 let index = 0
                 result.data.notifications.forEach(node => {

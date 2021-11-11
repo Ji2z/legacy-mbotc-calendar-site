@@ -36,8 +36,8 @@ export default defineComponent({
             labels: ['Complete', 'Task'],
             datasets: [
                 {
-                    data: computed(() => props.data),
-                    backgroundColor: ['#163172','#F6F6F6',],
+                    data: props.data,
+                    backgroundColor: ['#40C459','#F6F6F6',],
                 },
             ],
         })
