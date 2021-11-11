@@ -17,7 +17,15 @@ const getDayPicker = (date)=>{
     return parseInt(date.substring(8,10))
 }
 
+const getTitle = (content)=>{
+    console.log(content)
+    let replaceText = content.replace(new RegExp('@here','g'), ''); 
+    console.log(replaceText)
+    return replaceText.substring(0,10)
+}
+
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
 exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
+exports.getTitle = getTitle;
