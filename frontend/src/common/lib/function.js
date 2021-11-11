@@ -18,9 +18,9 @@ const getDayPicker = (date)=>{
 }
 
 const getTitle = (content)=>{
-    console.log(content)
+    //console.log(content)
     let replaceText = content.replace(new RegExp('@here','g'), ''); 
-    console.log(replaceText)
+    //console.log(replaceText)
     return replaceText.substring(0,10)
 }
 

@@ -100,7 +100,7 @@ export function getMonthNotice({state}, payload){
 }
 
 export function getDayNotice({state}, payload){
-    const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
+    const url = '/api/v1/notification/day?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
     //console.log(url)
     const headers = {
         'auth': payload.token 

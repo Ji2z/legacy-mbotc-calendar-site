@@ -57,7 +57,7 @@
                                 <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
                                     <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
                                         <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                        <p class="ml-2 font-bold opacity-100">{{node.title}}</p>
+                                        <p class="ml-2 font-bold opacity-100 overflow-hidden">{{node.title}}</p>
                                     </div>
                                 </div>
                             </div>
