@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "@j-t-mcc/vue3-chartjs": "^1.2.0",
+    "@kyvg/vue3-notification": "^2.3.4",
     "@toast-ui/editor": "^3.1.1",
     "axios": "^0.23.0",
     "chart.js": "^3.6.0",
     "core-js": "^3.6.5",
+    "sockjs-client": "^1.5.2",
     "vue": "^3.0.0",
     "vue-axios": "^3.3.7",
     "vue-chart-3": "^0.5.11",

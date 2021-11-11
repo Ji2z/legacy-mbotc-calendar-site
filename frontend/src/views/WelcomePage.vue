@@ -4,13 +4,13 @@
         <welcome-introduction/>
         <welcome-footer/>
         <div class="fixed h-40 w-8 right-3 p-1 bottom-1/2 rounded-full opacity-30 bg-gray-500 flex flex-col justify-between">
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[0], 'bg-gray-400':!state.marker[0]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[1], 'bg-gray-400':!state.marker[1]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[2], 'bg-gray-400':!state.marker[2]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[3], 'bg-gray-400':!state.marker[3]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[4], 'bg-gray-400':!state.marker[4]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[5], 'bg-gray-400':!state.marker[5]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto cursor-pointer" :class="{'bg-white': state.marker[6], 'bg-gray-400':!state.marker[6]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[0], 'bg-gray-400':!state.marker[0]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[1], 'bg-gray-400':!state.marker[1]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[2], 'bg-gray-400':!state.marker[2]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[3], 'bg-gray-400':!state.marker[3]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[4], 'bg-gray-400':!state.marker[4]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[5], 'bg-gray-400':!state.marker[5]}"></div>
+            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[6], 'bg-gray-400':!state.marker[6]}"></div>
         </div>
         <div class="transform fixed bottom-0 mx-auto inset-x-0" :class="{'rotate-180':state.reverseFlag}">
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
