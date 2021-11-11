@@ -72,6 +72,7 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getDayPicker } from '../../common/lib/function.js'
 
 export default {
     name: 'CalendarSmall',
@@ -102,15 +103,14 @@ export default {
             let noticeList = []
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
-                console.log("month list")
+                // console.log("small calendar")
                 console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
-                        title: node.content.subString(0,10),
                         color: "#808080",
                         startDay: getDayPicker(node.startTime),
                         endDay: getDayPicker(node.endTime),
-                        token: node.team.token
+                        token: node.token
                     }
                     noticeList.push(notice)
                 });

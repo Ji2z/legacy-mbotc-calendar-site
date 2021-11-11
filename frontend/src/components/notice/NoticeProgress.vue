@@ -1,44 +1,58 @@
 <template>
     <div>
-        <vue3-chart-js :id="doughnutChart.id" :type="doughnutChart.type" :data="doughnutChart.data"></vue3-chart-js>
+        <DoughnutChart ref="chartRef" :chartData="state" :options="options"></DoughnutChart>
         <div class="relative left-1/2">
-            {{0}}%
+            {{progress}}%
         </div>
     </div>
 </template>
 <script>
-import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 // import abc from '@/components/'
-// import { reactive } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+import { DoughnutChart } from 'vue-chart-3'
 
-export default {
+export default defineComponent({
     name: 'NoticeProgress',
     components: {
-        Vue3ChartJs,
+        DoughnutChart,
     },
-
-    setup(){
-        const doughnutChart = {
-            id: 'doughnut',
-            type: 'doughnut',
-            data: {
-                    labels: ['Complete','task'],
-                    datasets: [
-                    {
-                        backgroundColor: [
-                        '#163172',
-                        '#F6F6F6',
-                        ],
-                        data: [3,1]
-                    }
-                    ]
-                }
+    props:{
+        data : {                
+            type: Array,
+            default: [3,1]
+        },
+        progress : {
+            type: Number,
+            default : 0,
         }
-        return { doughnutChart }
     },
-}
+    setup(props){
+        const chartRef = ref();
+        const state = reactive({
+            labels: ['Complete', 'Task'],
+            datasets: [
+                {
+                    data: computed(() => props.data),
+                    backgroundColor: ['#163172','#F6F6F6',],
+                },
+            ],
+        })
+
+        const options = ref({
+            responsive: true,
+            plugins: {
+                legend: { position: 'top', },
+                title: { display: true, text: '진행도', },
+            },
+        });
+
+        return { chartRef, options, state };
+    },
+})
 </script>
 
 <style scoped>

@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-back mx-auto mt-5">
+            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-gray-400 mx-auto mt-5">
                 <div id="editor" ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center">
