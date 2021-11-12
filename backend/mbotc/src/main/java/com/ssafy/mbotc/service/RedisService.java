@@ -36,8 +36,9 @@ public class RedisService {
 			return null;
 		try {
 			System.out.println("~~redis~~ 토큰 값: "+token);
-			System.out.println("~~redis~~ 파싱 값: "+ parser.parse(value.get(token)).toString());
-			JSONObject content = (JSONObject) parser.parse(value.get(token));
+			String valS = value.get(token).toString();
+			System.out.println("~~redis~~ 파싱 값: "+ parser.parse(valS).toString()+"123");
+			JSONObject content = (JSONObject) parser.parse(valS);
 			System.out.println(content.toString());
 			userSetting.setTheme((String) content.get("theme"));
 			JSONArray teams = (JSONArray) content.get("teams");
