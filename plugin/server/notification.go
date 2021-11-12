@@ -76,7 +76,7 @@ func (p *Plugin) httpCreateNotificationWithButton(r *http.Request) {
 	}
 	post, err := p.API.GetPost(request.PostId)
 
-	if request.PostId != post.UserId {
+	if request.UserId != post.UserId {
 		message := fmt.Sprintf("Only post owner can create notification")
 		p.postEphemeralResponse(request.UserId, post.ChannelId, message)
 		return
