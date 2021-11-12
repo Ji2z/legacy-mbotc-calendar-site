@@ -2,26 +2,18 @@ package com.ssafy.mbotc.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.ssafy.mbotc.dao.ChannelRepository;
 import com.ssafy.mbotc.dao.NoticeRepository;
 import com.ssafy.mbotc.entity.Notice;
-import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.request.ReqNoticePost;
-import com.ssafy.mbotc.entity.response.ResRedisUser;
 
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -33,8 +25,7 @@ public class NoticeServiceImpl implements NoticeService {
 	ChannelRepository channelRepository;
 
 	@Override
-	public List<Notice> getNoticeByYearAndMonth(String year, String month, String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
+	public List<Notice> getNoticeByYearAndMonth(String year, String month, List<Long> channelId) {
 		return noticeRepository.findAllByYearAndMonth(year+"-"+month, channelId);
 	}
 
@@ -44,8 +35,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
+	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, List<Long> channelId) {
+		//long channelId = channelRepository.findByToken(channelToken).get().getId();
 		return noticeRepository.findAllByYearAndMonthAndDay(year+"-"+month+"-"+day, channelId);
 	}
 	
@@ -55,8 +46,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<ReqNoticePost> getTodayNoticeList(String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
+	public List<ReqNoticePost> getTodayNoticeList(List<Long> channelId) {
+//		long channelId = channelRepository.findByToken(channelToken).get().getId();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 		String formatedNow = df.format(new Date());
 		//System.out.println(formatedNow);

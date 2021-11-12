@@ -7,10 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -151,32 +148,33 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 		
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 		
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
+		StringBuilder channelTokenSB = new StringBuilder();
 		for(int i = 0; i< N; i++) {
 			channelsList= teams.get(i).getSubscribe();
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		List<Notice> total = new ArrayList<Notice>();
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
 		
 		//구독 채널의 한달치 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				total.add(temp.get(i));
-			}
-		}
-		result.setNotifications(total);
+		List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribeChannelidlist);
+
+		result.setNotifications(temp);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
@@ -207,32 +205,33 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 		
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 		
 		//channel list
+		StringBuilder channelTokenSB = new StringBuilder();
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
 		for(int i = 0; i< N; i++) {
 			channelsList= teams.get(i).getSubscribe();
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		List<Notice> total = new ArrayList<Notice>();
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
 		
 		//구독 채널의 한달치 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<Notice> temp = noticeService.getNoticeByYearAndMonthAndDay(year, month, day,subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				total.add(temp.get(i));
-			}
-		}
-		result.setNotifications(total);
+		List<Notice> temp = noticeService.getNoticeByYearAndMonthAndDay(year, month, day, subscribeChannelidlist);
+
+		result.setNotifications(temp);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
@@ -261,7 +260,7 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 			
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 			
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
@@ -270,20 +269,15 @@ public class NoticeController {
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					long channelId = channelService.findByToken(channelsList.get(j).getChannelId()).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
-		List<ReqNoticePost> result = new ArrayList<>();
-			
 		//구독 채널의 오늘 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<ReqNoticePost> temp = noticeService.getTodayNoticeList(subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				result.add(temp.get(i));
-			}
-		}
+		List<ReqNoticePost> result = noticeService.getTodayNoticeList(subscribeChannelidlist);
+
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
@@ -373,20 +367,25 @@ public class NoticeController {
 		List<Long> subscribeChannelidlist = new ArrayList<>();
 		
 		//channel list
+		StringBuilder channelTokenSB = new StringBuilder();
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
 		for(int i = 0; i< N; i++) {
 			channelsList= teams.get(i).getSubscribe();
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					long channelId = channelService.findByToken(channelsList.get(j).getChannelId()).get().getId();
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
 					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
 
 		//검색단어와 구독 채널을 넘겨서 해당하는 notice를 받는다.
 		List<Notice> temp = noticeService.getNoticeSearch(word, subscribeChannelidlist);
