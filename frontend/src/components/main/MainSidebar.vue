@@ -181,6 +181,7 @@ export default {
             theme: computed(() => store.getters['root/getThemeId']),
             logo: [logo_0, logo_1, logo_2, logo_3, logo_4],
             today: 0,
+            angry: 0,
         })
 
         const clickNav = (target)=>{
@@ -240,14 +241,29 @@ export default {
             router.push("/")
         }
 
-         const onClickTop = () => {
-            notify(
-                {
-                title: "From MBOTC 😎",
-                text: "Hello, nice to meet you 🤗",
-                type: "success"
+        const onClickTop = () => {
+            if(state.angry == 20){
+                state.angry = 0
+                notify({
+                    title: "From MBOTC 😡",
+                    text: "Initiate global destruction! 💣",
+                    type: "error"
                 });
-         }
+            }else if(state.angry == 10 || state.angry > 15){
+                notify({
+                    title: "From MBOTC 🤨",
+                    text: "Hello...? 😑",
+                    type: "warn"
+                });
+            }else{
+                notify({
+                    title: "From MBOTC 😎",
+                    text: "Hello, nice to meet you 🤗",
+                    type: "success"
+                });
+            }
+            state.angry++
+        }
 
         init()
         return { state, clickNav, logout, onClickTop }

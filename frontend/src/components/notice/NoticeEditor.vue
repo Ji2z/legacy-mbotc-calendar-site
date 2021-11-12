@@ -10,10 +10,10 @@
                         <p class="text-xl font-bold">Destination</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <select class="form-select block w-full mr-3 border-b-2 p-1"  v-model="state.teamId">
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId">
                             <option value="0" disabled selected>Choose Team</option>
                         </select>
-                        <select class="form-select block w-full mr-3 border-b-2 p-1"  v-model="state.channelId">
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.channelId">
                             <option value="0" disabled selected>Choose Channel</option>
                         </select>
                     </div> 
@@ -30,9 +30,9 @@
                         <p class="text-main text-sm">term</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <input type="datetime-local" class="border-2 rounded-xl p-1"  v-model="state.startTime" :min="state.today">
-                            <p v-if="state.termToggle" class="text-main text-sm mx-4">-</p>
-                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1" v-model="state.endTime">
+                        <input type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font"  v-model="state.startTime" :min="state.today">
+                            <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font" v-model="state.endTime">
                     </div>
                 </div>
             </div>
