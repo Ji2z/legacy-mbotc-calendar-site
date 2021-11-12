@@ -55,8 +55,7 @@
                                 </div>
                                 <div class="flex-grow h-10 py-1 w-full cursor-pointer">
                                     <div class="w-4 h-4 rounded-full mx-auto mt-4"
-                                    :class="{'bg-first':(day.count==1),'bg-second':(day.count>1 && day.count<4),'bg-third':(day.count>3 && day.count<6),'bg-most':(day.count>=6),}">
-
+                                        :class="{'bg-first':(day.count==1),'bg-second':(day.count>1 && day.count<4),'bg-third':(day.count>3 && day.count<6),'bg-most':(day.count>=6),}">
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +71,7 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getDayPicker } from '../../common/lib/function.js'
 
 export default {
     name: 'CalendarSmall',
@@ -102,53 +102,50 @@ export default {
             let noticeList = []
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
-                console.log("month list")
-                console.log(result)
+                // console.log("small calendar")
+                // console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
-                        title: node.content.subString(0,10),
-                        color: "#808080",
                         startDay: getDayPicker(node.startTime),
                         endDay: getDayPicker(node.endTime),
-                        token: node.team.token
                     }
                     noticeList.push(notice)
                 });
+                state.weeks = [[],[],[],[],[],[]]
+                let startDay = new Date(state.year, state.month, 1).getDay()
+                let dayCount = new Date(state.year, state.month+1, 0).getDate()
+                let target = 0
+                for (let i = 0; i < startDay; i++) {
+                    let day = {
+                        num : " ",
+                        count : 0
+                    }
+                    state.weeks[0].push(day)
+                }
+                for (let i = 1; i <= dayCount; i++) {
+                    //그 날의 공지갯수 새는 logic
+                    let day = {
+                        num : i,
+                        count : 0, // 여기에 공지갯수
+                    }
+
+                    noticeList.forEach(notice => {
+                        if(notice.startDay <= day.num && day.num <= notice.endDay){
+                            day.count++;
+                        }
+                    });
+
+                    state.weeks[target].push(day)
+                    startDay++
+                    if(startDay == 7){
+                        startDay = 0
+                        target++
+                    }
+                }
             })
             .catch((err)=>{
                 console.log(err)
             })
-            state.weeks = [[],[],[],[],[],[]]
-            let startDay = new Date(state.year, state.month, 1).getDay()
-            let dayCount = new Date(state.year, state.month+1, 0).getDate()
-            let target = 0
-            for (let i = 0; i < startDay; i++) {
-                let day = {
-                    num : " ",
-                    count : 0
-                }
-                state.weeks[0].push(day)
-            }
-            for (let i = 1; i <= dayCount; i++) {
-                //그 날의 공지갯수 새는 logic
-                let day = {
-                    num : i,
-                    count : 0, // 여기에 공지갯수
-                }
-
-                noticeList.forEach(notice => {
-                    if(notice.startDay <= day.num && day.num <= notice.endDay){
-                        day.count++;
-                    }
-                });
-
-                state.weeks[target].push(day)
-                startDay++
-                if(startDay == 7){
-                    startDay = 0
-                    target++
-                }
-            }
         }
         const init = ()=>{
             

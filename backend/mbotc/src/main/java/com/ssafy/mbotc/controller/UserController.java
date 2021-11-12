@@ -6,14 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.entity.User;
@@ -53,6 +46,24 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
+	// check if user exists
+	@GetMapping
+	@ApiOperation(
+			value = "Check if user exists in DB by user's userId",
+			notes = "- http://localhost:8080/api/v1/user\n - header : { \"userId\" : \"user's userId\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
+	public ResponseEntity<String> checkUserExists(@RequestHeader HashMap<String,String> header){
+		Optional<User> target = userService.findByUserId(header.get("userid"));
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
+
+		return ResponseEntity.status(200).body("SUCCESS");
+	}
+
 	// for new user (register)
 	@PostMapping
 	@ApiOperation(

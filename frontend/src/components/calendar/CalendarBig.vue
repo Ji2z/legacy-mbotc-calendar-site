@@ -57,7 +57,7 @@
                                 <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
                                     <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
                                         <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                        <p class="ml-2 font-bold opacity-100">{{node.title}}</p>
+                                        <p class="ml-2 font-bold opacity-100 overflow-hidden">{{node.title}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@ import MainAddon from '@/components/main/MainAddon.vue'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { getDayPicker } from '../../common/lib/function.js';
+import { getDayPicker, getTitle } from '../../common/lib/function.js';
 
 export default {
     name: 'CalendarBig',
@@ -109,7 +109,8 @@ export default {
                 result.data.notifications.forEach(node => {
                     //console.log(node.content)
                     let notice = {
-                        title: node.channel.team.name,
+                        //title: node.channel.team.name,
+                        title: getTitle(node.content),
                         color: "#808080",
                         startDay: getDayPicker(node.startTime),
                         endDay: getDayPicker(node.endTime),
@@ -179,7 +180,7 @@ export default {
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
                 // console.log("user setting")
-                console.log(result)
+                //console.log(result)
                 store.commit('root/setTheme', result.data.theme)
                 result.data.teams.forEach(team=> {
                     let color = {

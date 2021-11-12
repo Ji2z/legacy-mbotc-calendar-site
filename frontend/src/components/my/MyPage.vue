@@ -21,7 +21,7 @@ export default {
     components: {
         MyInfo,
         MySubscribe,
-        MyTheme
+        MyTheme,
     },
 
     setup(){

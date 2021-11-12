@@ -135,7 +135,7 @@ export default {
         const init = ()=>{
             state.url = "  " + getServerURL()
             //console.log(document.cookie)
-            if(document.cookie){
+            if(document.cookie && hasToken()){
                 state.hasCookie = true
                 store.dispatch('root/getUserMM')
                 .then((result)=>{
@@ -154,6 +154,12 @@ export default {
                 .catch((err)=>{
                 })
             }
+        }
+        const hasToken = ()=>{
+            let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
+            let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
+            return (userId && csrf)
+
         }
         init()
         return { state, submit, validationCheck, comeBack }

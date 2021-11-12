@@ -30,13 +30,13 @@
                         <p class="text-main text-sm">term</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <input type="date" class="border-2 rounded-xl p-1"  v-model="state.startTime" :min="state.today">
+                        <input type="datetime-local" class="border-2 rounded-xl p-1"  v-model="state.startTime" :min="state.today">
                             <p v-if="state.termToggle" class="text-main text-sm mx-4">-</p>
-                        <input v-if="state.termToggle" type="date" class="border-2 rounded-xl p-1" v-model="state.endTime">
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1" v-model="state.endTime">
                     </div>
                 </div>
             </div>
-            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-back mx-auto mt-5">
+            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-back text-font mx-auto mt-5">
                 <div id="editor" ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center">
@@ -80,14 +80,17 @@ export default {
         })
         const submit = ()=>{
             //console.log(state.mountEditor.getMarkdown())
+
+            let timeZone = new Date().getTimezoneOffset()/60;
+            console.log(timeZone)
             let payload = {
                 token: store.getters['root/getToken'],
                 notice:{
                     "channel_id": state.channelId,
                     "post_id": "",
                     "user_id": store.getters['root/getUserId'],
-                    "start_time": state.startTime,
-                    "end_time": state.endTime,
+                    "start_time": state.startTime + ":00.000",
+                    "end_time": state.endTime + ":00.000",
                     "message": state.mountEditor.getMarkdown(),
                     "file_ids": []
                 }

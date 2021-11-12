@@ -72,8 +72,8 @@ export function setUserSetting({state}, payload){
         'auth' : payload.token
     }
     const body = {
-        "teams" : payload.teams,
-        "theme" : payload.theme
+        'teams' : payload.teams,
+        'theme' : payload.theme
     }
     console.log(body)
     return $axios.post(url, {headers}, body);
@@ -100,11 +100,11 @@ export function getMonthNotice({state}, payload){
 }
 
 export function getDayNotice({state}, payload){
-    const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    const headers = { 
+    const url = '/api/v1/notification/day?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
+    //console.log(url)
+    const headers = {
         'auth': payload.token 
     }
-    
     return $axios.get(url, {headers});
 }
 
@@ -121,7 +121,10 @@ export function uploadNotice({state}, payload){
         'auth' : payload.token
     }
     const body = payload.notice
-    return $axios.post(url, {headers}, body);
+
+    console.log(body)
+
+    // return $axios.post(url, {headers}, body);
 }
 
 // bot API
