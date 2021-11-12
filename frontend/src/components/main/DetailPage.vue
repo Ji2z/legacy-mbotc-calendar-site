@@ -127,6 +127,11 @@ export default {
                     saveFlag = true
                 }
             });
+            state.notices.forEach(notice => {
+                if(notice.id == id){
+                    notice.check = check
+                }
+            });
 
             if(!saveFlag){
                 let notice = {

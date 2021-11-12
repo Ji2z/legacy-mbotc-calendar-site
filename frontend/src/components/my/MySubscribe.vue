@@ -77,6 +77,8 @@ export default {
                 subscribe: [
                     {channelId: '123', channelName: ' ', show: true},
                 ],
+                teamId: "",
+                teamName: "",
             }],
             selectedTeam: 0
         })
@@ -115,9 +117,18 @@ export default {
         const save = ()=>{
             let payload = {
                 token: store.getters['root/getToken'],
-                teams: state.teams,
+                teams: [],
                 theme: store.getters['root/getTheme']
             }
+            state.teams.forEach(team => {
+                let data = {
+                    color: team.color,
+                    subscribe: team.subscribe,
+                    teamId: team.teamId,
+                    teamName: team.teamName,
+                }
+                payload.teams.push(data)
+            }); 
             store.dispatch('root/setUserSetting', payload)
             .then((result)=>{
                 console.log(result)

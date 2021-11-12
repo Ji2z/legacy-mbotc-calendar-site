@@ -72,8 +72,8 @@ export function setUserSetting({state}, payload){
         'auth' : payload.token
     }
     const body = {
-        "teams" : payload.teams,
-        "theme" : payload.theme
+        'teams' : payload.teams,
+        'theme' : payload.theme
     }
     console.log(body)
     return $axios.post(url, {headers}, body);
@@ -121,7 +121,10 @@ export function uploadNotice({state}, payload){
         'auth' : payload.token
     }
     const body = payload.notice
-    return $axios.post(url, {headers}, body);
+
+    console.log(body)
+
+    // return $axios.post(url, {headers}, body);
 }
 
 // bot API
