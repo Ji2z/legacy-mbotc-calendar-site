@@ -7,7 +7,7 @@
                 <p class="text-lg">SSAFY 5기 자율 프로젝트</p>
                 <br>
                 <p>오픈소스 서울 1반 3팀 A103</p>
-                <div class="transform" @mouseenter="enterTeamName" @mouseleave="leaveTeamName">
+                <div class="transform transition duration-500" @mouseenter="enterTeamName" @mouseleave="leaveTeamName">
                     <span>Team.</span>
                     <span v-if="state.teamName" class="text-yellow-50 text-opacity-50">
                         <span class="text-yellow-50 text-opacity-100 font-bold text-2xl">공</span>

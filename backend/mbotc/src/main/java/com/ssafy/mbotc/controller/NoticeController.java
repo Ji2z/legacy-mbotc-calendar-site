@@ -1,20 +1,24 @@
 package com.ssafy.mbotc.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,13 +75,15 @@ public class NoticeController {
 		@ApiResponse(code = 200, message = "SUCCESS"),
 		@ApiResponse(code = 500, message = "FAIL")
 	})
-	public ResponseEntity<String> postFromSite(@RequestBody ReqPluginNotice notice){
+	public ResponseEntity<String> postFromPlugin(@RequestBody ReqPluginNotice notice){
+		if(noticeService.findByNoticeId(notice.getPost_id()) != null) // 이미 있는 공지
+			return ResponseEntity.status(500).body("Fail");
 		try {
 			String userId = notice.getUser_id();
 			Optional<User> user = userService.findByUserId(userId);
 			Optional<Channel> channel = channelService.findByToken(notice.getChannel_id());
 			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 			
 			Notice saveNotice = new Notice();
 			
@@ -142,32 +148,33 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 		
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 		
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
+		StringBuilder channelTokenSB = new StringBuilder();
 		for(int i = 0; i< N; i++) {
 			channelsList= teams.get(i).getSubscribe();
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		List<Notice> total = new ArrayList<Notice>();
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
 		
 		//구독 채널의 한달치 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				total.add(temp.get(i));
-			}
-		}
-		result.setNotifications(total);
+		List<Notice> temp = noticeService.getNoticeByYearAndMonth(year, month, subscribeChannelidlist);
+
+		result.setNotifications(temp);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
@@ -198,32 +205,33 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 		
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 		
 		//channel list
+		StringBuilder channelTokenSB = new StringBuilder();
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
 		for(int i = 0; i< N; i++) {
 			channelsList= teams.get(i).getSubscribe();
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
 		ResNoticeList result = new ResNoticeList();
-		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
-		List<Notice> total = new ArrayList<Notice>();
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
 		
 		//구독 채널의 한달치 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<Notice> temp = noticeService.getNoticeByYearAndMonthAndDay(year, month, day,subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				total.add(temp.get(i));
-			}
-		}
-		result.setNotifications(total);
+		List<Notice> temp = noticeService.getNoticeByYearAndMonthAndDay(year, month, day, subscribeChannelidlist);
+
+		result.setNotifications(temp);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
@@ -237,8 +245,8 @@ public class NoticeController {
         @ApiResponse(code = 200, message = "SUCCESS"),
         @ApiResponse(code = 404, message = "USER NOT FOUND")
     })
-    public ResponseEntity<List<ReqNoticePost>> getNoticeByDay(@RequestHeader HashMap<String,String> header){
-        Optional<User> target = userService.findByUserId(header.get("userId"));
+    public ResponseEntity<List<ReqNoticePost>> getTodayNoticeForPlugin(@RequestHeader HashMap<String,String> header){
+        Optional<User> target = userService.findByUserId(header.get("userid"));
 		if(!target.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
@@ -252,7 +260,7 @@ public class NoticeController {
 		List<ResRedisTeam> teams = redisUserinfo.getTeams();
 			
 		//channel id 담기
-		List<String> subscribeChannelidlist = new ArrayList<>();
+		List<Long> subscribeChannelidlist = new ArrayList<>();
 			
 		//channel list
 		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
@@ -261,20 +269,15 @@ public class NoticeController {
 			int K = channelsList.size();
 			for(int j = 0; j < K; j++) {
 				if(channelsList.get(j).isShow() == true) {
-					subscribeChannelidlist.add(channelsList.get(j).getChannelId());
+					long channelId = channelService.findByToken(channelsList.get(j).getChannelId()).get().getId();
+					subscribeChannelidlist.add(channelId);
 				}
 			}
 		}
 			
-		List<ReqNoticePost> result = new ArrayList<>();
-			
 		//구독 채널의 오늘 공지
-		for(String subscribe : subscribeChannelidlist) {
-			List<ReqNoticePost> temp = noticeService.getTodayNoticeList(subscribe);
-			for (int i = 0; i < temp.size(); i++) {
-				result.add(temp.get(i));
-			}
-		}
+		List<ReqNoticePost> result = noticeService.getTodayNoticeList(subscribeChannelidlist);
+
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
@@ -296,6 +299,102 @@ public class NoticeController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(noticeService.findByNoticeId(postId));
 	}
+	
+	@DeleteMapping(value = "/delete/{postId}")
+	@ApiOperation(
+			value = "Delete a Post by post Id",
+			notes = "- http://localhost:8080/api/v1/notification/delete/p1\n- header : { \"auth\" : \"user's token\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "POST NOT FOUND, DELETE FAIL")
+	})
+	public ResponseEntity<String> deletePost(@RequestHeader HashMap<String, String> header, @PathVariable String postId){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		String mattermostUrl = target.get().getUrl();
+
+		String DELETE_URL= mattermostUrl + "/api/v4/posts/"+ postId;
+		
+		try {
+			URL url = new URL(DELETE_URL);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("DELETE");
+			conn.setRequestProperty("Authorization", "bearer "+target.get().getToken());
+			conn.setRequestProperty("Content-Type", "application/json");
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			if(conn.getResponseCode() != 200) {
+				System.out.println("Failed: HTTP error code : " + conn.getResponseCode());
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "POST NOT FOUND, DELETE FAIL");
+			}
+			br.close();
+			conn.disconnect();
+			noticeService.deleteByToken(postId);
+		}
+		catch(IOException e) {
+			System.out.println("Delete Fail : " + e.getMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
+	}
+	
+	
+	// content 내용 검색
+	@GetMapping(value = "/search")
+	@ApiOperation(
+			value = "Get All Notices by Searching word", 
+			notes = "- http://localhost:8080/api/v1/notification/search?word=여러분\n- header : { \"auth\" : \"user's token\", \"Content-Type\" : \"application/json;charset=utf-8\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
+	public ResponseEntity<ResNoticeList> getNoticeSearchByWord(@RequestHeader HashMap<String,String> header, @RequestParam String word){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
+		String keyid = target.get().getUserId();
+		
+		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
+		ResRedisUser redisUserinfo = redisService.getUserSettings(keyid);
+		
+		//구독 팀 갯수
+		int N = redisUserinfo.getTeams().size();
+		List<ResRedisTeam> teams = redisUserinfo.getTeams();
+		
+		//channel id 담기
+		List<Long> subscribeChannelidlist = new ArrayList<>();
+		
+		//channel list
+		StringBuilder channelTokenSB = new StringBuilder();
+		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
+		for(int i = 0; i< N; i++) {
+			channelsList= teams.get(i).getSubscribe();
+			int K = channelsList.size();
+			for(int j = 0; j < K; j++) {
+				if(channelsList.get(j).isShow() == true) {
+					String channelIdTemp = channelsList.get(j).getChannelId();
+					channelTokenSB.append(channelIdTemp).append(",");
+					long channelId = channelService.findByToken(channelIdTemp).get().getId();
+					subscribeChannelidlist.add(channelId);
+				}
+			}
+		}
+			
+		ResNoticeList result = new ResNoticeList();
+		String subscribes = channelTokenSB.toString();
+		subscribes = subscribes.substring(0, subscribes.length()-1);
+		result.setSubscribe(subscribes);
+
+		//검색단어와 구독 채널을 넘겨서 해당하는 notice를 받는다.
+		List<Notice> temp = noticeService.getNoticeSearch(word, subscribeChannelidlist);
+
+		result.setNotifications(temp);
+
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
 	
 	
 }

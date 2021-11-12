@@ -1,5 +1,7 @@
 <template>
-    <div class="flex justify-start myPage">
+    <div class="flex justify-start myPage" id="socket">
+        <!-- <button class="ml-10" @click="onClickTop('meeeeeesssssage')">button</button> -->
+        <notifications position="top right"/>
         <router-view :key="$route.fullPath" class="w-full h-screen"
         @clickDetail="onClickDetail"/>
         <main-sidebar
@@ -10,6 +12,10 @@
 <script>
 import MainSidebar from '@/components/main/MainSidebar.vue'
 import { reactive } from 'vue'
+import { notify } from '@kyvg/vue3-notification'
+import Stomp from 'webstomp-client'
+import SockJS from 'sockjs-client'
+import { useStore } from 'vuex'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
@@ -20,8 +26,11 @@ export default {
     },
 
     setup(){
+        const store = useStore()
         const state = reactive({
             sideDetailFlag: false,
+            stompClient: null,
+            userToken: store.getters['root/getToken']
         })
         const onClickDetail = ()=>{
             //console.log("detail")
@@ -31,7 +40,32 @@ export default {
             //console.log("other")
             state.sideDetailFlag = false
         }
-        return { state, onClickDetail, onClickOther }
+        const connect = () => {
+            //console.log("시작이 되는건가?")
+            const serverURL = "/api/v1/websocket"
+            let socket = new SockJS(serverURL);
+            state.stompClient = Stomp.over(socket);
+            state.stompClient.connect(
+                {},
+                frame =>{
+                    //console.log("연결완료")
+                    state.stompClient.subscribe('/sub/notification/'+ state.userToken, function(notice){
+                        //console.log("응답 : ",notice);
+                        let notification = JSON.parse(notice.body);
+                        onClickTop(notification.content.substr(0,20));
+                    })
+                }
+            )
+        }
+        const onClickTop = (message) => {
+            notify(
+                {
+                title: "New Notification",
+                text: message,
+                });
+         }
+         connect()
+        return { state, onClickDetail, onClickOther, connect, onClickTop }
     }
 };
 </script>
@@ -40,4 +74,34 @@ export default {
 .myPage{
     background-color: rgba(0, 0, 0, 0);
 }
+/* .vue-notification-wrapper{
+    }
+.my-notification {
+    
+  margin: 0 5px 5px;
+  padding: 10px;
+  font-size: 12px;
+  color: rgb(6, 27, 78) !important;
+  
+  .notification-title {
+      
+      border-radius: 25px !important;
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2) !important;
+    color: #000000;
+  }
+
+  .notification-content {
+    color: #fafafa;
+  }
+
+  &.success {
+   
+  }
+  &.info {
+    
+  }
+  &.error {
+   
+  }
+} */
 </style>

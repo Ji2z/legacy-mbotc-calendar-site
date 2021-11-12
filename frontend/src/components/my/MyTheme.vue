@@ -14,9 +14,6 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">Change</button>
-                </div>
             </div>
         </div>
     </div>
@@ -26,6 +23,7 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 export default {
     name: 'MyTheme',
@@ -34,11 +32,11 @@ export default {
     setup(){
         const store = useStore()
         const state = reactive({
-            selected:store.getters['root/getThemeId'],
+            selected: store.getters['root/getThemeId'],
             themes:[
                 {
                     id: 0,
-                    theme: "default",
+                    theme: "light",
                 },
                 {                    
                     id: 1,
@@ -54,18 +52,25 @@ export default {
                 },
                 {
                     id: 4,
-                    theme: "orange",
+                    theme: "eclipse",
                 },
             ],
         })
-        const save = ()=>{
-            store.commit('root/setTheme', state.themes[state.selected])
-        }
         const clickTheme = (id)=>{
             //console.log(id)
             state.selected = id
+            store.commit('root/setTheme', state.themes[state.selected].theme)
+            notify({
+                title: "From MBOTC 😉",
+                text: "Theme has been changed temporarily, Please press SAVE before leave this page!",
+                type: "warn"
+            });
         }
-        return { state, save, clickTheme }
+        const init = ()=>{
+
+        }
+        init()
+        return { state, clickTheme }
     }
 };
 </script>

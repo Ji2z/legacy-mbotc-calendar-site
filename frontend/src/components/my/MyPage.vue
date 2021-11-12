@@ -12,7 +12,8 @@ import MyInfo from '@/components/my/MyInfo.vue'
 import MySubscribe from '@/components/my/MySubscribe.vue'
 import MyTheme from '@/components/my/MyTheme.vue'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
+import { getServerURL } from '../../common/lib/function.js'
+import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
 export default {
@@ -20,17 +21,19 @@ export default {
     components: {
         MyInfo,
         MySubscribe,
-        MyTheme
+        MyTheme,
     },
 
     setup(){
+        const store = useStore()
         const state = reactive({
             myInfo:{
-                url: "hello.ssafy.com",
-                id: "abc@abcmail.com"
+                url: getServerURL(),
+                id: "",
             },
         })
         const init = ()=>{
+            state.myInfo.id = store.getters['root/getUserEmail']
         }
         init()
         return { state }

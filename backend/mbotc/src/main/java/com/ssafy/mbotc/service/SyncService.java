@@ -79,6 +79,11 @@ public class SyncService {
 			Optional<Team> isTeam = teamRepository.findByToken(team.getTeamId());
 			
 			if(isTeam.isPresent()) { // 존재하는 팀 => 채널 검색
+				if(!isTeam.get().getName().equals(team.getTeamName())) {
+					Team t = isTeam.get();
+					t.setName(team.getTeamName());
+					teamRepository.save(t);
+				}
 				List<Channel> savedChannels = channelRepository.findAllByTeamId(isTeam.get().getId());
 				List<ResRedisChannel> channels = team.getSubscribe();
 				for (int j = 0; j < channels.size(); j++) {
@@ -89,6 +94,10 @@ public class SyncService {
 						// channel_id값이 같지 않고 반복문을 다 돌았을 때 = DB에 저장된 채널이 아닐 때
 						if(rrc.getChannelId().equals(sc.getToken())) { // 이미 DB에 저장된 채널. 다음 채널 검사
 							isInSavedList = true;
+							if(!sc.getName().equals(rrc.getChannelName())) { // 채널 이름 바꼈으면 반영
+								sc.setName(rrc.getChannelName());
+								channelRepository.save(sc);
+							}
 							break;
 						}
 					}

@@ -1,5 +1,5 @@
 import $axios from 'axios'
-//import { getServerData, getServerURL } from './src/common/lib/function.js';
+import { getServerURL } from '../common/lib/function.js';
 
 // user API
 export function userLoginMM({state}, payload){
@@ -10,15 +10,21 @@ export function userLoginMM({state}, payload){
     return $axios.post(url, body);
 }
 
+export function getUserMM({state}){
+    const url =  '/api/v4/users/me'
+
+    return $axios.get(url);
+}
+
 export function userLogin({state}, payload){
-    console.log("userLogin")
+    //console.log("userLogin")
     const url = '/api/v1/user'
     const body = {
         "token" : payload.token,
-        "userEmail" : payload.email,
+        "userEmail" : payload.userEmail,
         "userName" : payload.userName,
         "userId": payload.userId,
-        "url" : serverData.getServerURL(),
+        "url" : getServerURL(),
     }
     return $axios.post(url, body);
 }
@@ -32,7 +38,7 @@ export function userTokenRefresh({state}, payload){
         data:{
             "userEmail" : payload.email, 
             "token" : payload.token, 
-            "url" : serverData.getServerURL(),
+            "url" : getServerURL(),
             "userId" : payload.userId
         }
     })
@@ -43,11 +49,12 @@ export function deleteUser({state}, payload){
     return $axios({
         method: 'delete',
         url: url,
-        headers:{
-            'auth':  payload.token
-        },
         data:{
-            "userEmail" : payload.email, 
+            "token": payload.token,
+            "url": payload.url,
+            "userEmail": payload.userEmail,
+            "userId": payload.userId,
+            "userName": payload.userName,
         }
     })
 }
@@ -65,10 +72,24 @@ export function setUserSetting({state}, payload){
         'auth' : payload.token
     }
     const body = {
-        "teams" : payload.teams,
-        "theme" : payload.theme
+        'teams' : payload.teams,
+        'theme' : payload.theme
     }
-    return $axios.post(url, {headers}, body);
+    // console.log(headers)
+    // console.log(body)
+    // return $axios.post(url, {headers}, body);
+    return $axios({
+        method: 'post',
+        url: url,
+        headers:{
+            'auth':  payload.token
+        },
+        data:{
+            'teams' : payload.teams,
+            'theme' : payload.theme
+        }
+    })
+
 }
 
 export function getUserSetting({state}, payload){
@@ -84,15 +105,19 @@ export function getUserSetting({state}, payload){
 
 export function getMonthNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month
-    const headers = { "auth": payload.token }
+    const headers = { 
+        'auth': payload.token 
+    }
 
     return $axios.get(url, {headers});
 }
 
 export function getDayNotice({state}, payload){
-    const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    const headers = { "auth": payload.token }
-    
+    const url = '/api/v1/notification/day?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
+    //console.log(url)
+    const headers = {
+        'auth': payload.token 
+    }
     return $axios.get(url, {headers});
 }
 
@@ -103,13 +128,34 @@ export function getNoticeDetail({state}, payload){
     return $axios.get(url, {headers});
 }
 
+export function getNoticeSearch({state}, payload){
+    const url = '/api/v1/notification/search?word=' + payload.word
+    const headers = { "auth": payload.token, "Content-Type" : "application/json;charset=utf-8" }
+    
+    return $axios.get(url, {headers});
+}
+
+// export function uploadNotice({state}, payload){
+//     const url = '/api/v1/notification'
+//     const headers = {
+//         'auth' : payload.token
+//     }
+//     const body = payload.notice
+//     return $axios.post(url, {headers}, body);
+// }
+
 export function uploadNotice({state}, payload){
-    const url = '/api/v1/notification'
-    const headers = {
-        'auth' : payload.token
-    }
-    const body = payload.notice
-    return $axios.post(url, {headers}, body);
+    const url = '/plugins/com.mattermost.plugin-mbotc/api/v1/create-notification-with-editor'
+    console.log(payload.notice)
+    return $axios({
+        method: 'post',
+        url: url,
+        headers:{
+            'auth':  payload.token,
+            'Content-Type': 'multipart/form-data'
+        },
+        data: payload.notice
+    })
 }
 
 // bot API

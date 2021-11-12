@@ -2,10 +2,10 @@ package com.ssafy.mbotc.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,7 @@ public class NoticeServiceImpl implements NoticeService {
 	ChannelRepository channelRepository;
 
 	@Override
-	public List<Notice> getNoticeByYearAndMonth(String year, String month, String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
+	public List<Notice> getNoticeByYearAndMonth(String year, String month, List<Long> channelId) {
 		return noticeRepository.findAllByYearAndMonth(year+"-"+month, channelId);
 	}
 
@@ -36,8 +35,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
+	public List<Notice> getNoticeByYearAndMonthAndDay(String year, String month, String day, List<Long> channelId) {
+		//long channelId = channelRepository.findByToken(channelToken).get().getId();
 		return noticeRepository.findAllByYearAndMonthAndDay(year+"-"+month+"-"+day, channelId);
 	}
 	
@@ -47,14 +46,14 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<ReqNoticePost> getTodayNoticeList(String channelToken) {
-		long channelId = channelRepository.findByToken(channelToken).get().getId();
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String formatedNow = now.format(formatter);
+	public List<ReqNoticePost> getTodayNoticeList(List<Long> channelId) {
+//		long channelId = channelRepository.findByToken(channelToken).get().getId();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+		String formatedNow = df.format(new Date());
+		//System.out.println(formatedNow);
 		List<Notice> notices = noticeRepository.findAllByYearAndMonthAndDay(formatedNow, channelId);
 		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 		List<ReqNoticePost> response = new ArrayList<>();
 		for (int i = 0; i < notices.size(); i++) {
 			Notice n = notices.get(i);
@@ -63,6 +62,19 @@ public class NoticeServiceImpl implements NoticeService {
 			response.add(new ReqNoticePost(n.getUser().getUserName(), n.getContent(), startT, endT, n.getChannel().getName(),n.getChannel().getTeam().getName()));
 		}
 		return response;
+	}
+
+	@Override
+	public void deleteByToken(String postId) {
+		Notice notice = noticeRepository.findByToken(postId);
+		noticeRepository.delete(notice);
+
+	}
+
+	@Override
+	public List<Notice> getNoticeSearch(String word, List<Long> channelId) {
+		List<Notice> resultNotices = noticeRepository.findAllByContentContainingAndChannelIdIn(word, channelId);
+		return resultNotices;
 	}
 
 //

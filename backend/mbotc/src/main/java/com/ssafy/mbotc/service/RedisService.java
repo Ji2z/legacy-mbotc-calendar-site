@@ -21,7 +21,6 @@ public class RedisService {
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 	
-	JSONParser parser = new JSONParser();
 	
 	/**
 	 * Redis에 저장되어 있는 userSetting을 갖고온다.
@@ -35,8 +34,9 @@ public class RedisService {
 		if(!redisTemplate.hasKey(token))
 			return null;
 		try {
-			JSONObject content = (JSONObject) parser.parse(value.get(token));
-			System.out.println(content.toString());
+			JSONParser parser = new JSONParser();
+			String valS = value.get(token).toString();
+			JSONObject content = (JSONObject) parser.parse(valS);
 			userSetting.setTheme((String) content.get("theme"));
 			JSONArray teams = (JSONArray) content.get("teams");
 			List<ResRedisTeam> teamList = new ArrayList<>();
