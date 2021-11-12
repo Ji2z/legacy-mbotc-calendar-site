@@ -7,6 +7,7 @@ import (
 	"mime/multipart"
 )
 
+// Convert multipart file to []byte
 func ConvertFileToByte(file multipart.File) ([]byte, error) {
 	buf := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buf, file); err != nil {
@@ -15,14 +16,16 @@ func ConvertFileToByte(file multipart.File) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// Upload file to mattermost channel and return file id
 func UploadFileToMMChannel(p *Plugin, file []byte, channelId string, fileName string) string {
-	res, err := p.API.UploadFile(file, channelId, fileName)
+	resp, err := p.API.UploadFile(file, channelId, fileName)
 	if err != nil {
 		fmt.Println("UploadFile Error: ", err)
 	}
-	return res.Id
+	return resp.Id
 }
 
+// Get teamName and channelName by channelId
 func SearchTeamNameAndChannelName(p *Plugin, channelId string) (teamName string, channelName string) {
 	channel, err := p.API.GetChannel(channelId)
 	if err != nil {
