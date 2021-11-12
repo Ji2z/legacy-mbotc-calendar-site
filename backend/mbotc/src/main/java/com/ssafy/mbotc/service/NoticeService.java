@@ -15,4 +15,5 @@ public interface NoticeService {
 	Notice save(Notice notice);
 	List<ReqNoticePost> getTodayNoticeList(String channelToken);
 	void deleteByToken(String postId);
+	List<Notice> getNoticeSearch(String word, List<Long> channelId);
 }

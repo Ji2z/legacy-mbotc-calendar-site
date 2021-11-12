@@ -23,4 +23,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	@Transactional
 	@Query(value = "select * from notice where (:date between date_format(start_time,'%Y-%m-%d') and date_format(end_time,'%Y-%m-%d')) and channel_id = :channelId", nativeQuery = true)
 	List<Notice> findAllByYearAndMonthAndDay(@Param("date") String date, @Param("channelId") long channelId);
+	
+	@Transactional
+	List<Notice> findAllByContentContainingAndChannelIdIn(String word, List<Long> channelId);
 }

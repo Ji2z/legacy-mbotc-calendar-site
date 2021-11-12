@@ -6,16 +6,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.ssafy.mbotc.dao.ChannelRepository;
 import com.ssafy.mbotc.dao.NoticeRepository;
 import com.ssafy.mbotc.entity.Notice;
+import com.ssafy.mbotc.entity.User;
 import com.ssafy.mbotc.entity.request.ReqNoticePost;
+import com.ssafy.mbotc.entity.response.ResRedisUser;
 
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -72,6 +78,12 @@ public class NoticeServiceImpl implements NoticeService {
 		Notice notice = noticeRepository.findByToken(postId);
 		noticeRepository.delete(notice);
 
+	}
+
+	@Override
+	public List<Notice> getNoticeSearch(String word, List<Long> channelId) {
+		List<Notice> resultNotices = noticeRepository.findAllByContentContainingAndChannelIdIn(word, channelId);
+		return resultNotices;
 	}
 
 //

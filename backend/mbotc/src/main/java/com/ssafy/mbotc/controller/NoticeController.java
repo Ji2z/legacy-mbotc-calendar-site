@@ -342,4 +342,58 @@ public class NoticeController {
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}
 	
+	
+	// content 내용 검색
+	@GetMapping(value = "/search")
+	@ApiOperation(
+			value = "Get All Notices by Searching word", 
+			notes = "- http://localhost:8080/api/v1/notification/search?word=여러분\n- header : { \"auth\" : \"user's token\", \"Content-Type\" : \"application/json;charset=utf-8\" }")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "SUCCESS"),
+		@ApiResponse(code = 404, message = "USER NOT FOUND")
+	})
+	public ResponseEntity<ResNoticeList> getNoticeSearchByWord(@RequestHeader HashMap<String,String> header, @RequestParam String word){
+		String authToken = header.get("auth");
+		Optional<User> target = userService.findByToken(authToken);
+		if(!target.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+		}
+		String keyid = target.get().getUserId();
+		
+		//토큰을 기준으로 redis에 저장되어있는 구독 팀, 채널 가져옴
+		ResRedisUser redisUserinfo = redisService.getUserSettings(keyid);
+		
+		//구독 팀 갯수
+		int N = redisUserinfo.getTeams().size();
+		List<ResRedisTeam> teams = redisUserinfo.getTeams();
+		
+		//channel id 담기
+		List<Long> subscribeChannelidlist = new ArrayList<>();
+		
+		//channel list
+		List<ResRedisChannel> channelsList = new ArrayList<ResRedisChannel>();
+		for(int i = 0; i< N; i++) {
+			channelsList= teams.get(i).getSubscribe();
+			int K = channelsList.size();
+			for(int j = 0; j < K; j++) {
+				if(channelsList.get(j).isShow() == true) {
+					long channelId = channelService.findByToken(channelsList.get(j).getChannelId()).get().getId();
+					subscribeChannelidlist.add(channelId);
+				}
+			}
+		}
+			
+		ResNoticeList result = new ResNoticeList();
+		result.setSubscribe(subscribeChannelidlist.toString().substring(1,subscribeChannelidlist.size()-1));
+
+		//검색단어와 구독 채널을 넘겨서 해당하는 notice를 받는다.
+		List<Notice> temp = noticeService.getNoticeSearch(word, subscribeChannelidlist);
+
+		result.setNotifications(temp);
+
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
+	
+	
 }
