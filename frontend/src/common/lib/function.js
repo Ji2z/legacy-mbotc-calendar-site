@@ -24,8 +24,15 @@ const getTitle = (content)=>{
     return replaceText.substring(0,10)
 }
 
+const getTime = (date)=>{
+    //console.log(date)
+    let replaceText = date.substring(0,10) + " " + date.substring(11,16)
+    return replaceText
+}
+
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
 exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
 exports.getTitle = getTitle;
+exports.getTime = getTime;

@@ -242,14 +242,8 @@ export default {
         }
 
         const onClickTop = () => {
-            if(state.angry == 20){
+            if(state.angry > 10){
                 state.angry = 0
-                notify({
-                    title: "From MBOTC 😡",
-                    text: "Initiate global destruction! 💣",
-                    type: "error"
-                });
-            }else if(state.angry == 10 || state.angry > 15){
                 notify({
                     title: "From MBOTC 🤨",
                     text: "Hello...? 😑",

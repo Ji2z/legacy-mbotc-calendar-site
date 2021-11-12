@@ -128,16 +128,27 @@ export function getNoticeDetail({state}, payload){
     return $axios.get(url, {headers});
 }
 
+// export function uploadNotice({state}, payload){
+//     const url = '/api/v1/notification'
+//     const headers = {
+//         'auth' : payload.token
+//     }
+//     const body = payload.notice
+//     return $axios.post(url, {headers}, body);
+// }
+
 export function uploadNotice({state}, payload){
-    const url = '/api/v1/notification'
-    const headers = {
-        'auth' : payload.token
-    }
-    const body = payload.notice
-
-    console.log(body)
-
-    // return $axios.post(url, {headers}, body);
+    const url = '/plugins/com.mattermost.plugin-mbotc/api/v1/create-notification-with-editor'
+    console.log(payload.notice)
+    return $axios({
+        method: 'post',
+        url: url,
+        headers:{
+            'auth':  payload.token,
+            'Content-Type': 'multipart/form-data'
+        },
+        data: payload.notice
+    })
 }
 
 // bot API

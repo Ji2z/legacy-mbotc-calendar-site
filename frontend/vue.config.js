@@ -7,9 +7,15 @@ module.exports = {
         port: 8083,
         open: true,
         proxy: {
+            '/plugins': {
+                target: serverData.getServerURL(),
+                changeOrigin: true,
+                logLevel: "debug",
+            },
             '/api/v4': {
                 target: serverData.getServerURL(),
-                changeOrigin: true
+                changeOrigin: true,
+                logLevel: "debug",
             },
             '/api/v1': {
                 target: serverData.getMbotcURL(),
