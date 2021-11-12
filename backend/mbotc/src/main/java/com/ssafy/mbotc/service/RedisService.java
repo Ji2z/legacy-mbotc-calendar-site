@@ -21,7 +21,6 @@ public class RedisService {
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 	
-	JSONParser parser = new JSONParser();
 	
 	/**
 	 * Redis에 저장되어 있는 userSetting을 갖고온다.
@@ -35,6 +34,7 @@ public class RedisService {
 		if(!redisTemplate.hasKey(token))
 			return null;
 		try {
+			JSONParser parser = new JSONParser();
 			System.out.println("~~redis~~ 토큰 값: "+token);
 			String valS = value.get(token).toString();
 			System.out.println("~~redis~~ 파싱 값: "+ parser.parse(valS).toString()+"123");
