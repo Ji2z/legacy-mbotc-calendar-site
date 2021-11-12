@@ -46,10 +46,10 @@ class Plugin {
         );
         registry.registerPostDropdownMenuAction(
             <div>
-                {'Create MBotC Notice'}
+                {'Create MBotC Notification'}
             </div>,
             (postId) => {
-                var requestUrl = getPluginServerRoute(store.getState()) + '/api/v1/create-notice-with-button';
+                var requestUrl = getPluginServerRoute(store.getState()) + '/api/v1/create-notification-with-button';
                 this.sendRequest(postId, requestUrl);
             },
         );
