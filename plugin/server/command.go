@@ -73,12 +73,12 @@ func (p *Plugin) help(commandArgs *model.CommandArgs) *model.CommandResponse {
 		"* `/mbotc create` - Create a new Notification with dialog " +
 		" (or [here](+ " + clientUrl + ") : you can upload files)\n" +
 		"* `/mbotc today` - Will list the notifications you subscribed\n"
-	p.postCommandResponse(commandArgs, helpText)
+	p.postEphemeralResponse(commandArgs.UserId, commandArgs.ChannelId, helpText)
 	return &model.CommandResponse{}
 }
 
 func executeCreate(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs, args ...string) *model.CommandResponse {
-	err := checkAuthentication(p, commandArgs)
+	err := checkAuthentication(p, commandArgs.UserId, commandArgs.ChannelId)
 	if err == nil {
 		p.openCreateDialog(commandArgs)
 	}
@@ -86,7 +86,7 @@ func executeCreate(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs,
 }
 
 func executeToday(p *Plugin, c *plugin.Context, commandArgs *model.CommandArgs, args ...string) *model.CommandResponse {
-	err := checkAuthentication(p, commandArgs)
+	err := checkAuthentication(p, commandArgs.UserId, commandArgs.ChannelId)
 	if err == nil {
 		getNotificationList(p, commandArgs)
 	}
@@ -117,16 +117,6 @@ func getAutocompleteData() *model.AutocompleteData {
 	return mbotcAutocomplete
 }
 
-// Post Message to Channel with Bot
-func (p *Plugin) postCommandResponse(args *model.CommandArgs, text string) {
-	post := &model.Post{
-		UserId:    p.botUserID,
-		ChannelId: args.ChannelId,
-		Message:   text,
-	}
-	_ = p.API.SendEphemeralPost(args.UserId, post)
-}
-
 // Open form dialog for /mbotc create
 func (p *Plugin) openCreateDialog(args *model.CommandArgs) {
 	siteURL := *p.API.GetConfig().ServiceSettings.SiteURL
@@ -153,19 +143,19 @@ func getDialog() model.Dialog {
 			Type:        "text",
 			Placeholder: "YYYY-MM-DD hh:mm",
 			Default:     currentTime.Format("2006-01-02 15:04"),
-			HelpText:    "e.g. 2021-11-05 09:00",
+			HelpText:    "e.g. 2006-01-02 15:04",
 		}, {
 			DisplayName: "End date",
 			Name:        "end_time",
 			Type:        "text",
 			Optional:    true,
 			Placeholder: "YYYY-MM-DD hh:mm",
-			HelpText:    "e.g. 2021-11-05 18:00",
+			HelpText:    "e.g. 2006-01-02 15:04",
 		}, {
 			DisplayName: "Message",
 			Name:        "message",
 			Type:        "textarea",
-			Placeholder: "Write what you want to notification",
+			Placeholder: "Write notification message",
 			HelpText:    "Write in Markdown syntax.",
 		}},
 		SubmitLabel:    "Submit",

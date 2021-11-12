@@ -5,7 +5,19 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+
+	"github.com/mattermost/mattermost-server/v5/model"
 )
+
+// Post Message to Channel with Bot
+func (p *Plugin) postEphemeralResponse(userId string, channelId string, message string) {
+	post := &model.Post{
+		UserId:    p.botUserID,
+		ChannelId: channelId,
+		Message:   message,
+	}
+	_ = p.API.SendEphemeralPost(userId, post)
+}
 
 // Convert multipart file to []byte
 func ConvertFileToByte(file multipart.File) ([]byte, error) {

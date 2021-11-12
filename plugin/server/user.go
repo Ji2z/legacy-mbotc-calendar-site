@@ -4,22 +4,21 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/pkg/errors"
 )
 
-func checkAuthentication(p *Plugin, commandArgs *model.CommandArgs) error {
-	resp, err := checkUserExists(p, commandArgs.UserId)
+func checkAuthentication(p *Plugin, userId string, channelId string) error {
+	resp, err := checkUserExists(p, userId)
 
 	if err != nil {
-		p.postCommandResponse(commandArgs, "Oops! Something wrong")
+		p.postEphemeralResponse(userId, channelId, "Oops! Something wrong")
 		return err
 	}
 
 	if resp.StatusCode == 404 {
-		var text = "Please login first to use MBotC service.\n" +
+		var message = "Please login first to use MBotC service.\n" +
 		"[Login here](" + clientUrl + ")"
-		p.postCommandResponse(commandArgs, text)
+		p.postEphemeralResponse(userId, channelId, message)
 		return errors.New("USER NOT FOUND")
 	}
 
