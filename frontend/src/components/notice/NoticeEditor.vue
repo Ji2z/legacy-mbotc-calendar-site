@@ -18,7 +18,7 @@
                         </select>
                     </div> 
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-1">
                     <div class="flex justify-start items-center">
                         <p class="text-xl font-bold mr-4">Date</p>
                         <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
@@ -33,6 +33,16 @@
                         <input type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font"  v-model="state.startTime" :min="state.today">
                             <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
                         <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font" v-model="state.endTime">
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="flex justify-start items-center">
+                        <p class="text-xl font-bold mr-4">File Upload</p>
+                        <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold py-2 px-4 rounded cursor-pointer">upload</label>
+                        <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
+                    </div>
+                    <div class="flex justify-start items-center pt-3">
+                        {{state.fileList.length}} files in List
                     </div>
                 </div>
             </div>
@@ -67,7 +77,9 @@ export default {
         const store = useStore()
         const mdEditor = ref(null)
         const mdEditorWraper = ref(null)
+        const fileRoot = ref(null)
         const state = reactive({
+            fileList: [],
             termToggle: false,
             oldToggle: false,
             clickable: false,
@@ -90,6 +102,20 @@ export default {
                 teamName: "",
             }],
         })
+        const uploadFile = ()=>{
+            //console.log("upload")
+            let file = fileRoot.value.files[0]
+            if((file.size / (1024*1024)) > 50){
+                console.log("------------>",file.size / (1024*1024))
+                notify({
+                    title: "From MBOTC 😥",
+                    text: "Sorry, File is too big. We can accept files less than 50MB",
+                    type: "warn"
+                });
+            }else{
+                state.fileList.push(file)
+            }
+        }
         const validation = ()=>{
             if(!state.startTime){
                 return false
@@ -115,13 +141,19 @@ export default {
                     formData.append("end_time", "")
                 }
                 formData.append("message", state.mountEditor.getMarkdown())
+                state.fileList.forEach(file => {
+                    console.log(file)
+                    formData.append("file", file)
+                });
+                // console.log(fileRoot.value.files)
+                // formData.append("file", fileRoot.value.files)
                 let payload = {
                     token: store.getters['root/getToken'],
                     notice: formData
                 }
                 store.dispatch('root/uploadNotice', payload)
                 .then((result)=>{
-                    console.log("upload notice")
+                    //console.log("upload notice")
                     console.log(result)
                 })
                 .catch((err)=>{
@@ -174,8 +206,8 @@ export default {
             //console.log(state.today)
         }
         init()
-        return { state, submit, mdEditor, mdEditorWraper }
-    }
+        return { state, submit, mdEditor, mdEditorWraper, fileRoot, uploadFile }
+    },
 };
 </script>
 
