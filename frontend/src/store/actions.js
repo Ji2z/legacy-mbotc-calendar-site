@@ -128,6 +128,13 @@ export function getNoticeDetail({state}, payload){
     return $axios.get(url, {headers});
 }
 
+export function getNoticeSearch({state}, payload){
+    const url = '/api/v1/notification/search?word=' + payload.word
+    const headers = { "auth": payload.token, "Content-Type" : "application/json;charset=utf-8" }
+    
+    return $axios.get(url, {headers});
+}
+
 // export function uploadNotice({state}, payload){
 //     const url = '/api/v1/notification'
 //     const headers = {
