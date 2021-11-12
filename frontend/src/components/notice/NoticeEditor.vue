@@ -10,11 +10,11 @@
                         <p class="text-xl font-bold">Destination</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <select class="form-select block w-full mr-3 border-b-2 p-1"  v-model="state.teamId">
-                            <option value="0" disabled selected>Choose Team</option>
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.teamId=0">
+                            <option v-for="team in state.teams" :key="team.id" :value="team.id">{{team.teamName}}</option>
                         </select>
-                        <select class="form-select block w-full mr-3 border-b-2 p-1"  v-model="state.channelId">
-                            <option value="0" disabled selected>Choose Channel</option>
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.channelId">
+                            <option v-for="channel in state.teams[state.teamId].subscribe" :key="channel.channelId" :value="channel.channelId">{{channel.channelName}}</option>
                         </select>
                     </div> 
                 </div>
@@ -27,12 +27,12 @@
                                 <label for="termToggle" :class="{'bg-main':state.termToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                             </div>
                         </div>
-                        <p class="text-main text-sm">term</p>
+                        <p class="text-font text-sm">term</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <input type="datetime-local" class="border-2 rounded-xl p-1"  v-model="state.startTime" :min="state.today">
-                            <p v-if="state.termToggle" class="text-main text-sm mx-4">-</p>
-                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1" v-model="state.endTime">
+                        <input type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font"  v-model="state.startTime" :min="state.today">
+                            <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font" v-model="state.endTime">
                     </div>
                 </div>
             </div>
@@ -50,9 +50,11 @@
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import Editor from "@toast-ui/editor";
+import { getTime } from '../../common/lib/function.js';
 // import abc from '@/components/'
 import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { notify } from '@kyvg/vue3-notification'
 // import { useRouter } from 'vue-router'
 
 export default {
@@ -72,37 +74,66 @@ export default {
             mountEditor: null,
             startTime: "",
             endTime: "",
-            teamId: "0",
+            teamId: 0,
             channelId: "0",
             teamList: "",
             channelList: "",
             today: "",
+            teams:[{
+                color: "#FFFFFF",
+                id: 0,
+                open: false,
+                subscribe: [
+                    {channelId: '123', channelName: ' ', show: true},
+                ],
+                teamId: "",
+                teamName: "",
+            }],
         })
+        const validation = ()=>{
+            if(!state.startTime){
+                return false
+            }else if(state.channelId == 0){
+                return false
+            }else if(state.mountEditor.getMarkdown().length == 0){
+                return false
+            }
+            return true
+        }
         const submit = ()=>{
             //console.log(state.mountEditor.getMarkdown())
-
-            let timeZone = new Date().getTimezoneOffset()/60;
-            console.log(timeZone)
-            let payload = {
-                token: store.getters['root/getToken'],
-                notice:{
-                    "channel_id": state.channelId,
-                    "post_id": "",
-                    "user_id": store.getters['root/getUserId'],
-                    "start_time": state.startTime + ":00.000",
-                    "end_time": state.endTime + ":00.000",
-                    "message": state.mountEditor.getMarkdown(),
-                    "file_ids": []
+            //let timeZone = new Date().getTimezoneOffset()/60;
+            //console.log(timeZone)
+            if(validation()){
+                let formData = new FormData()
+                formData.append("channel_id", state.channelId,)
+                formData.append("user_id", store.getters['root/getUserId'])
+                formData.append("start_time", getTime(state.startTime))
+                if(state.termToggle){
+                    formData.append("end_time", getTime(state.endTime))
+                }else{
+                    formData.append("end_time", "")
                 }
+                formData.append("message", state.mountEditor.getMarkdown())
+                let payload = {
+                    token: store.getters['root/getToken'],
+                    notice: formData
+                }
+                store.dispatch('root/uploadNotice', payload)
+                .then((result)=>{
+                    console.log("upload notice")
+                    console.log(result)
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            }else{
+                notify({
+                    title: "From MBOTC 😉",
+                    text: "Please fill in the blanks.",
+                    type: "warn"
+                });
             }
-            store.dispatch('root/uploadNotice', payload)
-            .then((result)=>{
-                console.log("upload notice")
-                console.log(result)
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
         }
         onMounted(()=>{
             let wraperHeight = mdEditorWraper.value.clientHeight + 'px'
@@ -123,6 +154,23 @@ export default {
             }else{
                 state.today = state.today + today.getDate()
             }
+            let payload = store.getters['root/getUserData']
+            store.dispatch('root/getUserSetting', payload)
+            .then((result)=>{
+                state.teams = []
+                //console.log(result)
+                let index = 0;
+                result.data.teams.forEach(data => {
+                    let team = data
+                    team.id = index
+                    team.open = false,
+                    index++
+                    state.teams.push(team)
+                }); 
+                //console.log(state.teams)
+            })
+            .catch((err)=>{
+            })
             //console.log(state.today)
         }
         init()

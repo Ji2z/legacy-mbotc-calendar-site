@@ -23,6 +23,7 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 export default {
     name: 'MyTheme',
@@ -59,6 +60,11 @@ export default {
             //console.log(id)
             state.selected = id
             store.commit('root/setTheme', state.themes[state.selected].theme)
+            notify({
+                title: "From MBOTC 😉",
+                text: "Theme has been changed temporarily, Please press SAVE before leave this page!",
+                type: "warn"
+            });
         }
         const init = ()=>{
 

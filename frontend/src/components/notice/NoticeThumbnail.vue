@@ -6,7 +6,7 @@
         <div class="text-xs overflow-y-auto whitespace-normal p-2">
             {{notice.content}}
         </div>
-        <div class="absolute bottom-2 right-2 w-5 h-5 border-4 border-label cursor-pointer" @click="check">
+        <div class="absolute bottom-2 right-2 w-5 h-5 border-4 border-label cursor-pointer" @click.stop="check">
             <img v-if="notice.check" class="transform scale-150" src="@/assets/check.png" alt="check">
         </div>
     </div>
@@ -48,7 +48,6 @@ export default {
             }else{
                 emit("unchecked")
             }
-            props.notice.check = !props.notice.check
         }
         return { check }
     }

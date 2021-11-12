@@ -22,6 +22,7 @@ import CalendarTitle from '@/components/calendar/CalendarTitle.vue'
 import NoticeContent from '@/components/notice/NoticeContent.vue'
 import NoticeProgress from '@/components/notice/NoticeProgress.vue'
 import NoticeThumbnail from '@/components/notice/NoticeThumbnail.vue'
+import { getTime } from '../../common/lib/function.js';
 
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
@@ -79,13 +80,13 @@ export default {
                     let notice = {
                         id: index,
                         title: node.content.substring(0, 10),
-                        channel: node.channel.team.name + "/" + node.channel.name,
+                        channel: node.channel.team.name + "/ " + node.channel.name,
                         content: node.content,
                         files: node.files,
                         check: false, 
                         user: node.user.userName,
-                        startTime: node.startTime,
-                        endTime: node.endTime,
+                        startTime: getTime(node.startTime),
+                        endTime: getTime(node.endTime),
                     }
                     index ++
                     let data = localStorage.getItem(state.detailDate)

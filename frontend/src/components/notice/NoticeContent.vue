@@ -5,10 +5,10 @@
             <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">:{{notice.user}}</span>
         </div>
         <div>
-            <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}}   {{notice.endTime}}</span>
+            <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</span>
         </div>
         <div ref="mdViewerWraper" class="text-lg overflow-hidden p-4">
-            <div id="editor" ref="mdViewer"></div>
+            <div id="editor" ref="mdViewer" class="text-font"></div>
         </div>
     </div>
 </template>
