@@ -65,15 +65,27 @@ func (p *Plugin) httpCreateNotificationWithEditor(w http.ResponseWriter, r *http
 }
 
 // Create notification with more action button
-func (p *Plugin) httpCreateNotificationWithButton(w http.ResponseWriter, r *http.Request) (*http.Response, error) {
+func (p *Plugin) httpCreateNotificationWithButton(r *http.Request) {
 	var request struct {
 		PostId string `json:"post_id"`
+		UserId string `json:"user_id"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		fmt.Print("PostId Decoding Error: ", err)
 	}
 	post, err := p.API.GetPost(request.PostId)
+
+	if request.PostId != post.UserId {
+		message := fmt.Sprintf("Only post owner can create notification")
+		p.postEphemeralResponse(request.UserId, post.ChannelId, message)
+		return
+	}
+
+	authErr := checkAuthentication(p, post.UserId, post.ChannelId)
+	if authErr != nil {
+		return
+	}
 
 	loc, _ := time.LoadLocation(timezone)
 	currentTime := time.Now().In(loc)
@@ -106,7 +118,6 @@ func (p *Plugin) httpCreateNotificationWithButton(w http.ResponseWriter, r *http
 		p.API.AddReaction(reaction)
 		p.API.SendEphemeralPost(notification.UserId, resPost)
 	}
-	return resp, err
 }
 
 
@@ -201,6 +212,7 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notification Notification
 	attachment, err := asSlackAttachment(p, notification)
 	if err != nil {
 		fmt.Println("asSlackAttachment Error: ", err)
+		return
 	}
 	post.AddProp("attachments", attachment)
 

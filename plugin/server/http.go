@@ -22,7 +22,7 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 	case routeAPICreateNotificationWithEditor:
 		p.httpCreateNotificationWithEditor(w, r)
 	case routeAPICreateNotificationWithButton:
-		p.httpCreateNotificationWithButton(w, r)
+		p.httpCreateNotificationWithButton(r)
 
 	default:
 		http.Error(w, "Bad Request", http.StatusBadRequest)

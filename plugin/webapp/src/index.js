@@ -27,14 +27,8 @@ const getPluginServerRoute = (state) => {
 };
 
 class Plugin {
-    sendRequest(postId, requestUrl) {
-        axios.post(requestUrl, {post_id: postId})
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    sendRequest(postId, requestUrl, userId) {
+        axios.post(requestUrl, {post_id: postId, user_id: userId})
     }
     initialize(registry, store) {
         registry.registerChannelHeaderButtonAction(
@@ -50,7 +44,7 @@ class Plugin {
             </div>,
             (postId) => {
                 var requestUrl = getPluginServerRoute(store.getState()) + '/api/v1/create-notification-with-button';
-                this.sendRequest(postId, requestUrl);
+                this.sendRequest(postId, requestUrl, store.getState().entities.users.currentUserId);
             },
         );
     }
