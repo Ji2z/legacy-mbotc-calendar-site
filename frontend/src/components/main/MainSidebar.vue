@@ -1,6 +1,7 @@
 <template>
     <div class="h-screen">
-        <div class="h-1/5 fixed left-0 top-0">
+        <notifications position="top right"/>
+        <div class="h-1/5 fixed left-0 top-0" @click="onClickTop()">
             <img :src="state.logo[state.theme]" alt="logo" class="h-16 w-16 ml-4 mt-4">
         </div>
         <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
@@ -154,6 +155,7 @@
 import { reactive, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 import logo_0 from '@/assets/logo/logo_0.png'
 import logo_1 from '@/assets/logo/logo_1.png'
@@ -237,8 +239,18 @@ export default {
             store.commit('root/logout')
             router.push("/")
         }
+
+         const onClickTop = () => {
+            notify(
+                {
+                title: "From MBOTC 😎",
+                text: "Hello, nice to meet you 🤗",
+                type: "success"
+                });
+         }
+
         init()
-        return { state, clickNav, logout }
+        return { state, clickNav, logout, onClickTop }
     }
 };
 </script>

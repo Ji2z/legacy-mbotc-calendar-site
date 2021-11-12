@@ -15,10 +15,10 @@
         --text-main: #163172;
         --text-back: #F6F6F6;
 
-        --bg-first:;
-        --bg-second:;
-        --bg-third:;
-        --bg-most:;
+        --bg-first: #E2E5ED;
+        --bg-second: #A8B2CA;
+        --bg-third: #506595;
+        --bg-most: #163172;
 
         background-color: #F6F6F6;
     }
@@ -26,6 +26,7 @@
         --bg-main: #2C394B;
         --bg-back: #082032;
         --bg-panel: #334756;
+        --bg-side: #F6F6F6;
 
         --border-label: #2C394B;
 
@@ -33,10 +34,10 @@
         --text-main: #2C394B;
         --text-back: #082032;
         
-        --bg-first:;
-        --bg-second:;
-        --bg-third:;
-        --bg-most:;
+        --bg-first: #E2E5ED;
+        --bg-second: #A8B2CA;
+        --bg-third: #506595;
+        --bg-most: #163172;
 
         background-color: #082032;
     }
@@ -44,6 +45,7 @@
         --bg-main: #6F8788;
         --bg-back: #F6F6F6;
         --bg-panel: #FFFFFF;
+        --bg-side: #F6F6F6;
 
         --border-label: #6F8788;
 
@@ -51,10 +53,10 @@
         --text-main: #6F8788;
         --text-back: #F6F6F6;
 
-        --bg-first:;
-        --bg-second:;
-        --bg-third:;
-        --bg-most:;
+        --bg-first: #E2E5ED;
+        --bg-second: #A8B2CA;
+        --bg-third: #506595;
+        --bg-most: #163172;
 
         background-image: url('../../assets/bg/ssuk_night.gif');
         background-repeat: no-repeat;
@@ -64,6 +66,7 @@
         --bg-main: #14279B;
         --bg-back: #F6F6F6;
         --bg-panel: #FFFFFF;
+        --bg-side: #F6F6F6;
 
         --border-label: #14279B;
 
@@ -71,30 +74,31 @@
         --text-main: #14279B;
         --text-back: #F6F6F6;
 
-        --bg-first:;
-        --bg-second:;
-        --bg-third:;
-        --bg-most:;
+        --bg-first: #E2E5ED;
+        --bg-second: #A8B2CA;
+        --bg-third: #506595;
+        --bg-most: #163172;
 
         background-image: url('../../assets/bg/blue_night.png');
         background-repeat: no-repeat;
         background-size: cover;
     }
     .eclipse {
-        --bg-main: #FF8243;
+        --bg-main: #1C0C5B;
         --bg-back: #F6F6F6;
         --bg-panel: #FFFFFF;
+        --bg-side: #F6F6F6;
+        
+        --border-label: #1C0C5B;
 
-        --border-label: #FF8243;
-
-        --text-font: #FF8243;
-        --text-main: #FF8243;
+        --text-font: #1C0C5B;
+        --text-main: #1C0C5B;
         --text-back: #F6F6F6;
 
-        --bg-first:;
-        --bg-second:;
-        --bg-third:;
-        --bg-most:;
+        --bg-first: #E2E5ED;
+        --bg-second: #A8B2CA;
+        --bg-third: #506595;
+        --bg-most: #163172;
 
         background-image: url('../../assets/bg/eclipse.gif');
         background-repeat: no-repeat;

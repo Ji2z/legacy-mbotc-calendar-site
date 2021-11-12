@@ -13,6 +13,11 @@ const backgroundColor = {
   main: generateColorClass('bg-main'),
   back: generateColorClass('bg-back'),
   panel: generateColorClass('bg-panel'),
+  side: generateColorClass('bg-side'),
+  first: generateColorClass('bg-first'),
+  second: generateColorClass('bg-second'),
+  third: generateColorClass('bg-third'),
+  most: generateColorClass('bg-most'),
 }
 
 const borderColor = {

@@ -1,5 +1,5 @@
 <template>
-    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2">
+    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden">
         <div class="overflow-hidden">
             <span class="w-full font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
         </div>
