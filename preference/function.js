@@ -9,6 +9,10 @@ const getServerURL = () =>{
     return serverData.SERVER_URL
 }
 
+const getClientURL = () =>{
+    return serverData.CLIENT_URL
+}
+
 const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
@@ -19,5 +23,6 @@ const getDayPicker = (date)=>{
 
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
+exports.getClientURL = getClientURL;
 exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
