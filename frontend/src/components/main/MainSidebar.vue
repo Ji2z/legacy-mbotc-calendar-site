@@ -5,7 +5,7 @@
             <img :src="state.logo[state.theme]" alt="logo" class="h-16 w-16 ml-4 mt-4">
         </div>
         <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
-            <div class="h-20">
+            <div class="h-10">
 
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[0], 'text-main':state.nav[0], 'text-back':!state.nav[0]}" @click="clickNav(0)">
@@ -247,6 +247,8 @@ export default {
                 state.nav = [false,false,false,true,false]
             }else if(nowLocation === "/main/notice"){
                 state.nav = [false,false,true,false,false]
+            }else if(nowLocation === "/main/search"){
+                state.nav = [false,false,false,false,true]
             }else{
                 state.nav = [false,true,false,false,false]
             }

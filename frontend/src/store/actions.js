@@ -129,7 +129,7 @@ export function getNoticeDetail({state}, payload){
 }
 
 export function getNoticeSearch({state}, payload){
-    const url = '/api/v1/notification/search?' + payload.word
+    const url = '/api/v1/notification/search?word=' + payload.word
     const headers = { "auth": payload.token, "Content-Type" : "application/json;charset=utf-8" }
     
     return $axios.get(url, {headers});
