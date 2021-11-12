@@ -10,6 +10,7 @@ import CalendarBig from '@/components/calendar/CalendarBig.vue';
 import DetailPage from '@/components/main/DetailPage.vue';
 import NoticeEditor from '@/components/notice/NoticeEditor.vue';
 import MyPage from '@/components/my/MyPage.vue';
+import SearchPage from '@/components/main/SearchPage.vue';
 
 const routes = [
     {
@@ -27,6 +28,7 @@ const routes = [
             {path: "detail/:date", component: DetailPage , meta:{ loginRequired: true } },
             {path: "notice", component: NoticeEditor , meta:{ loginRequired: true } },
             {path: "myPage", component: MyPage , meta:{ loginRequired: true } },
+            {path: "search", component: SearchPage , meta:{ loginRequired: true } },
         ],
     },
     {

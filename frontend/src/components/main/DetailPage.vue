@@ -7,7 +7,7 @@
                     <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer"
                     @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, true)" @unchecked="changeChecked(notice.id, false)"/>
                 </div>
-                <notice-content class="h-3/5" :notice = state.chooseNotice />
+                <notice-content class="h-3/5" :notice ="state.chooseNotice"/>
             </div>
             <div class="col-span-1 h-full">
                 <notice-progress class="w-3/4 h-auto mx-auto" :data="state.data" :progress="state.progress"/>
