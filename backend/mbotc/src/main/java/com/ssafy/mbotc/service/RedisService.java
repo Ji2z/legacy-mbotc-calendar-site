@@ -35,6 +35,8 @@ public class RedisService {
 		if(!redisTemplate.hasKey(token))
 			return null;
 		try {
+			System.out.println("~~redis~~ 토큰 값: "+token);
+			System.out.println("~~redis~~ 파싱 값: "+ parser.parse(value.get(token)).toString());
 			JSONObject content = (JSONObject) parser.parse(value.get(token));
 			System.out.println(content.toString());
 			userSetting.setTheme((String) content.get("theme"));
