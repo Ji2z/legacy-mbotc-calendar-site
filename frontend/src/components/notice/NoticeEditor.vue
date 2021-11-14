@@ -1,6 +1,6 @@
 <template>
-    <div class="w-full h-screen px-32 pt-12">
-        <div class="bg-panel h-5/6 rounded-xl shadow-2xl p-8">
+    <div class="h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
+        <div class="bg-panel rounded-xl shadow-2xl p-8">
             <div class="header pb-8">
                 <span class="text-4xl font-bold text-main ">Create Alert</span>
             </div>
@@ -41,15 +41,21 @@
                         <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold py-2 px-4 rounded cursor-pointer">upload</label>
                         <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
                     </div>
-                    <div class="flex justify-start items-center pt-3">
-                        {{state.fileList.length}} files in List
+                    <div class="flex justify-start items-center pt-3 relative">
+                        <p  @mouseover="showList(true)" @mouseleave="showList(false)">{{state.fileList.length}} files in List</p>
+                        <!-- <div v-if="state.listOpen" class="absolute left-0 bottom-0 w-20 overflow-x-hidden bg-panel z-40">
+                            <div v-for="file in state.fileList" :key="file.name">
+                                {{file.name}} <br>
+                                {{(file.size/1024)}}KB
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-            <div ref="mdEditorWraper" class="w-11/12 h-2/3 bg-back text-font mx-auto mt-5">
+            <div ref="mdEditorWraper" class="w-11/12 bg-back text-font mx-auto mt-5" style="height:60vh">
                 <div id="editor" ref="mdEditor"></div>
             </div>
-            <div class="w-full flex justify-center">
+            <div class="w-full flex justify-center mt-5">
                 <button class="bg-back text-main px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click = "submit">
                     Create Alert to MatterMost
                 </button>
@@ -80,6 +86,7 @@ export default {
         const fileRoot = ref(null)
         const state = reactive({
             fileList: [],
+            listOpen: false,
             termToggle: false,
             oldToggle: false,
             clickable: false,
@@ -102,6 +109,11 @@ export default {
                 teamName: "",
             }],
         })
+        const showList = (flag)=>{
+            // console.log(flag)
+            // console.log(state.fileList)
+            state.listOpen = flag
+        }
         const uploadFile = ()=>{
             //console.log("upload")
             let file = fileRoot.value.files[0]
@@ -206,7 +218,7 @@ export default {
             //console.log(state.today)
         }
         init()
-        return { state, submit, mdEditor, mdEditorWraper, fileRoot, uploadFile }
+        return { state, submit, mdEditor, mdEditorWraper, fileRoot, uploadFile, showList }
     },
 };
 </script>

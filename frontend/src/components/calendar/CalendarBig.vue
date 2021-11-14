@@ -49,16 +49,16 @@
                     <tbody>
                         <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
                             <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
-                                <div class="flex flex-col w-full h-32" @click="goDetail(day.num)">
-                                    <div class="top h-4 w-full mb-2">
+                                <div class="flex flex-col h-32" @click="goDetail(day.num)">
+                                    <div class="top h-4 mb-2">
                                         <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-bold">{{day.num}}</span>
                                         <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
                                         <span v-else class="text-gray-400">{{day.num}}</span>
                                     </div>
-                                    <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
-                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
+                                    <div class="bottom flex-grow py-1 cursor-pointer overflow-auto no-scrollbar">
+                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70" :style="{'background':node.color}">
                                             <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                            <p class="ml-2 font-bold opacity-100 overflow-hidden">{{node.title}}</p>
+                                            <p class="ml-1 text-font text-xs font-bold opacity-100 overflow-clip overflow-hidden">{{node.title}}</p>
                                         </div>
                                     </div>
                                 </div>

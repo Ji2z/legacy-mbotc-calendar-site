@@ -17,8 +17,8 @@
                                 </p>
                             </div>
                             <div class="flex justify-end items-center z-30">
-                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click="changeColor(team.id)">
-                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor"/>
+                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click.stop="changeColor(team.id)">
+                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false"/>
                                 </div>
                                 <div>
                                     <svg class="h-5 w-5 bg-panel" fill="none" viewBox="0 0 24 24" stroke="currentColor">

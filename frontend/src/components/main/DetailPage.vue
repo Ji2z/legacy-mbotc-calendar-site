@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-screen pt-12">
+    <div class="w-full h-screen overflow-y-auto no-scrollbar pt-12">
         <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>

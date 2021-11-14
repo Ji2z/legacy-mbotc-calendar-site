@@ -1,11 +1,12 @@
 <template>
-    <div class="w-32 h-40 p-2 bg-panel border-2 border-label rounded-lg absolute left-1/2 top-1/2 inset-0">
-        <div class="grid grid-cols-3 gap-2">
+    <div class="w-36 h-40 p-2 bg-panel border-2 border-label rounded-lg absolute left-1/2 top-1/2">
+        <div class="w-32 grid grid-cols-4 gap-2">
             <div v-for="color in palette" :key="color.id" class="w-5 h-5 cursor-pointer rounded-sm" :style="{ 'background-color': `#${ color.hex }` }" @click="changeColor(color.hex)"></div>
         </div>
         <div class="flex justify-between mt-2">
             #<input type="text" v-model="state.color" :style="{ 'background-color': `#${ state.color }`}" class="w-16">
-            <button class="bg-back text-main font-bold" @click.stop="save">save</button>
+            <button class="text-main font-bold" @click.stop="save">save</button>
+            <button class="text-main font-bold" @click.stop="close">x</button>
         </div>
     </div>
 </template>
@@ -31,18 +32,22 @@ export default {
     },
     setup(props, {emit}){
         const palette = [
-            {hex : "FF0000", id : 0},
-            {hex : "800000", id : 1},
-            {hex : "FFFF00", id : 2},
-            {hex : "808000", id : 3},
-            {hex : "00FF00", id : 4},
-            {hex : "008000", id : 5},
-            {hex : "00FFFF", id : 6},
-            {hex : "008080", id : 7},
-            {hex : "0000FF", id : 8},
-            {hex : "000080", id : 9},
-            {hex : "FF00FF", id : 10},
-            {hex : "800080", id : 11},
+            {hex : "EA5455", id : 0},
+            {hex : "FF8243", id : 1},
+            {hex : "F2F013", id : 2},
+            {hex : "2FDD92", id : 3},
+            {hex : "2F86A6", id : 4},
+            {hex : "3F72AF", id : 5},
+            {hex : "9C19E0", id : 6},
+            {hex : "FFB6B9", id : 7},
+            {hex : "1FAB89", id : 8},
+            {hex : "F9ED69", id : 9},
+            {hex : "3F72AF", id : 10},
+            {hex : "F67280", id : 11},
+            {hex : "9896F1", id : 8},
+            {hex : "FF5722", id : 9},
+            {hex : "00A8CC", id : 10},
+            {hex : "005691", id : 11},
         ]
         const state = reactive({
             color: props.color.substring(1,8)
@@ -53,7 +58,10 @@ export default {
         const save = ()=>{
             emit("saveColor", {color:state.color, id:props.id})
         }
-        return { palette, state, changeColor, save }
+        const close = ()=>{
+            emit("close")
+        }
+        return { palette, state, changeColor, save, close }
     }
 };
 </script>
