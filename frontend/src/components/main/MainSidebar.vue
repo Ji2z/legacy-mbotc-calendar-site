@@ -100,6 +100,16 @@
                 </svg>
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[3], 'text-main':state.nav[3], 'text-back':!state.nav[3]}" @click="clickNav(3)">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 44 44" preserveAspectRatio="xMidYMid meet"
+                class="fill-current mx-auto mt-5 cursor-pointer">
+                    <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
+                    7.32075 25.3836 0 16.3522 0C7.32075 0 0 7.32075 0 16.3522C0 25.3836 7.32075 32.7044 16.3522 32.7044C20.4025 
+                    32.7044 24.1258 31.2201 26.9937 28.7547L27.673 29.4591V31.4465L40.2516 44L44 40.2516L31.4465 27.673V27.673ZM16.3522 
+                    27.673C10.0881 27.673 5.03145 22.6164 5.03145 16.3522C5.03145 10.0881
+                    10.0881 5.03145 16.3522 5.03145C22.6164 5.03145 27.673 10.0881 27.673 16.3522C27.673 22.6164 22.6164 27.673 16.3522 27.673Z"/>
+                </svg>
+            </div>
+            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[4], 'text-main':state.nav[4], 'text-back':!state.nav[4]}" @click="clickNav(4)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -134,16 +144,6 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[4], 'text-main':state.nav[4], 'text-back':!state.nav[4]}" @click="clickNav(4)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 44 44" preserveAspectRatio="xMidYMid meet"
-                class="fill-current mx-auto mt-5 cursor-pointer">
-                    <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
-                    7.32075 25.3836 0 16.3522 0C7.32075 0 0 7.32075 0 16.3522C0 25.3836 7.32075 32.7044 16.3522 32.7044C20.4025 
-                    32.7044 24.1258 31.2201 26.9937 28.7547L27.673 29.4591V31.4465L40.2516 44L44 40.2516L31.4465 27.673V27.673ZM16.3522 
-                    27.673C10.0881 27.673 5.03145 22.6164 5.03145 16.3522C5.03145 10.0881
-                    10.0881 5.03145 16.3522 5.03145C22.6164 5.03145 27.673 10.0881 27.673 16.3522C27.673 22.6164 22.6164 27.673 16.3522 27.673Z"/>
-                </svg>
-            </div>
             <div class="absolute h-10 text-back bottom-0">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current ml-7 cursor-pointer" @click="logout">
@@ -165,7 +165,6 @@
 import { reactive, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { notify } from '@kyvg/vue3-notification'
 
 import logo_0 from '@/assets/logo/logo_0.png'
 import logo_1 from '@/assets/logo/logo_1.png'
@@ -213,12 +212,12 @@ export default {
                 case 3:
                     state.nav = [false,false,false,true,false]
                     emit("clickOther")
-                    router.push("/main/myPage")
+                    router.push("/main/search")
                     break;
                 case 4:
                     state.nav = [false,false,false,false,true]
                     emit("clickOther")
-                    router.push("/main/search")
+                    router.push("/main/myPage")
                     break;
             }
 
@@ -244,11 +243,11 @@ export default {
             if(nowLocation === "/main"){
                 state.nav = [true,false,false,false,false]
             }else if(nowLocation === "/main/myPage"){
-                state.nav = [false,false,false,true,false]
+                state.nav = [false,false,false,false,true]
             }else if(nowLocation === "/main/notice"){
                 state.nav = [false,false,true,false,false]
             }else if(nowLocation === "/main/search"){
-                state.nav = [false,false,false,false,true]
+                state.nav = [false,false,false,true,false]
             }else{
                 state.nav = [false,true,false,false,false]
             }
@@ -259,21 +258,14 @@ export default {
         }
 
         const onClickTop = () => {
-            if(state.angry > 10){
-                state.angry = 0
-                notify({
-                    title: "From MBOTC 🤨",
-                    text: "Hello...? 😑",
-                    type: "warn"
-                });
+            let nowLocation = router.currentRoute.value.fullPath
+            if(nowLocation === "/main"){
+                state.nav = [true,false,false,false,false]
+                emit("clickOther")
+                router.push("/")
             }else{
-                notify({
-                    title: "From MBOTC 😎",
-                    text: "Hello, nice to meet you 🤗",
-                    type: "success"
-                });
+                router.push("/main")
             }
-            state.angry++
         }
 
         init()

@@ -12,9 +12,9 @@
         <div v-if="!state.hasCookie">
             <div>
                 <!-- <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck"> -->
-                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url" @change="validationCheck">
-                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
-                <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
+                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Server URL" v-model="state.url" @change="validationCheck">
+                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
+                <input type="password" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Password" v-model="state.password" @change="validationCheck" @keyup.enter="submit">
             </div>
             <div class="flex justify-between p-8">
                 <div>
@@ -160,7 +160,6 @@ export default {
             let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
             let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
             return (userId && csrf)
-
         }
         init()
         return { state, submit, validationCheck, comeBack }

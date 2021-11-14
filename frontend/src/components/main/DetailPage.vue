@@ -80,7 +80,7 @@ export default {
                     let notice = {
                         id: index,
                         title: node.content.substring(0, 10),
-                        channel: node.channel.team.name + "/ " + node.channel.name,
+                        channel: node.channel.team.name + " / " + node.channel.name,
                         content: node.content,
                         files: node.files,
                         check: false, 
