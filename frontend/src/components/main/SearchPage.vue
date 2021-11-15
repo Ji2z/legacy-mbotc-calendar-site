@@ -38,6 +38,9 @@
                 </div>
             </div>
         </div>
+        <div v-else class="w-full h-64 text-font text-4xl align-middle text-center mt-10">
+            No Search Results.
+        </div>
         <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div class="flex justify-end">
                 <button class="text-main bg-panel" @click.stop="state.open=false">x&nbsp;Close</button>

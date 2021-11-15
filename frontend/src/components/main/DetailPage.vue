@@ -46,8 +46,8 @@ export default {
             notices:[
                 {
                     id:0,
-                    title : "테스트 공지",
-                    channel : " ",
+                    title : " ",
+                    channel : "No Result",
                     content : " ",
                     files: "",
                     check : false, 
@@ -100,6 +100,9 @@ export default {
                     }
                     state.notices.push(notice)
                 });
+                if(state.notices.length > 0){
+                    state.chooseNotice = state.notices[0]
+                }
                 countChecked()
             })
             .catch((err)=>{

@@ -5,10 +5,10 @@
         </div>
         <div class="bg-panel w-full h-1/2 rounded-xl shadow-2xl p-8 border-l-8 border-label">
             <div class="flex justify-end">
-                <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
+                <button class="bg-back text-main font-bold border-2 border-label px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
             </div>
             <div class="grid grid-cols-2 gap-4 w-full">
-                <div class="overflow-y-auto p-4">
+                <perfect-scrollbar class="h-56 overflow-y-auto p-4">
                     <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label cursor-pointer text-font" @click="selectTeam(team.id)">
                         <div class="flex justify-between">
                             <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
@@ -18,7 +18,7 @@
                             </div>
                             <div class="flex justify-end items-center z-30">
                                 <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click.stop="changeColor(team.id)">
-                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false"/>
+                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
                                 </div>
                                 <div>
                                     <svg class="h-5 w-5 bg-panel" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -28,12 +28,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </perfect-scrollbar>
                 <div class="col-span-1">
                     <div>
                         <p class="bg-panel">{{state.teams[state.selectedTeam].teamName}}</p><br/>
                     </div>
-                    <div class="bg-back overflow-y-auto rounded-xl shadow-inner p-4">
+                    <div class="bg-back h-44 overflow-y-auto rounded-xl shadow-inner p-4">
                         <div v-for="channel in state.teams[state.selectedTeam].subscribe" :key="channel.channelId" class="m-2 p-2 bg-panel text-font rounded-xl">
                             <div class="flex justify-between">
                                 <p class="text-xl overflow-x-hidden">
@@ -58,7 +58,7 @@
 import MyPalette from '@/components/my/MyPalette.vue'
 import { notify } from '@kyvg/vue3-notification'
 // import abc from '@/components/'
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
@@ -67,8 +67,13 @@ export default {
     components: {
         MyPalette
     },
-
-    setup(){
+    props:{
+        saveFlag:{
+            type: Boolean,
+            default: false,
+        }
+    },
+    setup(props){
         const store = useStore()
         const state = reactive({
             teams:[{
@@ -81,7 +86,8 @@ export default {
                 teamId: "",
                 teamName: "",
             }],
-            selectedTeam: 0
+            selectedTeam: 0,
+            paletteOpen: false,
         })
         const init = ()=>{
             let payload = store.getters['root/getUserData']
@@ -107,17 +113,21 @@ export default {
         }
         const changeColor = (id)=>{
             //console.log("press")
-            state.teams[id].open = true
+            if(!state.paletteOpen){
+                state.teams[id].open = true
+                state.paletteOpen = true
+            }
         }
         const saveColor = (data)=>{
             state.teams[data.id].color = '#' + data.color
             //console.log(state.teams[data.id].open)
             state.teams[data.id].open = false
             //console.log(state.teams[data.id].open)
+            state.paletteOpen = false
             notify({
                 title: "From MBOTC 😉",
-                text: "Color changed successful!",
-                type: "success"
+                text: "Color has been changed temporarily, Please press SAVE before leave this page!",
+                type: "warn"
             });
         }
         const save = ()=>{
@@ -137,8 +147,6 @@ export default {
             }); 
             store.dispatch('root/setUserSetting', payload)
             .then((result)=>{
-                //console.log(result)
-                //state.teams 에 넣고 위의 v-for와 매칭
                 notify({
                     title: "From MBOTC 😉",
                     text: "Setting saved successful!",
@@ -153,6 +161,10 @@ export default {
                 });
             })
         }
+        watch(()=> props.saveFlag, ()=>{
+            console.log("테마로부터 event")
+            save()
+        })
         init()
         return { state, selectTeam, changeColor, save, saveColor }
     }
