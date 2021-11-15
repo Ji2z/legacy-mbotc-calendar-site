@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-screen pt-12">
+    <div class="w-full h-screen overflow-y-auto no-scrollbar pt-12">
         <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
@@ -80,7 +80,7 @@ export default {
                     let notice = {
                         id: index,
                         title: node.content.substring(0, 10),
-                        channel: node.channel.team.name + "/ " + node.channel.name,
+                        channel: node.channel.team.name + " / " + node.channel.name,
                         content: node.content,
                         files: node.files,
                         check: false, 
@@ -169,11 +169,4 @@ export default {
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar{
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
 </style>

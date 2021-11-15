@@ -3,11 +3,11 @@
         <div class="md:text-5xl sm:text-2xl font-bold">
             <p class="leading-relaxed">The Most</p>
             <p class="leading-relaxed">Beautiful and Convenient</p>
-            <p class="leading-relaxed">Mattermost bot Calendar 🗓</p>
+            <p class="leading-relaxed">Mattermost Bot Calendar 🗓</p>
             <br>
             <br>
             <br>
-            <p>MbotC 🤖</p>
+            <p>MBotC 🤖</p>
         </div>
         <welcome-login></welcome-login>
     </div>

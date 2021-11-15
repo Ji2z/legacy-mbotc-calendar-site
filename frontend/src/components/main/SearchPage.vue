@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="flex justify-center">
-            <input type="text" class="w-3/5 h-10 border-2 rounded-2xl mr-2" placeholder="  content word" v-model="state.word">
+            <input type="text" class="w-3/5 h-10 p-1 pl-4 border-2 rounded-2xl mr-2" placeholder="content word" v-model="state.word" @keyup.enter="search">
             <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="40px" height="40px"
             class="fill-current cursor-pointer" @click.stop="search">
                 <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
@@ -21,18 +21,20 @@
             </svg>
         </div>
         <div v-if="state.notices.length != 0" class="no-scrollbar w-3/4 mx-auto p-4">
-            <div v-for="notice in state.notices" :key="notice.postId" @click.stop="searchOne(notice.postId)" class="flex justify-between text-font bg-panel w-full rounded-xl shadow-2xl p-4 m-2">
-                <div class="w-1/4 overflow-hidden p-4 text-bold text-2xl">
-                    {{notice.channel}}
+            <div v-for="notice in state.notices" :key="notice.postId" @click.stop="searchOne(notice.postId)" class="text-font bg-panel w-full rounded-xl shadow-2xl p-4 m-2">
+                <div class = "font-bold flex justify-between">
+                    <div class="w-1/2 overflow-hidden p-4 text-bold text-2xl">
+                        {{notice.channel}}
+                    </div>
+                    <div class="w-1/4 overflow-hidden p-4 text-xl">
+                        {{notice.startTime}}
+                    </div>
+                    <div class="w-1/4 overflow-hidden p-4 text-xl">
+                        {{notice.user}}
+                    </div>
                 </div>
-                <div class="w-1/4 overflow-hidden p-4 text-xl">
+                <div class="w-full overflow-hidden p-4 text-xl whitespace-normal truncate">
                     {{notice.content}}
-                </div>
-                <div class="w-1/4 overflow-hidden p-4 text-xl">
-                    {{notice.startTime}}
-                </div>
-                <div class="w-1/4 overflow-hidden p-4 text-xl">
-                    {{notice.user}}
                 </div>
             </div>
         </div>
@@ -80,8 +82,8 @@ export default {
                 console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
-                        channel: node.channel.team.name + "/ " + node.channel.name,
-                        content: node.content.substring(0, 30),
+                        channel: node.channel.team.name + " / " + node.channel.name,
+                        content: node.content,
                         files: node.files,
                         user: node.user.userName,
                         startTime: getTime(node.startTime),
@@ -124,11 +126,4 @@ export default {
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar{
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
 </style>
