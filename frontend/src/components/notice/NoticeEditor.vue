@@ -66,6 +66,10 @@
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import Editor from "@toast-ui/editor";
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+
 import { getTime } from '../../common/lib/function.js';
 // import abc from '@/components/'
 import { reactive, ref, onMounted } from 'vue'
@@ -188,6 +192,8 @@ export default {
                 height: wraperHeight,
                 initialEditType: "markdown",
                 previewStyle: "vertical",
+                plugins: [colorSyntax],
+                theme: "dark"
             });
         })
         const init = ()=>{

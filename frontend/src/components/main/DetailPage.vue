@@ -3,10 +3,10 @@
         <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
-                <div class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap no-scrollbar content-end">
+                <perfect-scrollbar class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap content-end">
                     <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer"
                     @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, true)" @unchecked="changeChecked(notice.id, false)"/>
-                </div>
+                </perfect-scrollbar>
                 <notice-content class="h-3/5" :notice ="state.chooseNotice"/>
             </div>
             <div class="col-span-1 h-full">

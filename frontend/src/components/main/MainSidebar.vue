@@ -1,7 +1,7 @@
 <template>
     <div class="h-screen">
         <notifications position="top right"/>
-        <div class="h-1/5 fixed left-0 top-0" @click="onClickTop()">
+        <div class="h-1/5 fixed left-0 top-0" @click="clickNav(0)">
             <img :src="state.logo[state.theme]" alt="logo" class="h-16 w-16 ml-4 mt-4">
         </div>
         <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
@@ -257,19 +257,8 @@ export default {
             router.push("/")
         }
 
-        const onClickTop = () => {
-            let nowLocation = router.currentRoute.value.fullPath
-            if(nowLocation === "/main"){
-                state.nav = [true,false,false,false,false]
-                emit("clickOther")
-                router.push("/")
-            }else{
-                router.push("/main")
-            }
-        }
-
         init()
-        return { state, clickNav, logout, onClickTop }
+        return { state, clickNav, logout }
     }
 };
 </script>

@@ -2,7 +2,7 @@
     <div class="bg-panel rounded-xl shadow-lg p-8 m-4 text-font">
         <div class="overflow-hidden flex justify-between">
             <span class="w-5/6 h-10 text-3xl font-bold inline-block align-bottom overflow-hidden">{{notice.channel}}</span>
-            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">:{{notice.user}}</span>
+            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">{{notice.user}}</span>
         </div>
         <div>
             <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</span>
@@ -77,6 +77,7 @@ export default {
                 viewer: true,
                 height: wraperHeight,
                 initialValue: props.notice.content,
+                theme: 'dark',
             });
         })
         return { mdViewer, mdViewerWraper }

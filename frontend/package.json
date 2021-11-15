@@ -10,6 +10,7 @@
     "@j-t-mcc/vue3-chartjs": "^1.2.0",
     "@kyvg/vue3-notification": "^2.3.4",
     "@toast-ui/editor": "^3.1.1",
+    "@toast-ui/editor-plugin-color-syntax": "^3.0.2",
     "axios": "^0.23.0",
     "chart.js": "^3.6.0",
     "core-js": "^3.6.5",
@@ -18,6 +19,7 @@
     "vue-axios": "^3.3.7",
     "vue-chart-3": "^0.5.11",
     "vue-router": "^4.0.0-0",
+    "vue3-perfect-scrollbar": "^1.5.5",
     "vuex": "^4.0.0-0",
     "webstomp-client": "^1.2.6"
   },
