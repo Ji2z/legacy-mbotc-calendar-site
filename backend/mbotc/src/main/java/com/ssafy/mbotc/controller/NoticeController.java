@@ -312,8 +312,15 @@ public class NoticeController {
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);
 		String mattermostUrl = target.get().getUrl();
-
+		
+		Notice post = noticeService.findByNoticeId(postId);
+		
+		if(post.getUser().getId() != target.get().getId()) {
+			throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "YOUR NOT OWNER OF THIS POST");
+		}
+		
 		String DELETE_URL= mattermostUrl + "/api/v4/posts/"+ postId;
+
 		
 		try {
 			URL url = new URL(DELETE_URL);
