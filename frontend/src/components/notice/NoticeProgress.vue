@@ -9,7 +9,7 @@
 <script>
 // import abc from '@/components/'
 import { computed, defineComponent, reactive, ref } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -31,13 +31,17 @@ export default defineComponent({
         }
     },
     setup(props){
-        const chartRef = ref();
+        const store = useStore()
+        const colorSet = [
+            ["#163172","#FFFFFF"],["#2C394B","#082032"],["#6F8788","#F6F6F6"],["#14279B","#F6F6F6"],["#1C0C5B","#F6F6F6"]
+        ]
+        const chartRef = ref()
         const state = reactive({
             labels: ['Complete', 'Task'],
             datasets: [
                 {
                     data: props.data,
-                    backgroundColor: ['#40C459','#F6F6F6',],
+                    backgroundColor: colorSet[store.getters['root/getThemeId']],
                 },
             ],
         })

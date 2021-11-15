@@ -9,6 +9,10 @@ const getServerURL = () =>{
     return serverData.SERVER_URL
 }
 
+const getServerLock = () =>{
+    return serverData.SERVER_LOCK === "true"
+}
+
 const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
@@ -33,6 +37,7 @@ const getTime = (date)=>{
 
 exports.getServerData = getServerData;
 exports.getServerURL = getServerURL;
+exports.getServerLock = getServerLock;
 exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
 exports.getTitle = getTitle;

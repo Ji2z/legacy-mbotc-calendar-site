@@ -5,7 +5,7 @@
         </div>
         <div class="flex justify-between mt-2">
             #<input type="text" v-model="state.color" :style="{ 'background-color': `#${ state.color }`}" class="w-16">
-            <button class="text-main font-bold" @click.stop="save">save</button>
+            <button class="text-main font-bold" @click.stop="save">select</button>
             <button class="text-main font-bold" @click.stop="close">x</button>
         </div>
     </div>

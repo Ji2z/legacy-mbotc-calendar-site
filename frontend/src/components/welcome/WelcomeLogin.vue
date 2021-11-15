@@ -11,8 +11,7 @@
         </div>
         <div v-if="!state.hasCookie">
             <div>
-                <!-- <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck"> -->
-                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Server URL" v-model="state.url" @change="validationCheck">
+                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" :disabled="state.serverLock" placeholder="Server URL" v-model="state.url" @change="validationCheck">
                 <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
                 <input type="password" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Password" v-model="state.password" @change="validationCheck" @keyup.enter="submit">
             </div>
@@ -48,7 +47,8 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { getServerURL } from '../../common/lib/function.js'
+import { getServerURL, getServerLock } from '../../common/lib/function.js'
+import { notify } from '@kyvg/vue3-notification'
 
 export default {
     name: 'WelcomeLogin',
@@ -65,6 +65,7 @@ export default {
             loginToggle:false,
             clickable:false,
             hasCookie:false,
+            serverLock: getServerLock(),
             userData:{
                 token: "",
                 url: getServerURL(),
@@ -99,7 +100,11 @@ export default {
                     register(userData)
                 })
                 .catch((err)=>{
-
+                    notify({
+                        title: "From MBOTC 😅",
+                        text: "Check your server URL, Email and PW",
+                        type: "error"
+                    });
                 })
             }
         }

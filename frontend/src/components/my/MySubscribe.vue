@@ -56,6 +56,7 @@
 
 <script>
 import MyPalette from '@/components/my/MyPalette.vue'
+import { notify } from '@kyvg/vue3-notification'
 // import abc from '@/components/'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
@@ -113,6 +114,11 @@ export default {
             //console.log(state.teams[data.id].open)
             state.teams[data.id].open = false
             //console.log(state.teams[data.id].open)
+            notify({
+                title: "From MBOTC 😉",
+                text: "Color changed successful!",
+                type: "success"
+            });
         }
         const save = ()=>{
             let payload = {
@@ -133,9 +139,18 @@ export default {
             .then((result)=>{
                 //console.log(result)
                 //state.teams 에 넣고 위의 v-for와 매칭
+                notify({
+                    title: "From MBOTC 😉",
+                    text: "Setting saved successful!",
+                    type: "success"
+                });
             })
             .catch((err)=>{
-                console.log(err)
+                notify({
+                    title: "From MBOTC 😅",
+                    text: "Error has occurred. Please try again.",
+                    type: "error"
+                });
             })
         }
         init()
