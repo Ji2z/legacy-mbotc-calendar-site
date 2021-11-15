@@ -9,25 +9,14 @@
                 <img class="w-16 h-16" src="@/assets/mattermost.png" alt="mattermost">
             </div>
         </div>
-        <div v-if="!state.hasCookie">
+        <div v-if="!state.hasCookie || !state.hasToken">
             <div>
                 <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" :disabled="state.serverLock" placeholder="Server URL" v-model="state.url" @change="validationCheck">
                 <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
                 <input type="password" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Password" v-model="state.password" @change="validationCheck" @keyup.enter="submit">
             </div>
-            <div class="flex justify-between p-8">
-                <div>
-                    <label for="loginToggle" class="mr-8 text-sm text-gray-700">keep me logged in.</label>
-                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                        <div>
-                            <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                            <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
-                </div>
+            <div class="flex justify-end p-8">
+                <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
             </div>
         </div>
         <div v-else>
@@ -38,6 +27,7 @@
             </div>
             <div class="m-5">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="comeBack">Take Me!</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="logout">Logout</button>
             </div>
         </div>
     </div>
@@ -62,9 +52,10 @@ export default {
             url:"",
             email:"",
             password:"",
-            loginToggle:false,
-            clickable:false,
-            hasCookie:false,
+            loginToggle: false,
+            clickable: false,
+            hasCookie: false,
+            hasToken: false,
             serverLock: getServerLock(),
             userData:{
                 token: "",
@@ -97,7 +88,7 @@ export default {
                         userName: result.data.username,
                     }
                     store.commit('root/setUserData', userData)
-                    register(userData)
+                    register()
                 })
                 .catch((err)=>{
                     notify({
@@ -108,8 +99,9 @@ export default {
                 })
             }
         }
-        const register = (userData)=>{
+        const register = ()=>{
             //console.log("MbotC login start")
+            let userData = store.getters['root/getUserData']
             store.dispatch('root/userLogin', userData)
             .then((result)=>{
                 //console.log("MbotC login")
@@ -141,7 +133,7 @@ export default {
         const init = ()=>{
             state.url = "  " + getServerURL()
             //console.log(document.cookie)
-            if(document.cookie && hasToken()){
+            if(document.cookie && hasCookie()){
                 state.hasCookie = true
                 store.dispatch('root/getUserMM')
                 .then((result)=>{
@@ -155,16 +147,25 @@ export default {
                         userName: result.data.username,
                     }
                     store.commit('root/setUserData', state.userData)
-                    register(userData)
+                    register()
                 })
                 .catch((err)=>{
                 })
+            }else if(hasToken()){
+                state.hasToken = true
             }
         }
-        const hasToken = ()=>{
+        const hasCookie = ()=>{
             let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
             let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
             return (userId && csrf)
+        }
+        const hasToken = ()=>{
+            let userData = store.getters['root/getUserData']
+            if(userData.token!='' && userData.url!='' && userData.userEmail!='' && userData.userId!='' && userData.userName!=''){
+                return true
+            }
+            return false
         }
         init()
         return { state, submit, validationCheck, comeBack }
