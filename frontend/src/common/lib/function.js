@@ -23,7 +23,7 @@ const getDayPicker = (date)=>{
 
 const getTitle = (content)=>{
     //console.log(content)
-    let replaceText = content.replace(new RegExp('@here|@HERE|[#*`]','g'), '');
+    let replaceText = content.replace(new RegExp('@here|@HERE|[#*`]|@','g'), '');
 
     //console.log(replaceText)
     return replaceText.substring(0,20)

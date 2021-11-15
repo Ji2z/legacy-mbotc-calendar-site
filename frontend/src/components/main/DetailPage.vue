@@ -4,8 +4,8 @@
             <div class="col-span-3 h-full">
                 <calendar-title :date="state.detailDate"/>
                 <perfect-scrollbar class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap content-end">
-                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer"
-                    @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, true)" @unchecked="changeChecked(notice.id, false)"/>
+                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer" :class="{'animate-bounce transform ease-in-out': (notice.id==0&&state.jumpFlag)}"
+                    @mouseover="state.jumpFlag=false" @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, notice.token, true)" @unchecked="changeChecked(notice.id, notice.token, false)"/>
                 </perfect-scrollbar>
                 <notice-content class="h-3/5" :notice ="state.chooseNotice"/>
             </div>
@@ -59,6 +59,7 @@ export default {
             chooseNotice: {},
             data:[0,1],
             progress: 0,
+            jumpFlag:true,
         })
 
         const init = ()=>{
@@ -73,12 +74,13 @@ export default {
             store.dispatch('root/getDayNotice', payload)
             .then((result)=>{
                 // console.log("Day list")
-                // console.log(result)
+                //console.log(result)
                 state.notices = []
                 let index = 0
                 result.data.notifications.forEach(node => {
                     let notice = {
                         id: index,
+                        token: node.token,
                         title: node.content.substring(0, 10),
                         channel: node.channel.team.name + " / " + node.channel.name,
                         content: node.content,
@@ -93,7 +95,7 @@ export default {
                     if(data){
                         let checkList = JSON.parse(data)
                         checkList.forEach(node => {
-                            if(node.id == notice.id){
+                            if(node.token == notice.token){
                                 notice.check = node.check
                             }
                         });
@@ -117,7 +119,7 @@ export default {
             //console.log(id)
             state.chooseNotice = state.notices[id]
         }
-        const changeChecked = (id, check)=>{
+        const changeChecked = (id, token, check)=>{
             let data = localStorage.getItem(state.detailDate)
             let checkList = []
             let saveFlag = false
@@ -126,7 +128,7 @@ export default {
             }
 
             checkList.forEach(notice => {
-                if(notice.id == id){
+                if(notice.token == token){
                     notice.check = check
                     saveFlag = true
                 }
@@ -140,6 +142,7 @@ export default {
             if(!saveFlag){
                 let notice = {
                     id: id,
+                    token: token,
                     check: check,
                 }
                 checkList.push(notice)
@@ -164,7 +167,6 @@ export default {
                 state.progress = 0
             }
         }
-
         init()
         return { state, clickNotice, changeChecked }
     }

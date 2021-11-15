@@ -1,5 +1,5 @@
 <template>
-    <div class="w-40 h-40 p-2 bg-panel border-2 border-label rounded-lg fixed left-1/2 top-1/2">
+    <div class="w-40 h-40 p-2 bg-panel border-2 border-label rounded-lg fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div class="w-32 grid grid-cols-4 gap-2">
             <div v-for="color in palette" :key="color.id" class="w-5 h-5 cursor-pointer rounded-sm" :style="{ 'background-color': `#${ color.hex }` }" @click="changeColor(color.hex)"></div>
         </div>
