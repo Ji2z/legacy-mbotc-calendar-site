@@ -9,9 +9,9 @@
                 <img class="w-16 h-16" src="@/assets/mattermost.png" alt="mattermost">
             </div>
         </div>
-        <div class="flex justify-center">
-            <input type="text" class="w-3/5 h-10 p-1 pl-4 border-2 rounded-2xl mr-2" placeholder="content word" v-model="state.word" @keyup.enter="search">
-            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="40px" height="40px"
+        <div class="flex justify-center text-font">
+            <input type="text" class="w-3/5 h-10 p-1 pl-4 border-2 rounded-2xl mr-2 text-font bg-panel" placeholder="content word" v-model="state.word" @keyup.enter="search">
+            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="40px" height="40px"
             class="fill-current cursor-pointer" @click.stop="search">
                 <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
                     7.32075 25.3836 0 16.3522 0C7.32075 0 0 7.32075 0 16.3522C0 25.3836 7.32075 32.7044 16.3522 32.7044C20.4025 
@@ -38,9 +38,9 @@
                 </div>
             </div>
         </div>
-        <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 inset-0">
+        <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div class="flex justify-end">
-                <button class="text-main" @click="state.open=false">x&nbsp;Close</button>
+                <button class="text-main bg-panel" @click.stop="state.open=false">x&nbsp;Close</button>
             </div>
             <notice-content class="h-3/5" :notice="state.noticeDetail"/>
         </div>
@@ -79,7 +79,7 @@ export default {
             store.dispatch('root/getNoticeSearch', payload)
             .then((result) => {
                 state.notices = []
-                console.log(result)
+                //console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
                         channel: node.channel.team.name + " / " + node.channel.name,
@@ -99,7 +99,7 @@ export default {
         }
 
         const searchOne = (postId) =>{
-            console.log("눌렸")
+            //console.log("눌렸")
             state.open = true
             let payload = {
                 "postId" :postId,
@@ -107,8 +107,18 @@ export default {
             }
             store.dispatch('root/getNoticeDetail', payload)
             .then((result) => {
-                console.log(result)
-                state.noticeDetail = result.data;
+                //console.log(result)
+                let notice = {
+                    channel: result.data.channel.team.name + " / " + result.data.channel.name,
+                    content: result.data.content,
+                    files: result.data.files,
+                    user: result.data.user.userName,
+                    startTime: getTime(result.data.startTime),
+                    endTime: getTime(result.data.endTime),
+                    postId: result.data.token,
+                }
+                //console.log(notice)
+                state.noticeDetail = notice;
             })
             .catch((err)=>{
                 console.log(err)

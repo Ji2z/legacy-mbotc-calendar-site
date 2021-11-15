@@ -10,7 +10,7 @@
                         <p class="text-xl font-bold">Destination</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.teamId=0">
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.channelId=0">
                             <option v-for="team in state.teams" :key="team.id" :value="team.id">{{team.teamName}}</option>
                         </select>
                         <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.channelId">
@@ -66,6 +66,10 @@
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import Editor from "@toast-ui/editor";
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+
 import { getTime } from '../../common/lib/function.js';
 // import abc from '@/components/'
 import { reactive, ref, onMounted } from 'vue'
@@ -188,6 +192,8 @@ export default {
                 height: wraperHeight,
                 initialEditType: "markdown",
                 previewStyle: "vertical",
+                plugins: [colorSyntax],
+                theme: "dark"
             });
         })
         const init = ()=>{
