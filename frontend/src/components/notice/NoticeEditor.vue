@@ -10,7 +10,7 @@
                         <p class="text-xl font-bold">Destination</p>
                     </div>
                     <div class="flex justify-start items-center pt-3">
-                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.teamId=0">
+                        <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.channelId=0">
                             <option v-for="team in state.teams" :key="team.id" :value="team.id">{{team.teamName}}</option>
                         </select>
                         <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.channelId">
