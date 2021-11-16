@@ -4,23 +4,23 @@
 
 @layer base {
     :root {
-        --bg-main: #163172;
-        --bg-back: #F6F6F6;
-        --bg-panel: #FFFFFF;
-        --bg-side: #F6F6F6;
+        --bg-main: #163172; /* 메인칼라 */
+        --bg-back: #F6F6F6; /* 뒷배경 커러 */
+        --bg-panel: #FFFFFF; /* 창 칼라 */
+        --bg-side: #F6F6F6; /* 사이드바에서 선택됐을때 반전색상 */
 
-        --border-label:  #163172;
+        --border-label:  #163172; /* 마이페이지에서 좌측에 붙는 라벨의 색상 */
 
-        --text-font: #000000;
-        --text-main: #163172;
-        --text-back: #F6F6F6;
+        --text-font: #000000;   /* 거의 대부분의 글씨 색상 */
+        --text-main: #163172; /*  */
+        --text-back: #F6F6F6; /* 버튼안의 텍스트색 */
 
-        --bg-first: #E2E5ED;
-        --bg-second: #A8B2CA;
-        --bg-third: #506595;
-        --bg-most: #163172;
+        --bg-first: #E2E5ED;  /* 스몰캘린더의 공지 많아질수록 진해지는 생상 4단계 */
+        --bg-second: #A8B2CA;  /* */
+        --bg-third: #506595;  /* */
+        --bg-most: #163172;  /* */
 
-        background-color: #F6F6F6;
+        background-color: #F6F6F6;  /* 이미지가 없는 경우의 배경색 */
     }
     .dark {
         --bg-main: #2C394B;

@@ -4,9 +4,6 @@
             <p class="font-bold text-2xl">My Team</p><br/>
         </div>
         <div class="bg-panel w-full h-1/2 rounded-xl shadow-2xl p-8 border-l-8 border-label">
-            <div class="flex justify-end">
-                <button class="bg-back text-main font-bold border-2 border-label px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
-            </div>
             <div class="grid grid-cols-2 gap-4 w-full">
                 <perfect-scrollbar class="h-56 overflow-y-auto p-4">
                     <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label cursor-pointer text-font" @click="selectTeam(team.id)">
@@ -16,7 +13,7 @@
                                     {{team.teamName}}
                                 </p>
                             </div>
-                            <div class="flex justify-end items-center z-30">
+                            <div class="flex justify-end items-center z-20">
                                 <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click.stop="changeColor(team.id)">
                                     <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
                                 </div>
@@ -30,8 +27,13 @@
                     </div>
                 </perfect-scrollbar>
                 <div class="col-span-1">
-                    <div>
-                        <p class="bg-panel">{{state.teams[state.selectedTeam].teamName}}</p><br/>
+                    <div class="flex justify-between">
+                        <div class="flex items-end">
+                            <p class="font-bold">{{state.teams[state.selectedTeam].teamName}}</p>
+                        </div>
+                        <div>
+                            <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
+                        </div>
                     </div>
                     <div class="bg-back h-44 overflow-y-auto rounded-xl shadow-inner p-4">
                         <div v-for="channel in state.teams[state.selectedTeam].subscribe" :key="channel.channelId" class="m-2 p-2 bg-panel text-font rounded-xl">

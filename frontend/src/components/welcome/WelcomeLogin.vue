@@ -132,7 +132,7 @@ export default {
             router.push("/main")
         }
         const init = ()=>{
-            state.url = "  " + getServerURL()
+            state.url = getServerURL()
             //console.log(document.cookie)
             if(document.cookie && hasCookie()){
                 state.hasCookie = true

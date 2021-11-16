@@ -4,22 +4,8 @@
         </div>
         <div clsss="text-right whitespace-nowrap">
             <div class="text-md text-right font-semibold">
-                <p class="text-lg">SSAFY 5기 자율 프로젝트</p>
-                <br>
-                <p>오픈소스 서울 1반 3팀 A103</p>
-                <div class="transform transition duration-100 flex justify-end" @mouseenter="enterTeamName" @mouseleave="leaveTeamName">
+                <div class="transform transition duration-100 flex justify-end">
                     <div>Team.</div>
-                    <div v-if="state.teamName" class="text-yellow-50 text-opacity-50 flex justify-end">
-                        <div class="text-yellow-50 text-opacity-100 font-bold text-2xl">공</div>
-                        지
-                        <div class="text-yellow-50 text-opacity-100 font-bold text-2xl">모</div> 
-                        아
-                        <div class="text-yellow-50 text-opacity-100 font-bold text-2xl">전</div> 
-                        해드려요
-                    </div>
-                    <div v-else class="text-yellow-50 text-opacity-100 font-bold text-2xl">
-                        공모전
-                    </div>
                 </div>
                 <br>
                 <p>©Copyright 2021</p>
@@ -50,12 +36,6 @@ export default {
             github,
             npm
         })
-        const enterTeamName = ()=>{
-            state.teamName = true
-        }
-        const leaveTeamName = ()=>{
-            state.teamName = false
-        }
         const clickLogo = (id)=>{
             switch (id) {
                 case 0:

@@ -1,6 +1,6 @@
 <template>
-    <div class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <div class="bg-back rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
+    <div class="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        <div class="bg-back rounded-lg border-2 border-label md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
             <div class="md:flex items-center">
                 <div class="rounded-full border border-label flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
                     <img :src="icon" alt="warning" class="h-12 w-12">

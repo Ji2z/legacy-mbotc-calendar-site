@@ -10,6 +10,7 @@
                 <notice-content class="h-3/5" :notice ="state.chooseNotice"/>
             </div>
             <div class="col-span-1 h-full">
+                <div class="h-10"></div>
                 <notice-progress class="w-3/4 h-auto mx-auto" :data="state.data" :progress="state.progress"/>
                 <calendar-small class="w-3/4 h-auto" :date="state.detailDate"/>
             </div>

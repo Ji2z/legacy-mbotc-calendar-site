@@ -3,10 +3,7 @@
         <div class="flex items-end mt-8 mb-4 text-font">
             <p class="font-bold text-2xl">My Theme</p><br/>
         </div>
-        <div class="text-font bg-panel w-full h-64 rounded-xl shadow-2xl mb-2 p-8 border-l-8 border-label">
-            <div class="flex justify-end">
-                <button class="bg-back text-main font-bold border-2 border-label px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
-            </div>
+        <div class="text-font bg-panel w-full h-48 rounded-xl shadow-2xl mb-2 p-8 border-l-8 border-label">
             <div class="flex justify-between items-end">
                 <div v-for="theme in state.themes" :key="theme.id" class="pb-2 overflow-x-scroll whitespace-nowrap no-scrollbar">
                     <div class="relative inline-block h-32 w-48 bg-panel text-font rounded-lg p-2 mr-2" @click="clickTheme(theme.id)">
@@ -16,6 +13,9 @@
                             {{theme.theme}}
                         </div>
                     </div>
+                </div>
+                <div class="flex justify-end">
+                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
                 </div>
             </div>
         </div>

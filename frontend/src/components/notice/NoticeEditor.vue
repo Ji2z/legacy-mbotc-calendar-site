@@ -9,7 +9,7 @@
                     <div>
                         <p class="text-xl font-bold">Destination</p>
                     </div>
-                    <div class="flex justify-start items-center pt-3">
+                    <div class="w-5/6 flex justify-start items-center pt-3">
                         <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.channelId=0">
                             <option v-for="team in state.teams" :key="team.id" :value="team.id">{{team.teamName}}</option>
                         </select>
@@ -20,7 +20,9 @@
                 </div>
                 <div class="col-span-1">
                     <div class="flex justify-start items-center">
-                        <p class="text-xl font-bold mr-4">Date</p>
+                        <div>
+                            <p class="text-xl font-bold mr-4">Date</p>
+                        </div>
                         <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                             <div>
                                 <input type="checkbox" v-model="state.termToggle" name="termToggle" id="termToggle" :class="{'border-label':state.termToggle, 'right-0':state.termToggle}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
@@ -29,16 +31,16 @@
                         </div>
                         <p class="text-font text-sm">term</p>
                     </div>
-                    <div class="flex justify-start items-center pt-3">
-                        <input type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font"  v-model="state.startTime" :min="state.today">
+                    <div class="w-5/6 flex justify-start items-center pt-3">
+                        <input type="datetime-local" class="border-2 rounded-xl bg-back text-font"  v-model="state.startTime" :min="state.today">
                             <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
-                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font" v-model="state.endTime">
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl bg-back text-font" v-model="state.endTime">
                     </div>
                 </div>
                 <div class="col-span-1">
                     <div class="flex justify-start items-center">
                         <p class="text-xl font-bold mr-4">File Upload</p>
-                        <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold py-2 px-4 rounded cursor-pointer">upload</label>
+                        <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold px-4 rounded cursor-pointer">upload</label>
                         <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
                     </div>
                     <div class="flex justify-start items-center pt-3 relative">

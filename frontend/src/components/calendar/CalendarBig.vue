@@ -56,7 +56,7 @@
                                         <span v-else class="text-gray-400">{{day.num}}</span>
                                     </div>
                                     <div class="bottom flex-grow py-1 cursor-pointer overflow-auto no-scrollbar">
-                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70" :style="{'background':node.color}">
+                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70 rounded-sm border-b-2 border-white" :style="{'background':node.color}">
                                             <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
                                             <p class="ml-1 text-font text-xs font-bold opacity-100 overflow-clip overflow-hidden">{{node.title}}</p>
                                         </div>

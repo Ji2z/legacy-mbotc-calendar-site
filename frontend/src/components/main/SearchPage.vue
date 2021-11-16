@@ -9,7 +9,7 @@
                 <img class="w-16 h-16" src="@/assets/mattermost.png" alt="mattermost">
             </div>
         </div>
-        <div class="flex justify-center text-font">
+        <div class="flex justify-center text-main">
             <input type="text" class="w-3/5 h-10 p-1 pl-4 border-2 rounded-2xl mr-2 text-font bg-panel" placeholder="content word" v-model="state.word" @keyup.enter="search">
             <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="40px" height="40px"
             class="fill-current cursor-pointer" @click.stop="search">

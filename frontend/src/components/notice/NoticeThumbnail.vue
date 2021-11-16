@@ -1,12 +1,12 @@
 <template>
-    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden">
+    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden shadow-md">
         <div class="h-1/6">
             <span class="w-full font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
         </div>
-        <div class="text-xs h-2/3 p-2 overflow-hidden">
+        <div class="text-xs mt-2 h-1/2 p-2 overflow-hidden">
             <p class="whitespace-normal truncate">{{notice.content}}</p>
         </div>
-        <div class="float-right w-5 h-5 border-4 border-label cursor-pointer" @click.stop="check">
+        <div class="float-right w-7 h-7 border-4 border-label cursor-pointer" @click.stop="check">
             <img v-if="notice.check" class="transform scale-150" src="@/assets/check.png" alt="check">
         </div>
     </div>
