@@ -4,17 +4,17 @@
             <div class="bg-panel rounded-xl shadow-2xl p-8">
                 <div class="header flex justify-between pb-8">
                     <div class="text-font">
-                        <span class="text-4xl font-bold">{{monthList[state.month]}}</span>
-                        <span class="text-4xl p-8">{{state.year}}</span>
+                        <span class="text-5xl font-bold">{{monthList[state.month]}}</span>
+                        <span class="text-5xl p-8">{{state.year}}</span>
                     </div>
-                    <div class="inline-block mr-6">
-                        <button @click="beforeMonth">							
-                            <svg class="h-6 w-6 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="inline-block mr-6 mt-2">
+                        <button class="mr-6" @click="beforeMonth">							
+                            <svg class="h-8 w-8 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                             </svg> 
                         </button>
                         <button @click="nextMonth">
-                            <svg class="h-6 w-6 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="h-8 w-8 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>	
                         </button>
