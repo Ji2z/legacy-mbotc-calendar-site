@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header pb-4">
-            <span class="text-4xl font-bold text-main ">Settings</span>
+            <span class="text-4xl font-title text-main ">Settings</span>
         </div>
         <div class="text-font bold flex justify-between mb-2">
             <div class="flex items-end">

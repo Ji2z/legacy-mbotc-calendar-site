@@ -2,7 +2,7 @@
     <div class="h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
         <div class="bg-panel rounded-xl shadow-2xl p-12">
             <div class="header pb-8">
-                <span class="text-4xl font-bold text-main ">Create notification</span>
+                <span class="text-4xl font-title text-main ">Create notification</span>
             </div>
             <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto text-font">
                 <div class="col-span-1">

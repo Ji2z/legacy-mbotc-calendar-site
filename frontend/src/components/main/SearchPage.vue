@@ -2,7 +2,7 @@
     <div class="w-full h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
         <div class= "w-10/12 p-8 text-font flex justify-between mx-auto">
             <div class="header pb-4">
-                <span class="text-5xl font-bold text-main">Search from content</span>
+                <span class="text-5xl font-title text-main">Search from content</span>
             </div>
                 <div class="w-1/2">
                 <label class="search-label w-full">
