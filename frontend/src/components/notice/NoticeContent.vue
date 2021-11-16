@@ -1,11 +1,20 @@
 <template>
-    <div class="bg-panel rounded-xl shadow-lg p-8 m-4 text-font">
-        <div class="overflow-hidden flex justify-between">
-            <span class="w-5/6 h-10 text-3xl font-bold inline-block align-bottom overflow-hidden">{{notice.channel}}</span>
-            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">{{notice.user}}</span>
-        </div>
+    <div class="bg-panel rounded-xl shadow-lg p-12 text-font divide-y-2">
         <div>
-            <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</span>
+            <div class="overflow-hidden flex justify-between">
+                <div class="overflow-hidden flex justify-start">
+                    <div class="h-16 text-3xl text-main mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
+                    <div class="h-16 text-xl text-black align-text-bottom overflow-hidden">{{notice.team}}</div>
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="overflow-hidden flex justify-start">
+                <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
+                <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
+                <div class="h-10 text-xl align-text-bottom overflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</div>
+            </div>
         </div>
         <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden p-4">
             <div id="editor" ref="mdViewer" class="text-font"></div>
@@ -15,6 +24,7 @@
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import Editor from "@toast-ui/editor";
+import logo_0 from '@/assets/logo/logo_0.png'
 // import abc from '@/components/'
 import { reactive, ref, onUpdated } from 'vue'
 // import { useStore } from 'vuex'
@@ -65,6 +75,7 @@ export default {
         },
     },
     setup(props){
+        const logo = logo_0
         const mdViewer = ref(null)
         const mdViewerWraper = ref(null)
         const state = reactive({
@@ -84,7 +95,7 @@ export default {
                 theme: 'dark',
             });
         })
-        return { mdViewer, mdViewerWraper }
+        return { logo, mdViewer, mdViewerWraper }
     }
 };
 </script>
