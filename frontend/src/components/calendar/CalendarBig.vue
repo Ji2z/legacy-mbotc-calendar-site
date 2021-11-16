@@ -1,6 +1,6 @@
 <template>
     <div class="w-full overflow-y-auto no-scrollbar">
-        <div class="w-full px-32 pt-12">
+        <div class="w-full px-32 py-12">
             <div class="bg-panel rounded-xl shadow-2xl p-8">
                 <div class="header flex justify-between pb-8">
                     <div class="text-font">

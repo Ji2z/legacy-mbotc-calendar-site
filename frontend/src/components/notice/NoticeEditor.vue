@@ -167,7 +167,7 @@ export default {
                 }
                 formData.append("message", state.mountEditor.getMarkdown())
                 state.fileList.forEach(file => {
-                    console.log(file)
+                    //console.log(file)
                     formData.append("file", file)
                 });
                 // console.log(fileRoot.value.files)
@@ -179,10 +179,10 @@ export default {
                 store.dispatch('root/uploadNotice', payload)
                 .then((result)=>{
                     //console.log("upload notice")
-                    console.log(result)
+                    //console.log(result)
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
             }else{
                 notify({

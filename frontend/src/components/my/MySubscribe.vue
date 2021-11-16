@@ -5,7 +5,7 @@
         </div>
         <div class="bg-panel w-full h-1/2 rounded-xl shadow-2xl p-8 border-l-8 border-label">
             <div class="grid grid-cols-2 gap-4 w-full">
-                <perfect-scrollbar class="h-56 overflow-y-auto p-4">
+                <perfect-scrollbar class="h-56 overflow-y-auto p-4" @scroll.stop="">
                     <div v-for="team in state.teams" :key="team.id" class="h-10 mb-1 rounded-lg shadow-md border-label cursor-pointer text-font" :style="{'background-color': team.color}"  @click="selectTeam(team.id)">
                         <div class="flex justify-between bg-panel mr-0 ml-5 m-3 pl-2 h-10">
                                 <p class="text-xl overflow-x-hidden p-1">

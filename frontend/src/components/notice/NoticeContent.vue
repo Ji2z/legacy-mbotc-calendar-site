@@ -6,9 +6,12 @@
                     <div class="h-16 text-3xl text-main mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
                     <div class="h-16 text-xl text-black align-text-bottom overflow-hidden">{{notice.team}}</div>
                 </div>
-                <div>
-
-                </div>
+                <!-- <div v-if="state.fileList.length > 0">
+                    <select class="form-select block h-16 bg-back text-font" v-model="state.targetFile" @change="getFile">
+                        <option value="0">files</option>
+                        <option v-for="file in state.fileList" :key="file.id" :value="file">download {{file.name}}</option>
+                    </select>
+                </div> -->
             </div>
             <div class="overflow-hidden flex justify-start">
                 <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
@@ -53,8 +56,8 @@ export default {
                 default: " ",
             },
             files : {
-                type: Array,
-                default: [],
+                type: String,
+                default: null,
             },
             check : {
                 type: Boolean,
@@ -80,6 +83,7 @@ export default {
         const mdViewerWraper = ref(null)
         const state = reactive({
             mountViewr: null,
+            fileList:[]
         })
         onUpdated(()=>{
             let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
@@ -94,6 +98,10 @@ export default {
                 initialValue: props.notice.content,
                 theme: 'dark',
             });
+            if(props.notice.files != null){
+                let fileIds = props.notice.files.split(",")
+
+            }
         })
         return { logo, mdViewer, mdViewerWraper }
     }

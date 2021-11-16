@@ -144,9 +144,11 @@ export function getNoticeSearch({state}, payload){
 //     return $axios.post(url, {headers}, body);
 // }
 
+// bot API
+
 export function uploadNotice({state}, payload){
     const url = '/plugins/com.mattermost.plugin-mbotc/api/v1/create-notification-with-editor'
-    console.log(payload.notice)
+    //console.log(payload.notice)
     return $axios({
         method: 'post',
         url: url,
@@ -158,4 +160,12 @@ export function uploadNotice({state}, payload){
     })
 }
 
-// bot API
+export function getFile({state}, payload){
+    const url = '/api/v4/files/' + payload.fileId
+    const headers = { 
+        "auth": payload.token, 
+        "Cookie": payload.cookie
+    }
+    
+    return $axios.get(url, {headers});
+}

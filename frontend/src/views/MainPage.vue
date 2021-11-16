@@ -1,9 +1,9 @@
 <template>
-    <div class="flex justify-start myPage pt-12" id="socket">
+    <div class="flex justify-start myPage" id="socket">
         <!-- <button class="ml-10" @click="onClickTop('meeeeeesssssage')">button</button> -->
         <notifications/>
         <div class="w-full ml-20">
-            <router-view :key="$route.fullPath" class="w-full h-screen"
+            <router-view :key="$route.fullPath" class="w-full h-screen pt-12"
             @clickDetail="onClickDetail"/>
         </div>
         <main-sidebar
