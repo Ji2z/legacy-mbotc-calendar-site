@@ -6,33 +6,31 @@
         <div class="bg-panel w-full h-1/2 rounded-xl shadow-2xl p-8 border-l-8 border-label">
             <div class="grid grid-cols-2 gap-4 w-full">
                 <perfect-scrollbar class="h-56 overflow-y-auto p-4">
-                    <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label cursor-pointer text-font" @click="selectTeam(team.id)">
-                        <div class="flex justify-between">
-                            <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
-                                <p class="text-xl overflow-x-hidden ml-2">
+                    <div v-for="team in state.teams" :key="team.id" class="h-10 mb-1 rounded-lg shadow-md border-label cursor-pointer text-font" :style="{'background-color': team.color}"  @click="selectTeam(team.id)">
+                        <div class="flex justify-between bg-panel mr-0 ml-5 m-3 pl-2 h-10">
+                                <p class="text-xl overflow-x-hidden p-1">
                                     {{team.teamName}}
                                 </p>
-                            </div>
-                            <div class="flex justify-end items-center z-20">
-                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click.stop="changeColor(team.id)">
-                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
-                                </div>
-                                <div>
-                                    <svg class="h-5 w-5 bg-panel" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>	
-                                </div>
+                                <div class="flex justify-end items-center z-20">
+                                    <div class="w-5 h-5 cursor-pointer mr-2" :style="{background: team.color}" @click.stop="changeColor(team.id)">
+                                        <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
+                                    </div>
+                                    <div>
+                                        <svg class="h-5 w-5 bg-panel mr-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>	
+                                    </div>
                             </div>
                         </div>
                     </div>
                 </perfect-scrollbar>
                 <div class="col-span-1">
                     <div class="flex justify-between">
-                        <div class="flex items-end">
-                            <p class="font-bold">{{state.teams[state.selectedTeam].teamName}}</p>
+                        <div class="flex items-center">
+                            <p class="font-bold text-gray-600">{{state.teams[state.selectedTeam].teamName}}</p>
                         </div>
                         <div>
-                            <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
+                            <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
                         </div>
                     </div>
                     <div class="bg-back h-44 overflow-y-auto rounded-xl shadow-inner p-4">

@@ -49,7 +49,7 @@ export default {
                     break;
             }
         }
-        return { state, enterTeamName, leaveTeamName, clickLogo }
+        return { state, clickLogo }
     }
 };
 </script>

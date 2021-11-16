@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="flex justify-end">
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
+                    <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
                 </div>
             </div>
         </div>

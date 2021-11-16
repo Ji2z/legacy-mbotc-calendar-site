@@ -23,7 +23,7 @@
                     <div class="text-2xl">{{id}}</div>
                 </div>
                 <div>
-                    <button class="bg-red-500 text-white font-bold border-2 border-red-600 py-2 px-4 m-2 rounded-full hover:bg-red-700" @click="state.openModal=true">Leave</button>
+                    <button class="bg-red-500 text-white font-bold border-2 border-red-600 py-1 px-4 m-2 rounded-full hover:bg-red-700" @click="state.openModal=true">Leave</button>
                 </div>
             </div>
         </div>
