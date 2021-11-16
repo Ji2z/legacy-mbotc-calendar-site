@@ -2,11 +2,11 @@
     <div class="w-full h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
         <div class= "w-10/12 p-8 text-font flex justify-between mx-auto">
             <div class="header pb-4">
-                <span class="text-4xl font-bold text-main">Search from content</span>
+                <span class="text-5xl font-bold text-main">Search from content</span>
             </div>
                 <div class="w-1/2">
                 <label class="search-label w-full">
-                    <input type="text" class="w-full h-10 p-1 pl-4 border-2 rounded-2xl text-font bg-panel" placeholder="content word" v-model="state.word" @keyup.enter="search">
+                    <input type="text" class="w-full h-12 p-1 pl-4 border-2 rounded-2xl text-font bg-panel text-lg" placeholder="content word" v-model="state.word" @keyup.enter="search">
                 </label>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div v-for="notice in state.notices" :key="notice.postId" @click.stop="searchOne(notice.postId)" class="text-font bg-panel h-1/5 overflow-y-hidden rounded-xl shadow-lg p-4 m-2 my-4">
                 <div class = "flex justify-between p-3 pb-2">
                     <div class="font-bold w-2/3 overflow-hidden text-bold text-xl">
-                        {{notice.channel}}
+                        {{notice.team}} / {{notice.channel}}
                     </div>
                     <div class="w-1/6 overflow-hidden text-lg text-right text-gray-600">
                         {{notice.startTime}}
@@ -53,7 +53,7 @@
         <div v-else class="w-full h-64 text-font text-4xl align-middle text-center mt-10">
             No search results.
         </div>
-        <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 w-1/2 h-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 w-4/5 h-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <search-content :notice="state.noticeDetail" @close="state.open = false"/>
         </div>
     </div>
@@ -96,13 +96,15 @@ export default {
                 //console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
-                        channel: node.channel.team.name + " / " + node.channel.name,
+                        team : node.channel.team.name,
+                        channel: node.channel.name,
                         content: getTitleLen(node.content, 150),
                         files: node.files,
                         user: node.user.userName,
                         startTime: getTime(node.startTime),
                         endTime: getTime(node.endTime),
                         postId: node.token,
+                        time: getTime(node.time)
                     }
                     state.notices.push(notice)
                 });
@@ -125,13 +127,15 @@ export default {
             .then((result) => {
                 //console.log(result)
                 let notice = {
-                    channel: result.data.channel.team.name + " / " + result.data.channel.name,
+                    team: result.data.channel.team.name,
+                    channel: result.data.channel.name,
                     content: result.data.content,
                     files: result.data.files,
                     user: result.data.user.userName,
                     startTime: getTime(result.data.startTime),
                     endTime: getTime(result.data.endTime),
                     postId: result.data.token,
+                    time: getTime(result.data.time)
                 }
                 //console.log(notice)
                 state.noticeDetail = notice;
@@ -159,7 +163,7 @@ label {
 label:before {
     content: "";
     position: absolute;
-    left: 10px;
+    left: 20px;
     top: 0;
     bottom: 0;
     width: 20px;
@@ -167,6 +171,6 @@ label:before {
 }
 
 input {
-    padding: 10px 30px;
+    padding: 10px 50px;
 }
 </style>
