@@ -29,6 +29,18 @@ const getTitle = (content)=>{
     return replaceText.substring(0,20)
 }
 
+const getTitleLen = (content, len)=>{
+    //console.log(content)
+    let replaceText = content.replace(new RegExp('@here|@HERE|[#*`]|@','g'), '');
+
+    if (replaceText.length > len)
+        replaceText = replaceText.substring(0, len) + " ...";
+    else
+        replaceText = replaceText.substring(0, len)
+    //console.log(replaceText)
+    return replaceText
+}
+
 const getTime = (date)=>{
     //console.log(date)
     let replaceText = date.substring(0,10) + " " + date.substring(11,16)
@@ -42,3 +54,4 @@ exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
 exports.getTitle = getTitle;
 exports.getTime = getTime;
+exports.getTitleLen = getTitleLen;
