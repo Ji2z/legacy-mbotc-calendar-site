@@ -65,6 +65,7 @@
 </template>
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Editor from "@toast-ui/editor";
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
@@ -202,7 +203,7 @@ export default {
                 initialEditType: "markdown",
                 previewStyle: "vertical",
                 plugins: [colorSyntax],
-                theme: "dark"
+                theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
             });
         })
         const init = ()=>{

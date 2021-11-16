@@ -26,11 +26,12 @@
 </template>
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Editor from "@toast-ui/editor";
 import logo_0 from '@/assets/logo/logo_0.png'
 // import abc from '@/components/'
 import { reactive, ref, onUpdated } from 'vue'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 
 export default {
@@ -78,6 +79,7 @@ export default {
         },
     },
     setup(props){
+        const store = useStore()
         const logo = logo_0
         const mdViewer = ref(null)
         const mdViewerWraper = ref(null)
@@ -96,7 +98,7 @@ export default {
                 viewer: true,
                 height: wraperHeight,
                 initialValue: props.notice.content,
-                theme: 'dark',
+                theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
             });
             if(props.notice.files != null){
                 let fileIds = props.notice.files.split(",")

@@ -169,3 +169,13 @@ export function getFile({state}, payload){
     
     return $axios.get(url, {headers});
 }
+
+export function getFileThumbnail({state}, payload){
+    const url = '/api/v4/files/' + payload.fileId + "/thumbnail"
+    const headers = { 
+        "auth": payload.token, 
+        "Cookie": payload.cookie
+    }
+    
+    return $axios.get(url, {headers});
+}
