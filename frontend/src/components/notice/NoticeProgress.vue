@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <DoughnutChart ref="chartRef" :chartData="state" :options="options"></DoughnutChart>
-        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-font font-bold align-bottom mt-2">
+        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-font font-bold align-bottom">
             {{progress}}%
         </div>
     </div>

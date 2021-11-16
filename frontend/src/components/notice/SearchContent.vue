@@ -1,13 +1,14 @@
 <template>
-    <div class="bg-panel rounded-xl shadow-lg p-8 m-4 text-font">
+    <div class="bg-panel rounded-xl shadow-lg p-12 m-4 text-font">
         <div class="overflow-hidden flex justify-between">
-            <span class="w-5/6 h-10 text-3xl font-bold inline-block align-bottom overflow-hidden">{{notice.channel}}</span>
+            <span class="w-4/6 h-10 text-3xl font-bold inline-block align-bottom overflow-hidden">{{notice.channel}}</span>
             <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden">{{notice.user}}</span>
+            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden cursor-pointer" @click="close">x Close</span>
         </div>
         <div>
-            <span class="w-full h-10 text-xl inline-block align-bottomoverflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</span>
+            <span class="w-full h-10 text-xl inline-block align-bottom overflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</span>
         </div>
-        <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden p-4">
+        <perfect-scrollbar ref="mdViewerWraper" class="text-lg overflow-y-auto h-80 p-4">
             <div id="editor" ref="mdViewer" class="text-font"></div>
         </perfect-scrollbar>
     </div>
@@ -21,16 +22,12 @@ import { reactive, ref, onUpdated } from 'vue'
 // import { useRouter } from 'vue-router'
 
 export default {
-    name: 'NoticeContent',
+    name: 'SearchContent',
     components: {
     },
     props:{
         notice:{
             title : {                
-                type: String,
-                default: " ",
-            },
-            team : {
                 type: String,
                 default: " ",
             },
@@ -64,12 +61,17 @@ export default {
             },
         },
     },
-    setup(props){
+    setup(props, {emit}){
         const mdViewer = ref(null)
         const mdViewerWraper = ref(null)
         const state = reactive({
             mountViewr: null,
         })
+
+        const close = ()=>{
+            emit('close')
+        }
+
         onUpdated(()=>{
             let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
             //console.log(mdViewerWraper)
@@ -84,7 +86,7 @@ export default {
                 theme: 'dark',
             });
         })
-        return { mdViewer, mdViewerWraper }
+        return { mdViewer, mdViewerWraper, close }
     }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-start myPage" id="socket">
+    <div class="flex justify-start myPage pt-12" id="socket">
         <!-- <button class="ml-10" @click="onClickTop('meeeeeesssssage')">button</button> -->
         <notifications/>
         <router-view :key="$route.fullPath" class="w-full h-screen"

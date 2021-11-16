@@ -1,19 +1,19 @@
 <template>
-    <div class="bg-back w-5/6 px-2 pt-12 text-font">
+    <div class="bg-back w-5/6 px-2 py-4 text-font rounded-2xl">
         <div class="w-full rounded-xl p-2">
-            <div class="header flex justify-between py-2">
-                <div>
+            <div class="header flex justify-between">
+                <div class="mb-2">
                     <span class="text-xl font-bold p-2 pr-0">{{monthList[state.month]}}</span>
                     <span class="text-xl p-2">{{state.year}}</span>
                 </div>
                 <div class="inline-block">
-                    <button @click="beforeMonth">							
-                        <svg class="h-5 w-5 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button @click="beforeMonth" class="mr-2">							
+                        <svg class="h-6 w-6 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg> 
                     </button>
                     <button @click="nextMonth">
-                        <svg class="h-5 w-5 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-main inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>	
                     </button>

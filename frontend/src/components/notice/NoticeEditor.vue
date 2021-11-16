@@ -1,10 +1,10 @@
 <template>
     <div class="h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
-        <div class="bg-panel rounded-xl shadow-2xl p-8">
+        <div class="bg-panel rounded-xl shadow-2xl p-12">
             <div class="header pb-8">
-                <span class="text-4xl font-bold text-main ">Create Alert</span>
+                <span class="text-4xl font-bold text-main ">Create notification</span>
             </div>
-            <div class="grid grid-cols-3 gap-4 text-font">
+            <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto text-font">
                 <div class="col-span-1">
                     <div>
                         <p class="text-xl font-bold">Destination</p>
@@ -32,14 +32,14 @@
                         <p class="text-font text-sm">term</p>
                     </div>
                     <div class="w-5/6 flex justify-start items-center pt-3">
-                        <input type="datetime-local" class="border-2 rounded-xl bg-back text-font"  v-model="state.startTime" :min="state.today">
+                        <input type="datetime-local" class="border-2 h-8 bg-back text-font"  v-model="state.startTime" :min="state.today">
                             <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
-                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl bg-back text-font" v-model="state.endTime">
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 h-8 bg-back text-font" v-model="state.endTime">
                     </div>
                 </div>
                 <div class="col-span-1">
                     <div class="flex justify-start items-center">
-                        <p class="text-xl font-bold mr-4">File Upload</p>
+                        <p class="text-xl font-bold mr-4">File upload</p>
                         <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold px-4 rounded cursor-pointer">upload</label>
                         <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
                     </div>
@@ -56,7 +56,7 @@
                 <div id="editor" ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center mt-5">
-                <button class="bg-back text-main px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click = "submit">
+                <button class="bg-back text-main px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click="submit">
                     Create Alert to MatterMost
                 </button>
             </div>
