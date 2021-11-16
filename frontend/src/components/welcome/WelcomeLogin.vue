@@ -91,10 +91,11 @@ export default {
                     register()
                 })
                 .catch((err)=>{
+                    console.log('------>',err)
                     notify({
                         title: "From MBOTC 😅",
                         text: "Check your server URL, Email and PW",
-                        type: "error"
+                        type: "warn"
                     });
                 })
             }

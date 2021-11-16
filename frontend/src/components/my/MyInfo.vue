@@ -23,21 +23,24 @@
                     <span class="text-2xl">{{id}}</span>
                 </div>
                 <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="leave">Leave</button>
+                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="state.openModal=true">Leave</button>
                 </div>
             </div>
         </div>
+        <main-confirm :modalData="modalData" v-if="state.openModal" @cancel="state.openModal=false" @action="leave"/>
     </div>
 </template>
 <script>
+import MainConfirm from '@/components/main/MainConfirm.vue'
 // import abc from '@/components/'
-// import { reactive } from 'vue'
+import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
     name: 'MyInfo',
     components: {
+        MainConfirm
     },
     props:{
         url:{
@@ -50,8 +53,16 @@ export default {
         }
     },
     setup(){
+        const modalData = {
+            title: "Leave MBotC",
+            message: "You will lose all of your data by leaving MBotC. This action cannot be undone.",
+            action: "Delete Account",
+        }
         const store = useStore()
         const router = useRouter()
+        const state = reactive({
+            openModal: false,
+        })
         const leave = ()=>{
             let payload = store.getters['root/getUserData']
 
@@ -68,7 +79,7 @@ export default {
                 // status 409 핸들링
             })
         }
-        return { leave }
+        return { modalData, state, leave }
     }
 };
 </script>

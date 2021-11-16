@@ -1,5 +1,6 @@
 <template>
     <div>
+        <notifications position="top right"/>
         <welcome-content/>
         <welcome-introduction/>
         <welcome-footer/>
@@ -26,7 +27,7 @@
 import WelcomeContent from '@/components/welcome/WelcomeContent.vue'
 import WelcomeFooter from '@/components/welcome/WelcomeFooter.vue'
 import WelcomeIntroduction from '@/components/welcome/WelcomeIntroduction.vue'
-
+import { notify } from '@kyvg/vue3-notification'
 import { reactive } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'

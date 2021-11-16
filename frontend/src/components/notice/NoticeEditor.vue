@@ -42,13 +42,11 @@
                         <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
                     </div>
                     <div class="flex justify-start items-center pt-3 relative">
-                        <p  @mouseover="showList(true)" @mouseleave="showList(false)">{{state.fileList.length}} files in List</p>
-                        <!-- <div v-if="state.listOpen" class="absolute left-0 bottom-0 w-20 overflow-x-hidden bg-panel z-40">
-                            <div v-for="file in state.fileList" :key="file.name">
-                                {{file.name}} <br>
-                                {{(file.size/1024)}}KB
-                            </div>
-                        </div> -->
+                        <select class="form-select block w-1/2 mr-3 border-b-2 p-1 bg-back text-font" v-model="state.listAnchor" @change="deleteFile">
+                            <option value="0">{{state.fileList.length}} files in List</option>
+                            <option v-for="file in state.fileList" :key="file.lastModified" :value="file.name">remove {{file.name}}</option>
+                        </select>
+                        <!-- <button class="bg-back text-main px-4 rounded" @click="showList">{{state.fileList.length}} files in List</button> -->
                     </div>
                 </div>
             </div>
@@ -90,7 +88,6 @@ export default {
         const fileRoot = ref(null)
         const state = reactive({
             fileList: [],
-            listOpen: false,
             termToggle: false,
             oldToggle: false,
             clickable: false,
@@ -112,25 +109,35 @@ export default {
                 teamId: "",
                 teamName: "",
             }],
+            listAnchor: "0",
         })
-        const showList = (flag)=>{
-            // console.log(flag)
-            // console.log(state.fileList)
-            state.listOpen = flag
-        }
         const uploadFile = ()=>{
             //console.log("upload")
             let file = fileRoot.value.files[0]
             if((file.size / (1024*1024)) > 50){
-                console.log("------------>",file.size / (1024*1024))
+                //console.log("------------>",file.size / (1024*1024))
                 notify({
                     title: "From MBOTC 😥",
                     text: "Sorry, File is too big. We can accept files less than 50MB",
                     type: "warn"
                 });
             }else{
-                state.fileList.push(file)
+                if(state.fileList.indexOf(file.name) == -1){
+                    state.fileList.push(file)
+                }
+                //console.log(state.fileList)
             }
+        }
+        const deleteFile = ()=>{
+            if(state.fileList.length > 1){
+                let index = state.fileList.indexOf(state.listAnchor)
+                state.fileList.splice(index, 1);
+                state.listAnchor = "0"
+            }else{
+                state.fileList = []
+                state.listAnchor = "0"
+            }
+            //console.log(state.fileList)
         }
         const validation = ()=>{
             if(!state.startTime){
@@ -224,7 +231,7 @@ export default {
             //console.log(state.today)
         }
         init()
-        return { state, submit, mdEditor, mdEditorWraper, fileRoot, uploadFile, showList }
+        return { state, submit, mdEditor, mdEditorWraper, fileRoot, uploadFile, deleteFile }
     },
 };
 </script>

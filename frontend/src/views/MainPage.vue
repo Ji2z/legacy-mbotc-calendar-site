@@ -63,8 +63,8 @@ export default {
                 title: "New Notification",
                 text: message,
                 });
-         }
-         connect()
+        }
+        connect()
         return { state, onClickDetail, onClickOther, connect, onClickTop }
     }
 };

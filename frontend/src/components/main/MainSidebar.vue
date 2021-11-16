@@ -146,7 +146,7 @@
             </div>
             <div class="absolute h-10 text-back bottom-0">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
-                class="fill-current ml-7 cursor-pointer" @click="logout">
+                class="fill-current ml-7 cursor-pointer" @click="state.openModal=true">
                     <g>
                         <path d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03
                             C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03
@@ -158,10 +158,11 @@
                 </svg>
             </div>
         </div>
+        <main-confirm :modalData="modalData" v-if="state.openModal" @cancel="state.openModal=false" @action="logout"/>
     </div>
 </template>
 <script>
-// import abc from '@/components/'
+import MainConfirm from '@/components/main/MainConfirm.vue'
 import { reactive, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -175,6 +176,7 @@ import logo_4 from '@/assets/logo/logo_4.png'
 export default {
     name: 'MainSidebar',
     components: {
+        MainConfirm
     },
     props:{
         detailFlag:{
@@ -183,6 +185,11 @@ export default {
         }
     },
     setup(props, {emit}){
+        const modalData = {
+            title: "Logout MBotC",
+            message: "You will logout MBotC. See you next time.😎",
+            action: "Logout",
+        }
         const router = useRouter()
         const store = useStore()
         const state = reactive({
@@ -191,6 +198,7 @@ export default {
             logo: [logo_0, logo_1, logo_2, logo_3, logo_4],
             today: 0,
             angry: 0,
+            openModal: false,
         })
 
         const clickNav = (target)=>{
@@ -258,7 +266,7 @@ export default {
         }
 
         init()
-        return { state, clickNav, logout }
+        return { modalData, state, clickNav, logout }
     }
 };
 </script>

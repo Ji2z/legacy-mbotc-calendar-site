@@ -10,17 +10,17 @@ module.exports = {
             '/plugins': {
                 target: serverData.getServerURL(),
                 changeOrigin: true,
-                logLevel: "debug",
+                // logLevel: "debug",
             },
             '/api/v4': {
                 target: serverData.getServerURL(),
                 changeOrigin: true,
-                logLevel: "debug",
+                // logLevel: "debug",
             },
             '/api/v1': {
                 target: serverData.getMbotcURL(),
                 changeOrigin: true,
-                logLevel: "debug",
+                // logLevel: "debug",
             },
         },
         headers: {
