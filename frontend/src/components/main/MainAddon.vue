@@ -1,6 +1,6 @@
 <template>
     <div>
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
         class="fill-current text-main cursor-pointer hover:text-font">
             <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
             <path d="M2370 5113 c-379 -36 -661 -116 -980 -278 -378 -193 -717 -497 -965

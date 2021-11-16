@@ -68,7 +68,7 @@
                 </table>
             </div>
             <div>
-                <main-addon class="fixed right-16 bottom-16" @click="goEdit"/>
+                <main-addon class="fixed right-8 bottom-8" @click="goEdit"/>
             </div>
         </div>
     </div>
