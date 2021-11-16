@@ -6,7 +6,7 @@
         <div class="flex justify-between text-font bg-panel w-full h-56 rounded-xl shadow-2xl mb-2 pt-4 px-8 border-l-8 border-label">
             <perfect-scrollbar class="m-4 overflow-x-scroll whitespace-nowrap content-end">
                 <div v-for="theme in state.themes" :key="theme.id" class="relative inline-block pb-2 w-48">
-                    <div class="h-32 w-48 bg-panel text-font rounded-lg p-2 mr-2" @click="clickTheme(theme.id)">
+                    <div class="h-32 w-48 text-font rounded-lg p-2 mr-2" @click="clickTheme(theme.id)">
                         <div class="h-24 w-40 bg-black border-green-600" :class="{'border-4':(state.selected==theme.id)}">
                         </div>
                         <div class="h-4 text-xs p-2">
@@ -49,7 +49,7 @@ export default {
                 },
                 {
                     id: 3,
-                    theme: "blue",
+                    theme: "crayon",
                 },
                 {
                     id: 4,

@@ -12,7 +12,7 @@
         --border-label:  #163172; /* 마이페이지에서 좌측에 붙는 라벨의 색상 */
 
         --text-font: #000000;   /* 거의 대부분의 글씨 색상 */
-        --text-main: #163172; /*  */
+        --text-main: #163172; /* 반전색 */
         --text-back: #F6F6F6; /* 버튼안의 텍스트색 */
 
         --bg-first: #E2E5ED;  /* 스몰캘린더의 공지 많아질수록 진해지는 생상 4단계 */
@@ -23,28 +23,28 @@
         background-color: #F6F6F6;  /* 이미지가 없는 경우의 배경색 */
     }
     .dark {
-        --bg-main: #2C394B;
-        --bg-back: #082032;
-        --bg-panel: #334756;
-        --bg-side: #F6F6F6;
+        --bg-main: #383C48;
+        --bg-back: #2B2E37;
+        --bg-panel: #383C48;
+        --bg-side: #2B2E37;
 
-        --border-label: #2C394B;
+        --border-label: #121212;
 
-        --text-font: #FFFFFF;
-        --text-main: #2C394B;
-        --text-back: #082032;
+        --text-font: #E9E9E9;
+        --text-main: #E9E9E9;
+        --text-back: #E9E9E9;
         
-        --bg-first: #E2E5ED;
-        --bg-second: #A8B2CA;
-        --bg-third: #506595;
-        --bg-most: #163172;
+        --bg-first: #4B4E59;
+        --bg-second: #6D7079;
+        --bg-third: #C3C4C8;
+        --bg-most: #FFFFFF;
 
-        background-color: #082032;
+        background-color: #2B2E37;
     }
     .ssuk {
         --bg-main: #6F8788;
-        --bg-back: #F6F6F6;
-        --bg-panel: #FFFFFF;
+        --bg-back: #00000095;
+        --bg-panel: #00000095;
         --bg-side: #F6F6F6;
 
         --border-label: #6F8788;
@@ -62,24 +62,24 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
-    .blue {
-        --bg-main: #14279B;
-        --bg-back: #F6F6F6;
+    .crayon {
+        --bg-main: #FFFFFF;
+        --bg-back: #DDF4FE;
         --bg-panel: #FFFFFF;
-        --bg-side: #F6F6F6;
+        --bg-side: #DDF4FE;
 
-        --border-label: #14279B;
+        --border-label: #000000;
 
-        --text-font: #14279B;
-        --text-main: #14279B;
-        --text-back: #F6F6F6;
+        --text-font: #454649;
+        --text-main: #454649;
+        --text-back: #454649;
 
-        --bg-first: #E2E5ED;
-        --bg-second: #A8B2CA;
-        --bg-third: #506595;
-        --bg-most: #163172;
-
-        background-image: url('../../assets/bg/blue_night.png');
+        --bg-first: #FFFFFF;
+        --bg-second: #51BDEB;
+        --bg-third: #019EE2;
+        --bg-most: #0176E2;
+        
+        background-image: url('../../assets/bg/crayon.png');
         background-repeat: no-repeat;
         background-size: cover;
     }

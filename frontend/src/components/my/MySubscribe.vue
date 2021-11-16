@@ -7,19 +7,19 @@
             <div class="grid grid-cols-2 gap-4 w-full">
                 <perfect-scrollbar class="h-56 overflow-y-auto p-4">
                     <div v-for="team in state.teams" :key="team.id" class="h-10 mb-1 rounded-lg shadow-md border-label cursor-pointer text-font" :style="{'background-color': team.color}"  @click="selectTeam(team.id)">
-                        <div class="flex justify-between bg-panel mr-0 ml-5 m-3 pl-2 h-10">
-                                <p class="text-xl overflow-x-hidden p-1">
-                                    {{team.teamName}}
-                                </p>
-                                <div class="flex justify-end items-center z-20">
-                                    <div class="w-5 h-5 cursor-pointer mr-2" :style="{background: team.color}" @click.stop="changeColor(team.id)">
-                                        <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
-                                    </div>
-                                    <div>
-                                        <svg class="h-5 w-5 bg-panel mr-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                        </svg>	
-                                    </div>
+                        <div class="flex justify-between bg-panel mr-0 ml-5 m-3 pl-2 h-10 rounded-r-lg">
+                            <p class="text-xl overflow-x-hidden p-1">
+                                {{team.teamName}}
+                            </p>
+                            <div class="flex justify-end items-center z-20">
+                                <div class="w-5 h-5 cursor-pointer mr-2" :style="{background: team.color}" @click.stop="changeColor(team.id)">
+                                    <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
+                                </div>
+                                <div>
+                                    <svg class="h-5 w-5 mr-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>	
+                                </div>
                             </div>
                         </div>
                     </div>
