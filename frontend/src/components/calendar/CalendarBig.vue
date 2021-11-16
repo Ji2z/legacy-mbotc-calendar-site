@@ -4,7 +4,7 @@
             <div class="bg-panel rounded-xl shadow-2xl p-8">
                 <div class="header flex justify-between pb-8">
                     <div class="text-font">
-                        <span class="text-5xl font-bold">{{monthList[state.month]}}</span>
+                        <span class="text-5xl font-title font-bold">{{monthList[state.month]}}</span>
                         <span class="text-5xl p-8">{{state.year}}</span>
                     </div>
                     <div class="inline-block mr-6 mt-2">
