@@ -1,12 +1,12 @@
 <template>
     <div class="w-full h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
-        <div class= "w-11/12 p-8 text-font flex justify-between">
+        <div class= "w-10/12 p-8 text-font flex justify-between mx-auto">
             <div class="header pb-4">
-                <span class="text-4xl font-bold text-main ">Search from content</span>
+                <span class="text-4xl font-bold text-main">Search from content</span>
             </div>
                 <div class="w-1/2">
                 <label class="search-label w-full">
-                    <input type="text" class="w-full h-10 p-1 pl-4 border-2 rounded-2xl mr-2 text-font bg-panel" placeholder="content word" v-model="state.word" @keyup.enter="search">
+                    <input type="text" class="w-full h-10 p-1 pl-4 border-2 rounded-2xl text-font bg-panel" placeholder="content word" v-model="state.word" @keyup.enter="search">
                 </label>
             </div>
         </div>
@@ -32,20 +32,20 @@
                 Searching...
             </div>
         </div>
-        <perfect-scrollbar v-else-if="state.notices.length != 0" class="no-scrollbar w-3/4 h-5/6 mx-auto p-4">
-            <div v-for="notice in state.notices" :key="notice.postId" @click.stop="searchOne(notice.postId)" class="text-font bg-panel w-full h-2/6 overflow-y-hidden rounded-xl shadow-2xl p-4 m-2 my-4">
-                <div class = "font-bold flex justify-between">
-                    <div class="w-1/2 overflow-hidden p-4 text-bold text-2xl">
+        <perfect-scrollbar v-else-if="state.notices.length != 0" class="no-scrollbar w-10/12 h-3/4 p-4 mx-auto">
+            <div v-for="notice in state.notices" :key="notice.postId" @click.stop="searchOne(notice.postId)" class="text-font bg-panel h-1/5 overflow-y-hidden rounded-xl shadow-lg p-4 m-2 my-4">
+                <div class = "flex justify-between p-3 pb-2">
+                    <div class="font-bold w-2/3 overflow-hidden text-bold text-xl">
                         {{notice.channel}}
                     </div>
-                    <div class="w-1/4 overflow-hidden p-4 text-xl">
+                    <div class="w-1/6 overflow-hidden text-lg text-right text-gray-600">
                         {{notice.startTime}}
                     </div>
-                    <div class="w-1/4 overflow-hidden p-4 text-xl">
+                    <div class="w-1/6 overflow-hidden text-lg text-right mr-10 text-gray-600">
                         {{notice.user}}
                     </div>
                 </div>
-                <div class="w-full overflow-hidden p-4 text-xl whitespace-normal truncate">
+                <div class="w-full overflow-hidden p-3 pt-0 text-lg whitespace-normal truncate m-0 text-gray-500">
                     {{notice.content}}
                 </div>
             </div>
@@ -63,7 +63,7 @@ import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import SearchContent from '@/components/notice/SearchContent.vue'
-import { getTime } from '../../common/lib/function.js';
+import { getTime, getTitleLen } from '../../common/lib/function.js';
 
 export default {
     name: 'DetailPage',
@@ -97,7 +97,7 @@ export default {
                 result.data.notifications.forEach(node => {
                     let notice = {
                         channel: node.channel.team.name + " / " + node.channel.name,
-                        content: node.content,
+                        content: getTitleLen(node.content, 150),
                         files: node.files,
                         user: node.user.userName,
                         startTime: getTime(node.startTime),
