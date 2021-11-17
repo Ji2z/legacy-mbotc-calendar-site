@@ -17,8 +17,15 @@ const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
 
-const getDayPicker = (date)=>{
-    return parseInt(date.substring(8,10))
+const getDayPicker = (date, month)=>{
+    let thisMonth = parseInt(date.substring(5,7))
+    if(thisMonth < month){{
+        return parseInt(date.substring(8,10) - 50)
+    }}else if(thisMonth > month){
+        return parseInt(date.substring(8,10) + 50)
+    }else{
+        return parseInt(date.substring(8,10))
+    }
 }
 
 const getTitle = (content)=>{

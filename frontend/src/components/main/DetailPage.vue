@@ -47,19 +47,7 @@ export default {
         const router = useRouter()
         const state = reactive({
             detailDate: 0,
-            notices:[
-                {
-                    id:0,
-                    title : " ",
-                    channel : "No Result",
-                    content : " ",
-                    files: "",
-                    check : false, 
-                    user: "",
-                    startTime: "",
-                    endTime: "",
-                },
-            ],
+            notices:[],
             chooseNotice: {},
             data:[0,1],
             progress: 0,

@@ -1,126 +1,126 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
 @layer base {
-    :root {
-        --bg-main: #163172; /* 메인칼라 */
-        --bg-back: #F6F6F6; /* 뒷배경 커러 */
-        --bg-panel: #FFFFFF; /* 창 칼라 */
-        --bg-side: #F6F6F6; /* 사이드바에서 선택됐을때 반전색상 */
+  :root {
+    --bg-main: #163172; /* 메인칼라 */
+    --bg-back: #f6f6f6; /* 뒷배경 커러 */
+    --bg-panel: #fafafa; /* 창 칼라 */
+    --bg-side: #f6f6f6; /* 사이드바에서 선택됐을때 반전색상 */
 
-        --border-label:  #163172; /* 마이페이지에서 좌측에 붙는 라벨의 색상 */
+    --border-label: #163172; /* 마이페이지에서 좌측에 붙는 라벨의 색상 */
 
-        --text-font: #000000;   /* 거의 대부분의 글씨 색상 */
-        --text-main: #163172; /* 반전색 */
-        --text-back: #F6F6F6; /* 버튼안의 텍스트색 */
+    --text-font: #000000; /* 거의 대부분의 글씨 색상 */
+    --text-main: #163172; /* 반전색 */
+    --text-back: #f6f6f6; /* 버튼안의 텍스트색 */
 
-        --bg-first: #E2E5ED;  /* 스몰캘린더의 공지 많아질수록 진해지는 생상 4단계 */
-        --bg-second: #A8B2CA;  /* */
-        --bg-third: #506595;  /* */
-        --bg-most: #163172;  /* */
+    --bg-first: #e2e5ed; /* 스몰캘린더의 공지 많아질수록 진해지는 생상 4단계 */
+    --bg-second: #a8b2ca; /* */
+    --bg-third: #506595; /* */
+    --bg-most: #163172; /* */
 
-        background-color: #F6F6F6;  /* 이미지가 없는 경우의 배경색 */
-    }
-    .dark {
-        --bg-main: #383C48;
-        --bg-back: #2B2E37;
-        --bg-panel: #383C48;
-        --bg-side: #2B2E37;
+    background-color: #f6f6f6; /* 이미지가 없는 경우의 배경색 */
+  }
+  .dark {
+    --bg-main: #383c48;
+    --bg-back: #2b2e37;
+    --bg-panel: #383c48;
+    --bg-side: #2b2e37;
 
-        --border-label: #121212;
+    --border-label: #121212;
 
-        --text-font: #E9E9E9;
-        --text-main: #E9E9E9;
-        --text-back: #E9E9E9;
-        
-        --bg-first: #4B4E59;
-        --bg-second: #6D7079;
-        --bg-third: #C3C4C8;
-        --bg-most: #FFFFFF;
+    --text-font: #e9e9e9;
+    --text-main: #e9e9e9;
+    --text-back: #e9e9e9;
 
-        background-color: #2B2E37;
-    }
-    .ssuk {
-        --bg-main: #6F8788;
-        --bg-back: #00000095;
-        --bg-panel: #00000095;
-        --bg-side: #F6F6F6;
+    --bg-first: #4b4e59;
+    --bg-second: #6d7079;
+    --bg-third: #c3c4c8;
+    --bg-most: #fafafa;
 
-        --border-label: #6F8788;
+    background-color: #2b2e37;
+  }
+  .ssuk {
+    --bg-main: #6f8788;
+    --bg-back: #00000095;
+    --bg-panel: #00000095;
+    --bg-side: #f6f6f6;
 
-        --text-font: #6F8788;
-        --text-main: #6F8788;
-        --text-back: #F6F6F6;
+    --border-label: #6f8788;
 
-        --bg-first: #E2E5ED;
-        --bg-second: #A8B2CA;
-        --bg-third: #506595;
-        --bg-most: #163172;
+    --text-font: #fafafa;
+    --text-main: #6f8788;
+    --text-back: #f6f6f6;
 
-        background-image: url('../../assets/bg/ssuk_night.gif');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    .crayon {
-        --bg-main: #FFFFFF;
-        --bg-back: #DDF4FE;
-        --bg-panel: #FFFFFF;
-        --bg-side: #DDF4FE;
+    --bg-first: #e2e5ed;
+    --bg-second: #a8b2ca;
+    --bg-third: #506595;
+    --bg-most: #163172;
 
-        --border-label: #000000;
+    background-image: url("../../assets/bg/ssuk_night.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .crayon {
+    --bg-main: #ffffff;
+    --bg-back: #ddf4fe;
+    --bg-panel: #ffffff;
+    --bg-side: #ddf4fe;
 
-        --text-font: #454649;
-        --text-main: #454649;
-        --text-back: #454649;
+    --border-label: #000000;
 
-        --bg-first: #FFFFFF;
-        --bg-second: #51BDEB;
-        --bg-third: #019EE2;
-        --bg-most: #0176E2;
-        
-        background-image: url('../../assets/bg/crayon.png');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    .eclipse {
-        --bg-main: #1C0C5B;
-        --bg-back: #F6F6F6;
-        --bg-panel: #FFFFFF;
-        --bg-side: #F6F6F6;
-        
-        --border-label: #1C0C5B;
+    --text-font: #454649;
+    --text-main: #454649;
+    --text-back: #454649;
 
-        --text-font: #1C0C5B;
-        --text-main: #1C0C5B;
-        --text-back: #F6F6F6;
+    --bg-first: #fafafa;
+    --bg-second: #51bdeb;
+    --bg-third: #019ee2;
+    --bg-most: #0176e2;
 
-        --bg-first: #E2E5ED;
-        --bg-second: #A8B2CA;
-        --bg-third: #506595;
-        --bg-most: #163172;
+    background-image: url("../../assets/bg/crayon.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .eclipse {
+    --bg-main: #1c0c5b;
+    --bg-back: #f6f6f6;
+    --bg-panel: #ffffff;
+    --bg-side: #f6f6f6;
 
-        background-image: url('../../assets/bg/eclipse.gif');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+    --border-label: #1c0c5b;
+
+    --text-font: #1c0c5b;
+    --text-main: #1c0c5b;
+    --text-back: #f6f6f6;
+
+    --bg-first: #e2e5ed;
+    --bg-second: #a8b2ca;
+    --bg-third: #506595;
+    --bg-most: #163172;
+
+    background-image: url("../../assets/bg/eclipse.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 }
 
-.no-scrollbar::-webkit-scrollbar{
-    display: none;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .font-title {
-    font-family: Montserrat;
-    font-weight: bold;
+  font-family: Montserrat;
+  font-weight: bold;
 }
 .font-subtitle {
-    font-family: Montserrat;
-    font-weight: 400;
+  font-family: Montserrat;
+  font-weight: 400;
 }

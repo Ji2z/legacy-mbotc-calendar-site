@@ -3,8 +3,8 @@
         <div>
             <div class="overflow-hidden flex justify-between">
                 <div class="overflow-hidden flex justify-start">
-                    <div class="h-16 text-3xl text-main mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
-                    <div class="h-16 text-xl text-black align-text-bottom overflow-hidden">{{notice.team}}</div>
+                    <div class="h-16 text-3xl text-font mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
+                    <div class="h-16 text-xl text-font align-text-bottom overflow-hidden">{{notice.team}}</div>
                 </div>
             </div>
             <div class="overflow-hidden flex justify-between">
@@ -20,7 +20,7 @@
                         </button>
                     </div>
                     <div v-if="state.myNoticeFlag">
-                        <button class="bg-red-500 h-8 px-2 text-main align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
+                        <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ export default {
             },
             user : {
                 type: String,
-                default: " ",
+                default: "mbotc",
             },
             userId : {
                 type: String,
@@ -84,11 +84,11 @@ export default {
             },
             startTime : {
                 type: String,
-                default: " ",
+                default: "What are you looking for? ",
             },
             endTime : {
                 type: String,
-                default: " ",
+                default: " There's no notifications now.",
             },
         },
     },
