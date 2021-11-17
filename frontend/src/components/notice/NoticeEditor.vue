@@ -1,15 +1,15 @@
 <template>
     <div class="h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
-        <div class="bg-panel rounded-xl shadow-2xl p-8">
+        <div class="bg-panel rounded-xl shadow-2xl p-12">
             <div class="header pb-8">
-                <span class="text-4xl font-bold text-main ">Create Alert</span>
+                <span class="text-5xl font-title text-main ">Create notification</span>
             </div>
-            <div class="grid grid-cols-3 gap-4 text-font">
+            <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto text-font">
                 <div class="col-span-1">
                     <div>
                         <p class="text-xl font-bold">Destination</p>
                     </div>
-                    <div class="flex justify-start items-center pt-3">
+                    <div class="w-5/6 flex justify-start items-center pt-3">
                         <select class="form-select block w-full mr-3 border-b-2 p-1 bg-back text-font"  v-model="state.teamId" @change="state.channelId=0">
                             <option v-for="team in state.teams" :key="team.id" :value="team.id">{{team.teamName}}</option>
                         </select>
@@ -20,7 +20,9 @@
                 </div>
                 <div class="col-span-1">
                     <div class="flex justify-start items-center">
-                        <p class="text-xl font-bold mr-4">Date</p>
+                        <div>
+                            <p class="text-xl font-bold mr-4">Date</p>
+                        </div>
                         <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                             <div>
                                 <input type="checkbox" v-model="state.termToggle" name="termToggle" id="termToggle" :class="{'border-label':state.termToggle, 'right-0':state.termToggle}" class="absolute block w-5 h-5 rounded-full bg-back border-4 appearance-none cursor-pointer"/>
@@ -29,16 +31,16 @@
                         </div>
                         <p class="text-font text-sm">term</p>
                     </div>
-                    <div class="flex justify-start items-center pt-3">
-                        <input type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font"  v-model="state.startTime" :min="state.today">
+                    <div class="w-5/6 flex justify-start items-center pt-3">
+                        <input type="datetime-local" class="border-2 h-8 bg-back text-font"  v-model="state.startTime" :min="state.today">
                             <p v-if="state.termToggle" class="text-sm mx-4 text-font">-</p>
-                        <input v-if="state.termToggle" type="datetime-local" class="border-2 rounded-xl p-1 bg-back text-font" v-model="state.endTime">
+                        <input v-if="state.termToggle" type="datetime-local" class="border-2 h-8 bg-back text-font" v-model="state.endTime">
                     </div>
                 </div>
                 <div class="col-span-1">
                     <div class="flex justify-start items-center">
-                        <p class="text-xl font-bold mr-4">File Upload</p>
-                        <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold py-2 px-4 rounded cursor-pointer">upload</label>
+                        <p class="text-xl font-bold mr-4">File upload</p>
+                        <label for="fileInput" class="bg-back hover:bg-panel text-font font-bold px-4 rounded cursor-pointer">upload</label>
                         <input ref="fileRoot" id="fileInput" type="file" name="file" accept="*" class="hidden" @input="uploadFile">
                     </div>
                     <div class="flex justify-start items-center pt-3 relative">
@@ -54,8 +56,8 @@
                 <div id="editor" ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center mt-5">
-                <button class="bg-back text-main px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click = "submit">
-                    Create Alert to MatterMost
+                <button class="mt-1 w-11/12 h-12 px-4 py-2 my-2 inset-x-0 rounded-3xl bg-back text-main font-bold border-2 border-label hover:bg-main hover:text-back" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click="submit">
+                    Create notification to Mattermost
                 </button>
             </div>
         </div>
@@ -63,6 +65,7 @@
 </template>
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Editor from "@toast-ui/editor";
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
@@ -165,7 +168,7 @@ export default {
                 }
                 formData.append("message", state.mountEditor.getMarkdown())
                 state.fileList.forEach(file => {
-                    console.log(file)
+                    //console.log(file)
                     formData.append("file", file)
                 });
                 // console.log(fileRoot.value.files)
@@ -177,10 +180,10 @@ export default {
                 store.dispatch('root/uploadNotice', payload)
                 .then((result)=>{
                     //console.log("upload notice")
-                    console.log(result)
+                    //console.log(result)
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
             }else{
                 notify({
@@ -200,7 +203,7 @@ export default {
                 initialEditType: "markdown",
                 previewStyle: "vertical",
                 plugins: [colorSyntax],
-                theme: "dark"
+                theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
             });
         })
         const init = ()=>{

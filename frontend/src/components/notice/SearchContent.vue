@@ -1,14 +1,17 @@
 <template>
-    <div class="bg-panel rounded-xl shadow-lg p-12 text-font">            
-        <div class="overflow-hidden flex justify-start">
-            <div class="h-14 text-3xl text-font mr-4 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
-            <div class="h-14 text-xl text-font align-text-bottom overflow-hidden pt-2">{{notice.channel}}</div>
-        </div>
+    <div class="border-label border-4 rounded-xl shadow-lg p-12 m-4 text-font" :class="{'bg-black':(state.themeId == 2), 'bg-panel':(state.themeId != 2) }">
         <div class="overflow-hidden flex justify-between">
             <div class="overflow-hidden flex justify-start">
+                <span class="h-10 text-3xl font-bold inline-block align-bottom overflow-hidden mr-2">{{notice.team}}</span>
+                <span class="h-10 text-xl inline-block align-bottom overflow-hidden pt-2">{{notice.channel}}</span>
+            </div>
+            <span class="w-1/6 h-10 text-xl font-bold inline-block align-bottom overflow-hidden cursor-pointer text-right mr-5" @click="close">x Close</span>
+        </div>
+        <div class="overflow-hidden flex justify-between">
+            <div class="overflow-hidden flex justify-start mt-3">
                 <img :src="logo" alt="logo" class="h-6 w-6 mr-2">
-                <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
-                <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8 text-gray-500">{{notice.startTime}} ~ {{notice.endTime}}</div>
+                <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
+                <div class="h-10 text-xl align-text-bottom overflow-hidden text-gray-500">{{notice.startTime}} ~ {{notice.endTime}}</div>
             </div>
             <div class="overflow-hidden flex justify-end">
                 <div v-if="notice.files!=null" class="h-10 pb-2 mr-4">
@@ -16,14 +19,15 @@
                         Download files
                     </button>
                 </div>
-                <div v-if="state.myNoticeFlag">
-                    <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
+                <div v-if="state.myNoticeFlag" class="pt-2">
+                    <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700 mr-5" @click="deleteNotice">Delete</button>
                 </div>
             </div>
         </div>
         <hr>
-        <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden py-2">
-            <div id="editor" ref="mdViewer" class="text-font"></div>
+        <perfect-scrollbar ref="mdViewerWraperSearch" class="text-lg max-h-96 p-4">
+            <div id="editor" ref="mdViewerSearch" class="text-font"></div>
+            <div class="h-32"></div>
         </perfect-scrollbar>
     </div>
 </template>
@@ -31,27 +35,23 @@
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Editor from "@toast-ui/editor";
-import logo_0 from '@/assets/logo/logo_0.png'
 // import abc from '@/components/'
 import { reactive, ref, onUpdated } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import logo_0 from '@/assets/logo/logo_0.png'
 
 export default {
-    name: 'NoticeContent',
+    name: 'SearchContent',
     components: {
     },
     props:{
         notice:{
-            token : {                
-                type: String,
-                default: " ",
-            },
             title : {                
                 type: String,
                 default: " ",
             },
-            team : {
+             team : {
                 type: String,
                 default: " ",
             },
@@ -64,8 +64,8 @@ export default {
                 default: " ",
             },
             files : {
-                type: String,
-                default: null,
+                type: Array,
+                default: [],
             },
             check : {
                 type: Boolean,
@@ -73,7 +73,7 @@ export default {
             },
             user : {
                 type: String,
-                default: "mbotc",
+                default: " ",
             },
             userId : {
                 type: String,
@@ -81,101 +81,63 @@ export default {
             },
             startTime : {
                 type: String,
-                default: "What are you looking for? ",
+                default: " ",
             },
             endTime : {
                 type: String,
-                default: " There's no notifications now.",
+                default: " ",
+            },
+            time : {
+                type: String,
+                default: " ",
             },
         },
     },
-    setup(props){
+    setup(props, {emit}){
         const router = useRouter()
-        const store = useStore()
         const logo = logo_0
-        const mdViewer = ref(null)
-        const mdViewerWraper = ref(null)
+        const mdViewerSearch = ref(null)
+        const mdViewerWraperSearch = ref(null)
+        const store = useStore()
         const state = reactive({
             mountViewr: null,
+            themeId : store.getters['root/getThemeId'],
             fileList:[],
             targetFile: 0,
             myNoticeFlag: false,
         })
+
+        const close = ()=>{
+            emit('close')
+        }
+
         onUpdated(()=>{
+            // let wraperHeight = mdViewerWraperSearch.value.clientHeight + 'px'
+            //console.log(mdViewerWraperSearch)
+            //console.log(wraperHeight)
+            // console.log("------>")
+            // console.log(props.notice.content)
             if(store.getters['root/getUserId'] === props.notice.userId){
                 state.myNoticeFlag = true
             }else{
                 state.myNoticeFlag = false
             }
             state.fileList = []
-            let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
-            //console.log(mdViewerWraper)
-            //console.log(wraperHeight)
-            // console.log("------>")
-            // console.log(props.notice.content)
             state.mountViewer = new Editor.factory({
-                el: mdViewer.value,
+                el: mdViewerSearch.value,
                 viewer: true,
-                height: wraperHeight,
+                // height: wraperHeight,
                 initialValue: props.notice.content,
-                theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
+                theme: (state.themeId== 1 || state.themeId == 2)?"dark":"light"
             });
 
             changeFontSize();
         })
+
         const download = ()=>{
             if(props.notice.files != null){
                 let fileIds = props.notice.files.split(",")
                 fileIds.forEach(file => {
-                    // store.dispatch('root/getFileLink', payload)
-                    // .then((result)=>{
-                    //     console.log(result)
-                    //     const link = document.createElement('a');
-                    //     const url = result.data.link
-                    //     link.href = url;
-                    //     link.setAttribute('download', '');
-                    //     //link.style.cssText = 'display:none';
-                    //     document.body.appendChild(link);
-                    //     // link.click();
-                    //     // link.remove();
-                    // })
-                    // .catch((err)=>{
-                    // })
-                    // store.dispatch('root/getFile', payload)
-                    // .then((result)=>{
-                    //     console.log(result)
-                    //     try {
-                    //         let blob = new Blob([result.data], { type: result.headers['content-type'] })
-                    //         const url = (window.URL ? URL : webkitURL).createObjectURL(blob);
-                    //         const link = document.createElement('a');
-                    //         let fileName = 'unknown';
-                    //         const contentDisposition = result.headers['content-disposition'];
-                    //         if (contentDisposition) {
-                    //         const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
-                    //         if (fileNameMatch)
-                    //             [ , fileName ] = fileNameMatch.split('=');
-                    //         }
-                    //         fileName = fileName.replace(new RegExp('["]','g'), '');
-                    //         console.log(fileName)
-                    //         console.log(blob)
-
-                    //         if (window.navigator.msSaveOrOpenBlob) { // IE 10+
-                    //             window.navigator.msSaveOrOpenBlob(blob, fileName)
-                    //         } else { // not IE
-                    //             link.href = url;
-                    //             link.setAttribute('download', `${fileName}`);
-                    //             link.style.cssText = 'display:none';
-                    //             document.body.appendChild(link);
-                    //             link.click();
-                    //             link.remove();
-                    //         }
-                    //     } catch (e) {
-                    //         console.error(e)
-                    //     }
-                    // })
-                    // .catch((err)=>{
-
-                    // })
                     var xhr = new XMLHttpRequest();
                     xhr.onreadystatechange = function(){
                         if (this.readyState == 4 && this.status == 200){
@@ -225,9 +187,9 @@ export default {
             
         }
         const changeFontSize = () => {
-            document.getElementsByClassName("toastui-editor-contents")[0].style.fontSize = "17px";
+            document.getElementsByClassName("toastui-editor-contents")[0].style.fontSize = "20px";
         }
-        return { state, logo, mdViewer, mdViewerWraper, download, deleteNotice }
+        return { mdViewerSearch, mdViewerWraperSearch, close, state, logo, onUpdated, download, deleteNotice  }
     }
 };
 </script>

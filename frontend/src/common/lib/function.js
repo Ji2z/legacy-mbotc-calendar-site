@@ -17,8 +17,15 @@ const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
 
-const getDayPicker = (date)=>{
-    return parseInt(date.substring(8,10))
+const getDayPicker = (date, month)=>{
+    let thisMonth = parseInt(date.substring(5,7))
+    if(thisMonth < month){{
+        return parseInt(date.substring(8,10) - 50)
+    }}else if(thisMonth > month){
+        return parseInt(date.substring(8,10) + 50)
+    }else{
+        return parseInt(date.substring(8,10))
+    }
 }
 
 const getTitle = (content)=>{
@@ -27,6 +34,18 @@ const getTitle = (content)=>{
 
     //console.log(replaceText)
     return replaceText.substring(0,20)
+}
+
+const getTitleLen = (content, len)=>{
+    //console.log(content)
+    let replaceText = content.replace(new RegExp('@here|@HERE|[#*`]|@','g'), '');
+
+    if (replaceText.length > len)
+        replaceText = replaceText.substring(0, len) + " ...";
+    else
+        replaceText = replaceText.substring(0, len)
+    //console.log(replaceText)
+    return replaceText
 }
 
 const getTime = (date)=>{
@@ -42,3 +61,4 @@ exports.getMbotcURL = getMbotcURL;
 exports.getDayPicker = getDayPicker;
 exports.getTitle = getTitle;
 exports.getTime = getTime;
+exports.getTitleLen = getTitleLen;

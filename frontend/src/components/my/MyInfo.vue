@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header pb-4">
-            <span class="text-4xl font-bold text-main ">Settings</span>
+            <span class="text-5xl font-title text-main ">Settings</span>
         </div>
         <div class="text-font bold flex justify-between mb-2">
             <div class="flex items-end">
@@ -13,17 +13,17 @@
             </div>
         </div>
         <div class="text-font bg-panel w-full h-1/5 rounded-xl shadow-2xl mb-2 p-8 border-l-8 border-label">
-            <div>
-                <span class="font-bold text-2xl mr-2">URL</span>
-                <span class="text-2xl">{{url}}</span>
+            <div class="flex justify-start">
+                <div class="font-bold text-2xl w-20 mr-2">URL</div>
+                <div class="text-2xl">{{url}}</div>
             </div>
             <div class="flex justify-between items-end">
-                <div>
-                    <span class="font-bold text-2xl mr-2">ID</span>
-                    <span class="text-2xl">{{id}}</span>
+                <div class="flex justify-start">
+                    <div class="font-bold text-2xl w-20 mr-2">ID</div>
+                    <div class="text-2xl">{{id}}</div>
                 </div>
                 <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="state.openModal=true">Leave</button>
+                    <button class="bg-red-500 text-white font-bold border-2 border-red-600 py-1 px-4 m-2 rounded-full hover:bg-red-700" @click="state.openModal=true">Leave</button>
                 </div>
             </div>
         </div>

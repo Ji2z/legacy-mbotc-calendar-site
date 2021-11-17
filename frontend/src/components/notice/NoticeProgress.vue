@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <DoughnutChart ref="chartRef" :chartData="state" :options="options"></DoughnutChart>
-        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 text-4xl text-font font-bold align-bottom mt-2">
+        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-font font-bold align-bottom">
             {{progress}}%
         </div>
     </div>
@@ -33,7 +33,7 @@ export default defineComponent({
     setup(props){
         const store = useStore()
         const colorSet = [
-            ["#163172","#FFFFFF"],["#2C394B","#082032"],["#6F8788","#F6F6F6"],["#14279B","#F6F6F6"],["#1C0C5B","#F6F6F6"]
+            ["#163172","rgba(255,255,255,0.2)"],["#000000","rgba(0,0,0,0.2)"],["#6F8788","rgba(0,0,0,0.2)"],["#019EE2","rgba(255,255,255,0.2)"],["#1D889C","rgba(0,0,0,0.2)"],["#FDD397","rgba(0,0,0,0.2)"]
         ]
         const chartRef = ref()
         const state = reactive({
@@ -49,8 +49,8 @@ export default defineComponent({
         const options = ref({
             responsive: true,
             plugins: {
-                legend: { position: 'top', },
-                title: { display: true, text: '진행도', },
+                legend: { display: false, position: 'bottom', },
+                title: { display: false, text: 'progress', },
             },
         });
 

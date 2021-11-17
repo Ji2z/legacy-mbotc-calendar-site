@@ -4,24 +4,19 @@
             <p class="font-bold text-2xl">My Team</p><br/>
         </div>
         <div class="bg-panel w-full h-1/2 rounded-xl shadow-2xl p-8 border-l-8 border-label">
-            <div class="flex justify-end">
-                <button class="bg-back text-main font-bold border-2 border-label px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
-            </div>
             <div class="grid grid-cols-2 gap-4 w-full">
-                <perfect-scrollbar class="h-56 overflow-y-auto p-4">
-                    <div v-for="team in state.teams" :key="team.id" class="m-2 p-2 bg-panel rounded-xl shadow-2xl border-b-2 border-r-2 border-label cursor-pointer text-font" @click="selectTeam(team.id)">
-                        <div class="flex justify-between">
-                            <div class="flex items-center border-l-8" :style="{'border-color': team.color}">
-                                <p class="text-xl overflow-x-hidden ml-2">
-                                    {{team.teamName}}
-                                </p>
-                            </div>
-                            <div class="flex justify-end items-center z-30">
-                                <div class="w-5 h-5 cursor-pointer" :style="{background: team.color}" @click.stop="changeColor(team.id)">
+                <perfect-scrollbar class="h-56 overflow-y-auto p-4" @scroll.stop="">
+                    <div v-for="team in state.teams" :key="team.id" class="h-10 mb-1 rounded-lg shadow-md border-label cursor-pointer text-font" :style="{'background-color': team.color}"  @click="selectTeam(team.id)">
+                        <div class="flex justify-between mr-0 ml-5 m-3 pl-2 h-10 rounded-r-lg " :class="{'bg-panel':(state.selectedTeam != team.id), 'text-black':(state.selectedTeam == team.id)}" >
+                            <p class="text-xl overflow-x-hidden p-1">
+                                {{team.teamName}}
+                            </p>
+                            <div class="flex justify-end items-center z-20">
+                                <div class="w-5 h-5 cursor-pointer mr-2 border-2 border-gray-500" :style="{background: team.color}" @click.stop="changeColor(team.id)">
                                     <my-palette v-if="team.open" :color="team.color" :id="team.id" @saveColor="saveColor" @close="team.open=false, state.paletteOpen=false"/>
                                 </div>
                                 <div>
-                                    <svg class="h-5 w-5 bg-panel" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="h-5 w-5 mr-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>	
                                 </div>
@@ -30,8 +25,14 @@
                     </div>
                 </perfect-scrollbar>
                 <div class="col-span-1">
-                    <div>
-                        <p class="bg-panel">{{state.teams[state.selectedTeam].teamName}}</p><br/>
+                    <div class="flex justify-between">
+                        <div class="flex justify-between">
+                            <p class="font-bold text-gray-600 pt-4 pl-2">{{state.teams[state.selectedTeam].teamName}}</p>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="sync">&nbsp;Synchronization&nbsp;</button>
+                            <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
+                        </div>
                     </div>
                     <div class="bg-back h-44 overflow-y-auto rounded-xl shadow-inner p-4">
                         <div v-for="channel in state.teams[state.selectedTeam].subscribe" :key="channel.channelId" class="m-2 p-2 bg-panel text-font rounded-xl">
@@ -60,7 +61,7 @@ import { notify } from '@kyvg/vue3-notification'
 // import abc from '@/components/'
 import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'MySubscribe',
@@ -75,6 +76,7 @@ export default {
     },
     setup(props){
         const store = useStore()
+        const router = useRouter()
         const state = reactive({
             teams:[{
                 color: "#FFFFFF",
@@ -161,12 +163,38 @@ export default {
                 });
             })
         }
+        const sync = ()=>{
+            let payload = {
+                token: store.getters['root/getToken'],
+            }
+            notify({
+                    title: "From MBOTC 🧐",
+                    text: "I'm checking your teams and chnnels!\nwait please..",
+                    type: "warn"
+            });
+            store.dispatch('root/userSync', payload)
+            .then((result)=>{
+                notify({
+                    title: "From MBOTC 😉",
+                    text: "Synchronization complete!",
+                    type: "success"
+                });
+                router.go()
+            })
+            .catch((err)=>{
+                notify({
+                    title: "From MBOTC 😅",
+                    text: "Error has occurred. Please try again.",
+                    type: "error"
+                });
+            })
+        }
         watch(()=> props.saveFlag, ()=>{
             console.log("테마로부터 event")
             save()
         })
         init()
-        return { state, selectTeam, changeColor, save, saveColor }
+        return { state, selectTeam, changeColor, save, saveColor, sync }
     }
 };
 

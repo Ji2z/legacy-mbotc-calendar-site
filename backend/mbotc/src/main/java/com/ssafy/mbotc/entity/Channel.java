@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name = "channel")
 public class Channel extends BaseEntity {
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@ApiParam(value = "team to which channel belongs")
 	Team team;
 	

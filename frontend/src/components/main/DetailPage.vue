@@ -1,17 +1,21 @@
 <template>
-    <div class="w-full h-screen overflow-y-auto no-scrollbar pt-12">
-        <div class="grid grid-cols-4 gap-4 w-5/6 h-full mx-auto">
-            <div class="col-span-3 h-full">
+    <div class="w-full overflow-y-auto no-scrollbar pt-12">
+        <div class="grid grid-cols-4 w-11/12 h-full mx-auto">
+            <div class="col-span-3 h-52 mb-5">
                 <calendar-title :date="state.detailDate"/>
-                <perfect-scrollbar class="h-1/5 py-2 overflow-x-scroll whitespace-nowrap content-end">
-                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice = notice class="cursor-pointer" :class="{'animate-bounce transform ease-in-out': (notice.id==0&&state.jumpFlag)}"
-                    @mouseover="state.jumpFlag=false" @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, notice.token, true)" @unchecked="changeChecked(notice.id, notice.token, false)"/>
+                <perfect-scrollbar class="h-52 my-4 pt-2 overflow-x-scroll whitespace-nowrap content-end">
+                    <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice="notice" class="cursor-pointer" :class="{'border-4 border-label':(state.choosedId==notice.id)}" 
+                    @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, notice.token, true)" @unchecked="changeChecked(notice.id, notice.token, false)"/>
                 </perfect-scrollbar>
-                <notice-content class="h-3/5" :notice ="state.chooseNotice"/>
             </div>
-            <div class="col-span-1 h-full">
+            <div class="col-span-1 h-52 mt-5 pt-10 ml-10">
                 <notice-progress class="w-3/4 h-auto mx-auto" :data="state.data" :progress="state.progress"/>
-                <calendar-small class="w-3/4 h-auto" :date="state.detailDate"/>
+            </div>
+            <div class="col-span-3 pb-8">
+                <notice-content class="h-full" :notice ="state.chooseNotice"/>
+            </div>
+            <div class="col-span-1 my-auto ml-10">
+                <calendar-small class="w-3/4 h-auto mx-auto" :date="state.detailDate"/>
             </div>
         </div>
     </div>
@@ -43,23 +47,12 @@ export default {
         const router = useRouter()
         const state = reactive({
             detailDate: 0,
-            notices:[
-                {
-                    id:0,
-                    title : " ",
-                    channel : "No Result",
-                    content : " ",
-                    files: "",
-                    check : false, 
-                    user: "",
-                    startTime: "",
-                    endTime: "",
-                },
-            ],
+            notices:[],
             chooseNotice: {},
             data:[0,1],
             progress: 0,
             jumpFlag:true,
+            choosedId: 0,
         })
 
         const init = ()=>{
@@ -74,7 +67,7 @@ export default {
             store.dispatch('root/getDayNotice', payload)
             .then((result)=>{
                 // console.log("Day list")
-                //console.log(result)
+                console.log(result)
                 state.notices = []
                 let index = 0
                 result.data.notifications.forEach(node => {
@@ -82,11 +75,13 @@ export default {
                         id: index,
                         token: node.token,
                         title: node.content.substring(0, 10),
-                        channel: node.channel.team.name + " / " + node.channel.name,
+                        team: node.channel.team.name,
+                        channel: node.channel.name,
                         content: node.content,
                         files: node.files,
                         check: false, 
                         user: node.user.userName,
+                        userId: node.user.userId,
                         startTime: getTime(node.startTime),
                         endTime: getTime(node.endTime),
                     }
@@ -117,6 +112,7 @@ export default {
 
         const clickNotice = (id)=>{
             //console.log(id)
+            state.choosedId = id
             state.chooseNotice = state.notices[id]
         }
         const changeChecked = (id, token, check)=>{
