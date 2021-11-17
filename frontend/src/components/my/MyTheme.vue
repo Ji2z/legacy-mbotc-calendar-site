@@ -39,7 +39,7 @@ export default {
                     id: 0,
                     theme: "light",
                 },
-                {                    
+                {
                     id: 1,
                     theme: "dark",
                 },
@@ -53,7 +53,11 @@ export default {
                 },
                 {
                     id: 4,
-                    theme: "eclipse",
+                    theme: "art",
+                },
+                {
+                    id: 5,
+                    theme: "lilac",
                 },
             ],
         })

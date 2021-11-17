@@ -55,10 +55,10 @@
     --text-main: #6f8788;
     --text-back: #f6f6f6;
 
-    --bg-first: #e2e5ed;
-    --bg-second: #a8b2ca;
-    --bg-third: #506595;
-    --bg-most: #163172;
+    --bg-first: #212829;
+    --bg-second: #506162;
+    --bg-third: #BFC9CA;
+    --bg-most: #F4F5F6;
 
     background-image: url("../../assets/bg/ssuk_night.gif");
     background-repeat: no-repeat;
@@ -85,7 +85,7 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .eclipse {
+  .art {
     --bg-main: #1c0c5b;
     --bg-back: #f6f6f6;
     --bg-panel: #ffffff;
@@ -102,7 +102,28 @@
     --bg-third: #506595;
     --bg-most: #163172;
 
-    background-image: url("../../assets/bg/eclipse.gif");
+    background-image: url("../../assets/bg/art.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .lilac {
+    --bg-main: #FDD397;
+    --bg-back: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-side: #FCFAFF;
+
+    --border-label: #FDD397;
+
+    --text-font: #000000;
+    --text-main: #555555;
+    --text-back: #555555;
+
+    --bg-first: #FDD397;
+    --bg-second: #F4B52D;
+    --bg-third: #EF9121;
+    --bg-most: #D4780B;
+
+    background-image: url("../../assets/bg/lilac.png");
     background-repeat: no-repeat;
     background-size: cover;
   }
