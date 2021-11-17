@@ -4,7 +4,7 @@
             <div class="bg-panel rounded-xl shadow-2xl p-8">
                 <div class="header flex justify-between pb-8">
                     <div class="text-font">
-                        <span class="text-5xl font-bold">{{monthList[state.month]}}</span>
+                        <span class="text-5xl font-title">{{monthList[state.month]}}</span>
                         <span class="text-5xl p-8">{{state.year}}</span>
                     </div>
                     <div class="inline-block mr-6 mt-2">
@@ -51,14 +51,14 @@
                             <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
                                 <div class="flex flex-col h-32" @click="goDetail(day.num)">
                                     <div class="top h-4 mb-2">
-                                        <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-bold">{{day.num}}</span>
+                                        <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-title">{{day.num}}</span>
                                         <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
                                         <span v-else class="text-gray-400">{{day.num}}</span>
                                     </div>
                                     <div class="bottom flex-grow py-1 cursor-pointer overflow-auto no-scrollbar">
-                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70 rounded-sm border-b-2 border-white" :style="{'background':node.color}">
+                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70 rounded-sm" :style="{'background':node.color}">
                                             <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                            <p class="ml-1 text-font text-xs font-bold opacity-100 overflow-clip overflow-hidden">{{node.title}}</p>
+                                            <p class="ml-1 mt-0.5 text-font text-xs font-bold opacity-100 overflow-clip overflow-hidden">{{node.title}}</p>
                                         </div>
                                     </div>
                                 </div>
