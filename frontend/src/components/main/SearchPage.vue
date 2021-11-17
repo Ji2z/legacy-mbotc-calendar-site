@@ -53,11 +53,7 @@
         <div v-else class="w-full h-64 text-font text-4xl align-middle text-center mt-10">
             No search results.
         </div>
-<<<<<<< HEAD
-        <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 w-2/3 h-1/2 transform -translate-x-1/2 -translate-y-1/2">
-=======
         <div v-if="state.open" class="z-50 absolute top-1/2 left-1/2 w-4/5 h-1/2 transform -translate-x-1/2 -translate-y-1/2">
->>>>>>> c0c7a071c703a8a930a6e4bea2e6c6c2bb6a1b25
             <search-content :notice="state.noticeDetail" @close="state.open = false"/>
         </div>
     </div>
