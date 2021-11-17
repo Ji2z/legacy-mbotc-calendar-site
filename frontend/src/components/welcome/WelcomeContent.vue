@@ -1,5 +1,5 @@
 <template>
-<div id="top" class="w-full h-screen flex justify-between items-center px-6 lg:px-32 relative bg-gray-100">
+<div id="top" class="w-full h-screen flex justify-between items-center px-6 lg:px-32 relative">
         <div class="md:text-5xl sm:text-2xl font-bold">
             <p class="leading-relaxed">The Most</p>
             <p class="leading-relaxed">Beautiful and Convenient</p>
