@@ -75,6 +75,10 @@ public class RedisService {
 		value.set(userToken, userSetting.toString());
 	}
 	
+	public boolean deleteUserSettings(String userId) {
+		return redisTemplate.delete(userId);
+	}
+	
 	/* ############################### CHECK LIST #######################################
 	//user post checklist
 	public void setUserChecklists(String keyid, ResRedisCheckList userCheckList) {
