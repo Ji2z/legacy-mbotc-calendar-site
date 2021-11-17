@@ -2,7 +2,7 @@
     <div class="h-screen px-32 pt-12 overflow-y-auto no-scrollbar">
         <div class="bg-panel rounded-xl shadow-2xl p-12">
             <div class="header pb-8">
-                <span class="text-4xl font-title text-main ">Create notification</span>
+                <span class="text-5xl font-title text-main ">Create notification</span>
             </div>
             <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto text-font">
                 <div class="col-span-1">
@@ -56,8 +56,8 @@
                 <div id="editor" ref="mdEditor"></div>
             </div>
             <div class="w-full flex justify-center mt-5">
-                <button class="bg-back text-main px-4 py-2 my-2 inset-x-0 rounded" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click="submit">
-                    Create Alert to MatterMost
+                <button class="mt-1 w-11/12 h-12 px-4 py-2 my-2 inset-x-0 rounded-3xl bg-back text-main font-bold border-2 border-label hover:bg-main hover:text-back" :class="{'bg-back':state.clickable, 'hover:bg-main':state.clickable}" @click="submit">
+                    Create notification to Mattermost
                 </button>
             </div>
         </div>

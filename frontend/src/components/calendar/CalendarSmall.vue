@@ -106,8 +106,8 @@ export default {
                 // console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
-                        startDay: getDayPicker(node.startTime),
-                        endDay: getDayPicker(node.endTime),
+                        startDay: getDayPicker(node.startTime, payload.month),
+                        endDay: getDayPicker(node.endTime, payload.month),
                     }
                     noticeList.push(notice)
                 });

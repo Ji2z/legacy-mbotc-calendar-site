@@ -55,10 +55,10 @@
                                         <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
                                         <span v-else class="text-gray-400">{{day.num}}</span>
                                     </div>
-                                    <div class="bottom flex-grow py-1 cursor-pointer overflow-auto no-scrollbar">
-                                        <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 text-left text-font opacity-70 rounded-sm" :style="{'background':node.color}">
+                                    <div class="bottom flex-grow p-1 cursor-pointer overflow-auto no-scrollbar">
+                                        <div v-for="node in day.notice" :key="node.token" class="mb-1 text-sm h-7 text-left text-black opacity-100 rounded-md overflow-hidden" :style="{'background':node.color}">
                                             <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                            <p class="ml-1 mt-0.5 text-font text-xs font-bold opacity-100 overflow-clip overflow-hidden">{{node.title}}</p>
+                                            <p class="ml-2 my-auto text-gray-800 font-semibold text-sm pt-1 opacity-100 overflow-clip">{{node.title}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -114,8 +114,8 @@ export default {
                         //title: node.channel.team.name,
                         title: getTitle(node.content),
                         color: "#808080",
-                        startDay: getDayPicker(node.startTime),
-                        endDay: getDayPicker(node.endTime),
+                        startDay: getDayPicker(node.startTime, payload.month),
+                        endDay: getDayPicker(node.endTime, payload.month),
                         token: node.channel.team.token
                     }
 
