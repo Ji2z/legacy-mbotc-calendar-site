@@ -2,13 +2,13 @@
     <div>
         <div id="intro1" class="grid grid-cols-2 w-full h-screen items-center relative">
             <div class="w-full h-2/3 my-auto relative">
-                <p class="z-50 absolute top-10 left-20 text-sm text-gray-700 whitespace-nowrap" style="animation: ping 6s cubic-bezier(0, 0, 0.3, 1) infinite;">Hello I'm MBOTC</p>
-                <p class="z-50 absolute top-96 left-32 ttext-sm text-gray-500 whitespace-nowrap" style="animation: ping 7s cubic-bezier(0, 0, 0.2, 1) infinite;">What are you looking for?</p>
-                <p class="z-50 absolute top-72 left-80 ttext-sm text-gray-700 whitespace-nowrap" style="animation: ping 3s cubic-bezier(0, 0, 0.4, 1) infinite;">Hello</p>
-                <p class="z-50 absolute top-96 left-0 ttext-sm text-gray-700 whitespace-nowrap" style="animation: ping 5s cubic-bezier(0, 0, 0.4, 1) infinite;">Hello</p>
-                <p class="z-50 absolute top-24 right-48 ttext-sm text-black whitespace-nowrap" style="animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;">안녕하세요</p>
-                <p class="z-50 absolute top-36 left-72 ttext-sm text-gray-400 whitespace-nowrap" style="animation: ping 7s cubic-bezier(0, 0, 0.3, 1) infinite;">Hi</p>
-                <p class="z-50 absolute top-28 right-72 ttext-sm text-gray-700 whitespace-nowrap" style="animation: ping 6s cubic-bezier(0, 0, 0.2, 1) infinite;">Nice to meet you!</p>
+                <p class="z-50 absolute top-10 left-20 text-sm text-gray-700" style="animation: ping 6s cubic-bezier(0, 0, 0.3, 1) infinite;">Hello I'm MBOTC</p>
+                <p class="z-50 absolute top-96 left-32 ttext-sm text-gray-500" style="animation: ping 7s cubic-bezier(0, 0, 0.2, 1) infinite;">What are you looking for?</p>
+                <p class="z-50 absolute top-72 left-80 ttext-sm text-gray-700" style="animation: ping 3s cubic-bezier(0, 0, 0.4, 1) infinite;">Hello</p>
+                <p class="z-50 absolute top-96 left-0 ttext-sm text-gray-700" style="animation: ping 5s cubic-bezier(0, 0, 0.4, 1) infinite;">Hello</p>
+                <p class="z-50 absolute top-24 right-48 ttext-sm text-black" style="animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;">안녕하세요</p>
+                <p class="z-50 absolute top-36 left-72 ttext-sm text-gray-400" style="animation: ping 7s cubic-bezier(0, 0, 0.3, 1) infinite;">Hi</p>
+                <p class="z-50 absolute top-28 right-72 ttext-sm text-gray-700" style="animation: ping 6s cubic-bezier(0, 0, 0.2, 1) infinite;">Nice to meet you!</p>
                 <div class="absolute top-12 left-20">
                     <img :src="mbotc[0]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 1s infinite;">
                 </div>
@@ -42,8 +42,8 @@
             </div>
             <div class="w-full h-1/2 my-auto">
                 <div class="mx-auto w-4/5">
-                    <p class="text-7xl font-bold text-left mb-4">Download</p>
-                    <p class="text-xl text-left whitespace-nowrap mb-20">Our MBotC is opended for every developers who can develop our services passionately. <br> 
+                    <p class="text-7xl md:text-4xl font-bold text-left mb-4">Download</p>
+                    <p class="text-xl md:text-lg text-left mb-20">Our MBotC is opended for every developers who can develop our services passionately. <br> 
                         Welcome for every interest and any of questions about out service. <br>
                         You could check our contributing convention documents in Github.</p>
                     <a href="https://github.com/mbotc">
@@ -59,8 +59,8 @@
             <div class="w-full h-full">
                 <div class="h-3/4 w-5/6 m-auto relative">
                     <img :src="mbotc[0]" alt="mbotc" class="h-24 w-24 my-10">
-                    <p class="text-7xl font-bold text-left mb-10">Daily notifications</p>
-                    <p class="text-xl text-left whitespace-nowrap mb-20">Check your daily notification. <br>
+                    <p class="text-7xl md:text-4xl font-bold text-left mb-10">Daily notifications</p>
+                    <p class="text-xl md:text-lg text-left mb-20">Check your daily notification. <br>
                         You can check your every detail contents of daily notices. <br>
                         Also, it’s intuitive to recognize about tracking progress. <br>
                         Our service provide  such a cute version of calendar that shows how many <br>
@@ -95,8 +95,8 @@
             <div class="w-full h-full">
                 <div class="h-3/4 w-5/6 m-auto relative">
                     <img :src="mbotc[3]" alt="mbotc" class="h-24 w-24 my-10"  style="animation: bounce 2s infinite;">
-                    <p class="text-7xl font-bold text-left mb-10">Create notification</p>
-                    <p class="text-xl text-left whitespace-nowrap mb-20">Easy to create new notification with MBotC. <br>
+                    <p class="text-7xl md:text-4xl font-bold text-left mb-10">Create notification</p>
+                    <p class="text-xl md:text-lg text-left mb-20">Easy to create new notification with MBotC. <br>
                         In Right Side, you can check your result of applying Markdown at a glance. <br> 
                         More of details, we could provide ‘Start Date’ and ‘End Date’ to effecitively let you see <br>
                         how many days your schedule can be processed. <br>
@@ -123,8 +123,8 @@
                     <div class="h-24 w-24">
                         <img :src="mbotc[4]" alt="mbotc" class="h-24 w-24 my-10" style="animation: spin 3s linear infinite;">
                     </div>
-                    <p class="text-7xl font-bold text-left mb-4">Search Mode</p>
-                    <p class="text-xl text-left whitespace-nowrap mb-20">Don't you ever had a hard time searching for what you wanted 
+                    <p class="text-7xl md:text-4xl font-bold text-left mb-4">Search Mode</p>
+                    <p class="text-xl md:text-lg text-left mb-20">Don't you ever had a hard time searching for what you wanted 
                         while using Classic MatterMost? <br>
                         Here, MBotC offers a attractive solution just for you. <br>
                         Just type in a word, what you want to search from your all notices you’ve got. <br>

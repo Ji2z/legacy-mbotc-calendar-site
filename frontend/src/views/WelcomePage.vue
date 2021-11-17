@@ -48,7 +48,7 @@ export default {
         })
 
         const checkMarker = () =>{
-            state.reverseFlag = (state.now==6)?true:false
+            state.reverseFlag = (state.now==5)?true:false
         }
 
         const jumpScroll = (target)=>{
