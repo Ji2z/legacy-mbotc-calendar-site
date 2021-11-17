@@ -86,21 +86,21 @@
     background-size: cover;
   }
   .art {
-    --bg-main: #1c0c5b;
+    --bg-main: #1d889c;
     --bg-back: #f6f6f6;
     --bg-panel: #ffffff;
-    --bg-side: #f6f6f6;
+    --bg-side: #0b3550;
 
-    --border-label: #1c0c5b;
+    --border-label: #1d889c;
 
-    --text-font: #1c0c5b;
-    --text-main: #1c0c5b;
-    --text-back: #f6f6f6;
+    --text-font: #000000;
+    --text-main: #0b3550;
+    --text-back: #0b3550;
 
-    --bg-first: #e2e5ed;
-    --bg-second: #a8b2ca;
-    --bg-third: #506595;
-    --bg-most: #163172;
+    --bg-first: #c7dde2;
+    --bg-second: #1d889c;
+    --bg-third: #115966;
+    --bg-most: #0d353d;
 
     background-image: url("../../assets/bg/art.png");
     background-repeat: no-repeat;
