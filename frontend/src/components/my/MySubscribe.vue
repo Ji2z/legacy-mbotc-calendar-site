@@ -26,13 +26,11 @@
                 </perfect-scrollbar>
                 <div class="col-span-1">
                     <div class="flex justify-between">
-                        <div class="flex items-center">
-                            <p class="font-bold text-gray-600">{{state.teams[state.selectedTeam].teamName}}</p>
+                        <div class="flex justify-between">
+                            <p class="font-bold text-gray-600 pt-4 pl-2">{{state.teams[state.selectedTeam].teamName}}</p>
                         </div>
-                        <div>
+                        <div class="flex justify-end">
                             <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="sync">&nbsp;Synchronization&nbsp;</button>
-                        </div>
-                        <div>
                             <button class="bg-back text-main font-bold border-2 border-label py-1 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="save">&nbsp;Save&nbsp;</button>
                         </div>
                     </div>
