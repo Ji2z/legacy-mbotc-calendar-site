@@ -20,11 +20,11 @@ import lombok.Setter;
 public class Notice extends BaseEntity {
 	
 	@ApiParam(value = "channel to which notice belongs")
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	Channel channel;
 	
 	@ApiParam(value = "user who write this notice")
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	User user;
 	
 	@ApiModelProperty(example = "2021-01-01 00:00:00.000000")
