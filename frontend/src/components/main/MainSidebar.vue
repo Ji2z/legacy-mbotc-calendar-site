@@ -1,7 +1,7 @@
 <template>
     <div class="h-screen">
         <notifications position="top right"/>
-        <div class="h-1/5 fixed left-0 top-0" @click="clickNav(0)">
+        <div class="h-1/5 fixed left-0 top-0 cursor-pointer" @click="clickNav(0)">
             <img :src="state.logo[state.theme]" alt="logo" class="h-16 w-16 ml-4 mt-4">
         </div>
         <div class="flex flex-col fixed w-20 h-5/6 bottom-0 left-0 rounded-tr-3xl bg-main font-bold">
@@ -9,7 +9,7 @@
 
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[0], 'text-main':state.nav[0], 'text-back':!state.nav[0]}" @click="clickNav(0)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
                     <path d="M840 4920 l0 -200 -147 0 c-91 0 -175 -6 -218 -15 -225 -47 -413
@@ -41,7 +41,7 @@
                 </svg>
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[1], 'text-main':state.nav[1], 'text-back':!state.nav[1]}" @click="clickNav(1)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
                     <path d="M247 4310 c-92 -24 -179 -97 -218 -185 -17 -38 -23 -70 -23 -135 -1
@@ -66,7 +66,7 @@
                 </svg>
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[2], 'text-main':state.nav[2], 'text-back':!state.nav[2]}" @click="clickNav(2)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
                     <path d="M782 4880 c-359 -50 -641 -294 -748 -645 -25 -81 -27 -105 -27 -240
@@ -100,7 +100,7 @@
                 </svg>
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[3], 'text-main':state.nav[3], 'text-back':!state.nav[3]}" @click="clickNav(3)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 44 44" preserveAspectRatio="xMidYMid meet"
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 44 44" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
                     7.32075 25.3836 0 16.3522 0C7.32075 0 0 7.32075 0 16.3522C0 25.3836 7.32075 32.7044 16.3522 32.7044C20.4025 
@@ -110,7 +110,7 @@
                 </svg>
             </div>
             <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[4], 'text-main':state.nav[4], 'text-back':!state.nav[4]}" @click="clickNav(4)">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
                     <path d="M2245 5111 c-50 -13 -112 -49 -151 -88 -65 -64 -81 -117 -111 -354

@@ -35,7 +35,7 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Noto Sans KR','sans-serif'],
-      montserrat: ['Montserrat','sans-serif']
+      Montserrat: ['Montserrat','sans-serif']
     },
   },
   variants: {

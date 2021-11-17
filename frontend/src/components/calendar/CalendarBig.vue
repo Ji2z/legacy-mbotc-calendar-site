@@ -5,7 +5,7 @@
                 <div class="header flex justify-between pb-8">
                     <div class="text-font">
                         <span class="text-5xl font-title">{{monthList[state.month]}}</span>
-                        <span class="text-5xl p-8">{{state.year}}</span>
+                        <span class="text-5xl p-8 font-subtitle">{{state.year}}</span>
                     </div>
                     <div class="inline-block mr-6 mt-2">
                         <button class="mr-6" @click="beforeMonth">							
