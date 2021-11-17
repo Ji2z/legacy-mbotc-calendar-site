@@ -7,7 +7,8 @@
             <perfect-scrollbar class="m-4 overflow-x-scroll whitespace-nowrap content-end">
                 <div v-for="theme in state.themes" :key="theme.id" class="relative inline-block pb-2 w-48">
                     <div class="h-32 w-48 text-font rounded-lg p-2 mr-2" @click="clickTheme(theme.id)">
-                        <div class="h-24 w-40 bg-black border-green-600" :class="{'border-4':(state.selected==theme.id)}">
+                        <div class="h-24 w-40 border-green-600" :class="{'border-4':(state.selected==theme.id)}">
+                            <img :src="state.preview[theme.id]">
                         </div>
                         <div class="h-4 text-xs p-2">
                             {{theme.theme}}
@@ -26,6 +27,13 @@ import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
 import { notify } from '@kyvg/vue3-notification'
 
+import preview_0 from '@/assets/bg/light_preview.png'
+import preview_1 from '@/assets/bg/dark_preview.png'
+import preview_2 from '@/assets/bg/ssuk_night_preview.png'
+import preview_3 from '@/assets/bg/crayon_preview.png'
+import preview_4 from '@/assets/bg/art_preview.png'
+import preview_5 from '@/assets/bg/lilac_preview.png'
+
 export default {
     name: 'MyTheme',
     components: {
@@ -34,12 +42,13 @@ export default {
         const store = useStore()
         const state = reactive({
             selected: store.getters['root/getThemeId'],
+            preview: [preview_0, preview_1, preview_2, preview_3, preview_4, preview_5],
             themes:[
                 {
                     id: 0,
                     theme: "light",
                 },
-                {                    
+                {
                     id: 1,
                     theme: "dark",
                 },
@@ -53,7 +62,11 @@ export default {
                 },
                 {
                     id: 4,
-                    theme: "eclipse",
+                    theme: "art",
+                },
+                {
+                    id: 5,
+                    theme: "lilac",
                 },
             ],
         })

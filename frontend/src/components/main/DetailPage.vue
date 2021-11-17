@@ -1,20 +1,20 @@
 <template>
     <div class="w-full overflow-y-auto no-scrollbar pt-12">
-        <div class="grid grid-cols-4 w-5/6 h-full mx-auto">
-            <div class="col-span-3">
+        <div class="grid grid-cols-4 w-11/12 h-full mx-auto">
+            <div class="col-span-3 h-52 mb-5">
                 <calendar-title :date="state.detailDate"/>
-                <perfect-scrollbar class="h-52 m-4 py-2 overflow-x-scroll whitespace-nowrap content-end">
+                <perfect-scrollbar class="h-52 my-4 pt-2 overflow-x-scroll whitespace-nowrap content-end">
                     <notice-thumbnail v-for="notice in state.notices" :key="notice.id" :notice="notice" class="cursor-pointer" :class="{'border-4 border-label':(state.choosedId==notice.id)}" 
                     @click="clickNotice(notice.id)" @checked="changeChecked(notice.id, notice.token, true)" @unchecked="changeChecked(notice.id, notice.token, false)"/>
                 </perfect-scrollbar>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-1 h-52 mt-5 pt-10 ml-10">
                 <notice-progress class="w-3/4 h-auto mx-auto" :data="state.data" :progress="state.progress"/>
             </div>
             <div class="col-span-3 pb-8">
                 <notice-content class="h-full" :notice ="state.chooseNotice"/>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-1 my-auto ml-10">
                 <calendar-small class="w-3/4 h-auto mx-auto" :date="state.detailDate"/>
             </div>
         </div>

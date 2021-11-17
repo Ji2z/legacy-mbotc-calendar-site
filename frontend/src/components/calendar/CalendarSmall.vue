@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-back w-5/6 px-2 py-4 text-font rounded-2xl">
+    <div class="bg-back w-5/6 px-2 py-4 text-font rounded-2xl" :class="{'shadow-lg':(state.themeId==4||state.themeId==5)}">
         <div class="w-full rounded-xl p-2">
             <div class="header flex justify-between">
                 <div class="mb-2">
@@ -68,7 +68,7 @@
 </template>
 <script>
 // import abc from '@/components/'
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { getDayPicker } from '../../common/lib/function.js'
@@ -91,7 +91,8 @@ export default {
             year:0,
             month:0,
             today:0,
-            weeks: [[],[],[],[],[],[]]
+            weeks: [[],[],[],[],[],[]],
+            themeId: computed(() => store.getters['root/getThemeId']),
         })
         const initCalendar = ()=>{
             let payload = {

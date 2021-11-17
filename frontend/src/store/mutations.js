@@ -3,7 +3,8 @@ const idList = {
     "dark": 1,
     "ssuk": 2,
     "crayon": 3,
-    "eclipse": 4,
+    "art": 4,
+    "lilac": 5,
 }
 
 export function settingInit(state){

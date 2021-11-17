@@ -1,10 +1,10 @@
 <template>
-    <div class="relative inline-block h-5/6 w-60 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden shadow-md">
-        <div class="h-1/6">
+    <div class="relative inline-block w-60 h-44 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden shadow-md">
+        <div class="h-1/6 px-3 pt-1 mb-3">
             <div class="font-bold align-bottom mr-2 overflow-hidden">{{notice.team}}</div>
             <div class="text-sm align-bottom overflow-hidden">{{notice.channel}}</div>
         </div>
-        <div class="text-xs mt-2 h-1/2 p-2 pt-4 overflow-hidden">
+        <div class="text-xs h-1/2 mt-2 px-3 py-2 pt-4 overflow-hidden">
             <p class="whitespace-normal truncate">{{notice.content}}</p>
         </div>
         <div class="float-right w-7 h-7 border-4 border-label cursor-pointer" @click.stop="check">
