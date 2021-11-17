@@ -6,17 +6,16 @@
                     <div class="h-16 text-3xl text-main mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
                     <div class="h-16 text-xl text-black align-text-bottom overflow-hidden">{{notice.team}}</div>
                 </div>
-                <!-- <div v-if="state.fileList.length > 0">
-                    <select class="form-select block h-16 bg-back text-font" v-model="state.targetFile" @change="getFile">
-                        <option value="0">files</option>
-                        <option v-for="file in state.fileList" :key="file.id" :value="file">download {{file.name}}</option>
-                    </select>
-                </div> -->
             </div>
             <div class="overflow-hidden flex justify-start">
                 <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
                 <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
-                <div class="h-10 text-xl align-text-bottom overflow-hidden">{{notice.startTime}} ~ {{notice.endTime}}</div>
+                <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8">{{notice.startTime}} ~ {{notice.endTime}}</div>
+                <div v-if="notice.files!=null" class="h-10 pb-2">
+                    <button class="h-8 px-2 bg-back text-main align-bottom rounded text-sm" @click="download">
+                        Download files
+                    </button>
+                </div>
             </div>
         </div>
         <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden p-4">
@@ -85,9 +84,11 @@ export default {
         const mdViewerWraper = ref(null)
         const state = reactive({
             mountViewr: null,
-            fileList:[]
+            fileList:[],
+            targetFile: 0,
         })
         onUpdated(()=>{
+            state.fileList = []
             let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
             //console.log(mdViewerWraper)
             //console.log(wraperHeight)
@@ -100,12 +101,95 @@ export default {
                 initialValue: props.notice.content,
                 theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
             });
+        })
+        const download = ()=>{
             if(props.notice.files != null){
                 let fileIds = props.notice.files.split(",")
+                fileIds.forEach(file => {
+                    // store.dispatch('root/getFileLink', payload)
+                    // .then((result)=>{
+                    //     console.log(result)
+                    //     const link = document.createElement('a');
+                    //     const url = result.data.link
+                    //     link.href = url;
+                    //     link.setAttribute('download', '');
+                    //     //link.style.cssText = 'display:none';
+                    //     document.body.appendChild(link);
+                    //     // link.click();
+                    //     // link.remove();
+                    // })
+                    // .catch((err)=>{
 
+                    // })
+                    // store.dispatch('root/getFile', payload)
+                    // .then((result)=>{
+                    //     console.log(result)
+                    //     try {
+                    //         let blob = new Blob([result.data], { type: result.headers['content-type'] })
+                    //         const url = (window.URL ? URL : webkitURL).createObjectURL(blob);
+                    //         const link = document.createElement('a');
+                    //         let fileName = 'unknown';
+                    //         const contentDisposition = result.headers['content-disposition'];
+                    //         if (contentDisposition) {
+                    //         const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
+                    //         if (fileNameMatch)
+                    //             [ , fileName ] = fileNameMatch.split('=');
+                    //         }
+                    //         fileName = fileName.replace(new RegExp('["]','g'), '');
+                    //         console.log(fileName)
+                    //         console.log(blob)
+
+                    //         if (window.navigator.msSaveOrOpenBlob) { // IE 10+
+                    //             window.navigator.msSaveOrOpenBlob(blob, fileName)
+                    //         } else { // not IE
+                    //             link.href = url;
+                    //             link.setAttribute('download', `${fileName}`);
+                    //             link.style.cssText = 'display:none';
+                    //             document.body.appendChild(link);
+                    //             link.click();
+                    //             link.remove();
+                    //         }
+                    //     } catch (e) {
+                    //         console.error(e)
+                    //     }
+                    // })
+                    // .catch((err)=>{
+
+                    // })
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function(){
+                        if (this.readyState == 4 && this.status == 200){
+                        
+                            let fileName = "unknown";
+                            let disposition = xhr.getResponseHeader('Content-Disposition');
+                            if (disposition) {
+                                const [ fileNameMatch ] = disposition.split(';').filter(str => str.includes('filename'));
+                                if (fileNameMatch)
+                                    [ , fileName ] = fileNameMatch.split('=');
+                            }
+                            fileName = fileName.replace(new RegExp('["]','g'), '');
+
+                            console.log(fileName)
+                        
+                            //this.response is what you're looking for
+                            //console.log(this.response, typeof this.response);
+                            let a = document.createElement("a");
+                            let url = URL.createObjectURL(this.response)
+                            a.href = url;
+                            a.download = fileName;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        }
+                    }
+                    xhr.open('get', '/api/v4/files/' + file);
+                    xhr.setRequestHeader("Authorization", "bearer " + store.getters['root/getToken'])
+                    xhr.responseType = 'blob';
+                    xhr.send();
+                });
             }
-        })
-        return { logo, mdViewer, mdViewerWraper }
+        }
+        return { state, logo, mdViewer, mdViewerWraper, download }
     }
 };
 </script>

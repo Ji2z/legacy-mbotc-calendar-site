@@ -162,20 +162,37 @@ export function uploadNotice({state}, payload){
 
 export function getFile({state}, payload){
     const url = '/api/v4/files/' + payload.fileId
-    const headers = { 
-        "auth": payload.token, 
-        "Cookie": payload.cookie
-    }
     
-    return $axios.get(url, {headers});
+    //return $axios.get(url, {headers});
+    return $axios({
+        method: 'get',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload.token,
+            "responseType": "blob"
+        }
+    })
 }
 
-export function getFileThumbnail({state}, payload){
-    const url = '/api/v4/files/' + payload.fileId + "/thumbnail"
-    const headers = { 
-        "auth": payload.token, 
-        "Cookie": payload.cookie
-    }
+export function getFileLink({state}, payload){
+    const url = '/api/v4/files/' + payload.fileId + "/link"
     
-    return $axios.get(url, {headers});
+    //return $axios.get(url, {headers});
+    return $axios({
+        method: 'get',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload.token,
+        }
+    })
 }
+
+// export function getFileThumbnail({state}, payload){
+//     const url = '/api/v4/files/' + payload.fileId + "/thumbnail"
+//     const headers = { 
+//         "Authorization": "bearer " + payload.token, 
+//         "responseType": "arraybuffer"
+//     }
+    
+//     return $axios.get(url, {headers});
+// }
