@@ -7,14 +7,21 @@
                     <div class="h-16 text-xl text-black align-text-bottom overflow-hidden">{{notice.team}}</div>
                 </div>
             </div>
-            <div class="overflow-hidden flex justify-start">
-                <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
-                <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
-                <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8">{{notice.startTime}} ~ {{notice.endTime}}</div>
-                <div v-if="notice.files!=null" class="h-10 pb-2">
-                    <button class="h-8 px-2 bg-back text-main align-bottom rounded text-sm" @click="download">
-                        Download files
-                    </button>
+            <div class="overflow-hidden flex justify-between">
+                <div class="overflow-hidden flex justify-start">
+                    <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
+                    <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
+                    <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8">{{notice.startTime}} ~ {{notice.endTime}}</div>
+                </div>
+                <div class="overflow-hidden flex justify-end">
+                    <div v-if="notice.files!=null" class="h-10 pb-2 mr-4">
+                        <button class="h-8 px-2 bg-back text-main align-bottom rounded text-sm" @click="download">
+                            Download files
+                        </button>
+                    </div>
+                    <div v-if="state.myNoticeFlag">
+                        <button class="bg-red-500 h-8 px-2 text-main align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,7 +38,7 @@ import logo_0 from '@/assets/logo/logo_0.png'
 // import abc from '@/components/'
 import { reactive, ref, onUpdated } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'NoticeContent',
@@ -39,6 +46,10 @@ export default {
     },
     props:{
         notice:{
+            token : {                
+                type: String,
+                default: " ",
+            },
             title : {                
                 type: String,
                 default: " ",
@@ -67,6 +78,10 @@ export default {
                 type: String,
                 default: " ",
             },
+            userId : {
+                type: String,
+                default: " ",
+            },
             startTime : {
                 type: String,
                 default: " ",
@@ -78,6 +93,7 @@ export default {
         },
     },
     setup(props){
+        const router = useRouter()
         const store = useStore()
         const logo = logo_0
         const mdViewer = ref(null)
@@ -86,8 +102,14 @@ export default {
             mountViewr: null,
             fileList:[],
             targetFile: 0,
+            myNoticeFlag: false,
         })
         onUpdated(()=>{
+            if(store.getters['root/getUserId'] === props.notice.userId){
+                state.myNoticeFlag = true
+            }else{
+                state.myNoticeFlag = false
+            }
             state.fileList = []
             let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
             //console.log(mdViewerWraper)
@@ -119,7 +141,6 @@ export default {
                     //     // link.remove();
                     // })
                     // .catch((err)=>{
-
                     // })
                     // store.dispatch('root/getFile', payload)
                     // .then((result)=>{
@@ -189,7 +210,22 @@ export default {
                 });
             }
         }
-        return { state, logo, mdViewer, mdViewerWraper, download }
+        const deleteNotice = ()=>{
+            let payload={
+                token: store.getters['root/getToken'],
+                postId: props.notice.token
+            }
+            store.dispatch('root/deleteNotice', payload)
+            .then((result)=>{
+                if(result.status == 200){
+                    router.go()
+                }
+            })
+            .catch((err)=>{
+            })
+            
+        }
+        return { state, logo, mdViewer, mdViewerWraper, download, deleteNotice }
     }
 };
 </script>

@@ -135,6 +135,19 @@ export function getNoticeSearch({state}, payload){
     return $axios.get(url, {headers});
 }
 
+
+export function deleteNotice({state}, payload){
+    const url = '/api/v1/notification/delete/' + payload.postId
+    //console.log(payload.notice)
+    return $axios({
+        method: 'delete',
+        url: url,
+        headers:{
+            'auth':  payload.token,
+        },
+    })
+}
+
 // export function uploadNotice({state}, payload){
 //     const url = '/api/v1/notification'
 //     const headers = {
