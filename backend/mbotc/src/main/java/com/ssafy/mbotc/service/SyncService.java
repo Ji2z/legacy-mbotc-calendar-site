@@ -30,19 +30,22 @@ import com.ssafy.mbotc.entity.response.ResRedisUser;
 public class SyncService {
 	
 	 public String[] colors = {
-	            "#39add1", // light blue
-	            "#3079ab", // dark blue
-	            "#c25975", // mauve
-	            "#e15258", // red
-	            "#f9845b", // orange
-	            "#838cc7", // lavender
-	            "#7d669e", // purple
-	            "#53bbb4", // aqua
-	            "#51b46d", // green
-	            "#e0ab18", // mustard
-	            "#637a91", // dark gray
-	            "#f092b0", // pink
-	            "#b7c0c7"  // light gray
+	            "#F9FBE7", // lime
+	            "#E1F5FE", // light-blue
+	            "#FFEBEE", // red
+	            "#E8F5E9", // green
+	            "#FFF3E0", // orange
+	            "#E8EAF6", // indigo
+	            "#F3E5F5", // purple
+	            "#E0F2F1", // teal
+	            "#B9F6CA", // green
+	            "#FF9E80", // deep orange
+	            "#FF8A80", // red
+	            "#8C9EFF", // indigo
+	            "#FFFF8D", // yellow
+	            "#A7FFEB", // teal
+	            "#CCFF90", // light-green
+	            "#FFD180"  // orange
 	    };
 	
 	@Autowired
