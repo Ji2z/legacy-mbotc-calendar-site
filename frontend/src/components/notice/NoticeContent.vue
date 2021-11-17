@@ -1,31 +1,28 @@
 <template>
-    <div class="bg-panel rounded-xl shadow-lg p-12 text-font divide-y-2">
-        <div>
-            <div class="overflow-hidden flex justify-between">
-                <div class="overflow-hidden flex justify-start">
-                    <div class="h-16 text-3xl text-font mr-8 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
-                    <div class="h-16 text-xl text-font align-text-bottom overflow-hidden">{{notice.team}}</div>
-                </div>
+    <div class="bg-panel rounded-xl shadow-lg p-12 text-font">            
+        <div class="overflow-hidden flex justify-start">
+            <div class="h-14 text-3xl text-font mr-4 font-bold align-text-bottom overflow-hidden">{{notice.team}}</div>
+            <div class="h-14 text-xl text-font align-text-bottom overflow-hidden pt-2">{{notice.channel}}</div>
+        </div>
+        <div class="overflow-hidden flex justify-between">
+            <div class="overflow-hidden flex justify-start">
+                <img :src="logo" alt="logo" class="h-6 w-6 mr-2">
+                <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
+                <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8 text-gray-500">{{notice.startTime}} ~ {{notice.endTime}}</div>
             </div>
-            <div class="overflow-hidden flex justify-between">
-                <div class="overflow-hidden flex justify-start">
-                    <img :src="logo" alt="logo" class="h-6 w-6 mx-4">
-                    <div class="h-10 text-xl font-bold align-text-bottom overflow-hidden mr-8 ">{{notice.user}}</div>
-                    <div class="h-10 text-xl align-text-bottom overflow-hidden mr-8">{{notice.startTime}} ~ {{notice.endTime}}</div>
+            <div class="overflow-hidden flex justify-end">
+                <div v-if="notice.files!=null" class="h-10 pb-2 mr-4">
+                    <button class="h-8 px-2 bg-back text-main align-bottom rounded text-sm" @click="download">
+                        Download files
+                    </button>
                 </div>
-                <div class="overflow-hidden flex justify-end">
-                    <div v-if="notice.files!=null" class="h-10 pb-2 mr-4">
-                        <button class="h-8 px-2 bg-back text-main align-bottom rounded text-sm" @click="download">
-                            Download files
-                        </button>
-                    </div>
-                    <div v-if="state.myNoticeFlag">
-                        <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
-                    </div>
+                <div v-if="state.myNoticeFlag">
+                    <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
                 </div>
             </div>
         </div>
-        <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden p-4">
+        <hr>
+        <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden py-2">
             <div id="editor" ref="mdViewer" class="text-font"></div>
         </perfect-scrollbar>
     </div>
@@ -123,6 +120,8 @@ export default {
                 initialValue: props.notice.content,
                 theme: (store.getters['root/getThemeId'] == 1 || store.getters['root/getThemeId'] == 2)?"dark":"light"
             });
+
+            changeFontSize();
         })
         const download = ()=>{
             if(props.notice.files != null){
@@ -224,6 +223,9 @@ export default {
             .catch((err)=>{
             })
             
+        }
+        const changeFontSize = () => {
+            document.getElementsByClassName("toastui-editor-contents")[0].style.fontSize = "17px";
         }
         return { state, logo, mdViewer, mdViewerWraper, download, deleteNotice }
     }

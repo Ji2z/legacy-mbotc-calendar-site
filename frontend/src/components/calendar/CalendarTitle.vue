@@ -1,7 +1,7 @@
 <template>
     <div class="mx-4 text-font">
         <span class="text-6xl font-bold inline-block align-bottom mr-2 font-title text-main">{{state.day}}</span>
-        <span class="text-4xl inline-block align-bottom mr-2 font-subtitle">{{monthList[state.month]}}</span>
+        <span class="text-4xl inline-block align-bottom mr-2 font-title">{{monthList[state.month]}}</span>
         <span class="inline-block align-bottom font-subtitle">{{state.year}}</span>
     </div>
 </template>

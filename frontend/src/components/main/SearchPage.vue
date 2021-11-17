@@ -132,6 +132,7 @@ export default {
                     content: result.data.content,
                     files: result.data.files,
                     user: result.data.user.userName,
+                    userId: result.data.user.userId,
                     startTime: getTime(result.data.startTime),
                     endTime: getTime(result.data.endTime),
                     postId: result.data.token,
