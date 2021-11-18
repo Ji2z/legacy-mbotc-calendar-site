@@ -6,7 +6,7 @@
                     <p class="font-bold text-2xl text-blue-500">Sign in</p><br/>
                 </div>
             </div>
-            <div v-if="!state.hasToken">
+            <div v-if="!state.hasToken&&!state.hasCookie">
                 <div>
                     <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" :disabled="state.serverLock" placeholder="Server URL" v-model="state.url" @change="validationCheck">
                     <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
@@ -21,13 +21,14 @@
             </div>
             <div v-else>
                 <div class="mx-auto h-16 w-4/5 items-center">
-                    <p class="text-xl">Welcome Back</p> 
+                    <p v-if="state.hasToken" class="text-xl">Welcome Back!</p> 
+                    <p v-else-if="state.hasCookie" class="text-xl">You're already logged in Mattermost</p>
                     <p class="font-bold text-2xl">{{state.userData.userName}}</p>
                     <br/>
                 </div>
                 <div class="m-5">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="comeBack">Take Me!</button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="logout">Logout</button>
+                    <button v-if="!state.hasCookie" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="logout">Logout</button>
                 </div>
             </div>
             <div>
@@ -120,9 +121,13 @@ export default {
             store.dispatch('root/userLogin', userData)
             .then((result)=>{
                 //console.log("MbotC login")
-                //console.log(result)
+                // console.log(result)
                 if(result.status == 200 ||  result.status == 201){
-                    router.push("/main")
+                    if(!state.hasCookie){
+                        router.push("/main")
+                    }else{
+                        store.commit('root/setToken', result.data.token)
+                    }
                 }
             })
             .catch((err)=>{
@@ -148,36 +153,39 @@ export default {
         const init = ()=>{
             state.url = getServerURL()
             //console.log(document.cookie)
-            // if(document.cookie && hasCookie()){
-            //     state.hasCookie = true
-            //     store.dispatch('root/getUserMM')
-            //     .then((result)=>{
-            //         //console.log("MbotC login")
-            //         //console.log(result)
-            //         state.userData = {
-            //             token: "cookie",
-            //             url: getServerURL(),
-            //             userEmail: result.data.email,
-            //             userId: result.data.id,
-            //             userName: result.data.username,
-            //         }
-            //         store.commit('root/setUserData', state.userData)
-            //         register()
-            //     })
-            //     .catch((err)=>{
-            //     })
-            // }else if(hasToken()){
-            //     state.hasToken = true
-            // }
-            if(hasToken()){
+            if(hasCookie()){
+                state.hasCookie = true
+                store.dispatch('root/getUserMM')
+                .then((result)=>{
+                    //console.log("MbotC login")
+                    //console.log(result)
+                    state.userData = {
+                        token: "cookie",
+                        url: getServerURL(),
+                        userEmail: result.data.email,
+                        userId: result.data.id,
+                        userName: result.data.username,
+                    }
+                    store.commit('root/setUserData', state.userData)
+                    register()
+                })
+                .catch((err)=>{
+                })
+            }else if(hasToken()){
                 state.hasToken = true
             }
+            // if(hasToken()){
+            //     state.hasToken = true
+            // }
         }
-        // const hasCookie = ()=>{
-        //     let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
-        //     let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
-        //     return (userId && csrf)
-        // }
+        const hasCookie = ()=>{
+            let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
+            let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
+            // console.log(userId)
+            // console.log(csrf)
+            // console.log((userId.length>0) && (csrf.length>0))
+            return ((userId.length>0) && (csrf.length>0))
+        }
         const hasToken = ()=>{
             let userData = store.getters['root/getUserData']
             if(userData.token!='' && userData.url!='' && userData.userEmail!='' && userData.userId!='' && userData.userName!=''){
@@ -185,8 +193,25 @@ export default {
             }
             return false
         }
+        const logout = ()=>{
+            // if(state.hasCookie){
+            //     store.dispatch('root/userLogoutMM',store.getters['root/getToken'])
+            //     .then((result)=>{
+            //         console.log(result)
+            //     })
+            //     store.commit('root/logout')
+            //     state.hasCookie = false
+            //     state.hasToken = false
+            // }else 
+            if(state.hasToken){
+                store.commit('root/logout')
+                state.hasCookie = false
+                state.hasToken = false
+            }
+            router.push("/")
+        }
         init()
-        return { state, submit, validationCheck, comeBack }
+        return { state, submit, validationCheck, comeBack, logout }
     }
 };
 </script>
