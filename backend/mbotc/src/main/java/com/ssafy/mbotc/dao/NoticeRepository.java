@@ -26,4 +26,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	
 	@Transactional
 	List<Notice> findAllByContentContainingAndChannelIdIn(String word, List<Long> channelId);
+	
+	@Transactional
+	List<Notice> findAllByUserId(long userId);
 }
