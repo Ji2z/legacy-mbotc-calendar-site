@@ -6,7 +6,7 @@
                     <p class="font-bold text-2xl text-blue-500">Sign in</p><br/>
                 </div>
             </div>
-            <div v-if="!state.hasCookie || !state.hasToken">
+            <div v-if="!state.hasToken">
                 <div>
                     <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" :disabled="state.serverLock" placeholder="Server URL" v-model="state.url" @change="validationCheck">
                     <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
@@ -148,33 +148,36 @@ export default {
         const init = ()=>{
             state.url = getServerURL()
             //console.log(document.cookie)
-            if(document.cookie && hasCookie()){
-                state.hasCookie = true
-                store.dispatch('root/getUserMM')
-                .then((result)=>{
-                    //console.log("MbotC login")
-                    //console.log(result)
-                    state.userData = {
-                        token: "cookie",
-                        url: getServerURL(),
-                        userEmail: result.data.email,
-                        userId: result.data.id,
-                        userName: result.data.username,
-                    }
-                    store.commit('root/setUserData', state.userData)
-                    register()
-                })
-                .catch((err)=>{
-                })
-            }else if(hasToken()){
+            // if(document.cookie && hasCookie()){
+            //     state.hasCookie = true
+            //     store.dispatch('root/getUserMM')
+            //     .then((result)=>{
+            //         //console.log("MbotC login")
+            //         //console.log(result)
+            //         state.userData = {
+            //             token: "cookie",
+            //             url: getServerURL(),
+            //             userEmail: result.data.email,
+            //             userId: result.data.id,
+            //             userName: result.data.username,
+            //         }
+            //         store.commit('root/setUserData', state.userData)
+            //         register()
+            //     })
+            //     .catch((err)=>{
+            //     })
+            // }else if(hasToken()){
+            //     state.hasToken = true
+            // }
+            if(hasToken()){
                 state.hasToken = true
             }
         }
-        const hasCookie = ()=>{
-            let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
-            let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
-            return (userId && csrf)
-        }
+        // const hasCookie = ()=>{
+        //     let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
+        //     let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
+        //     return (userId && csrf)
+        // }
         const hasToken = ()=>{
             let userData = store.getters['root/getUserData']
             if(userData.token!='' && userData.url!='' && userData.userEmail!='' && userData.userId!='' && userData.userName!=''){

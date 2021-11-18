@@ -17,7 +17,7 @@
                     </button>
                 </div>
                 <div v-if="state.myNoticeFlag">
-                    <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="deleteNotice">Delete</button>
+                    <button class="bg-red-500 h-8 px-2 text-white align-bottom rounded text-sm hover:bg-red-700" @click="state.openModal=true">Delete</button>
                 </div>
             </div>
         </div>
@@ -25,11 +25,13 @@
         <perfect-scrollbar ref="mdViewerWraper" class="text-lg h-80 overflow-hidden py-2">
             <div id="editor" ref="mdViewer" class="text-font"></div>
         </perfect-scrollbar>
+        <main-confirm :modalData="modalData" v-if="state.openModal" @cancel="state.openModal=false" @action="deleteNotice"/>
     </div>
 </template>
 <script>
 import "@toast-ui/editor/dist/toastui-editor.css"; 
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
+import MainConfirm from '@/components/main/MainConfirm.vue'
 import Editor from "@toast-ui/editor";
 import logo_0 from '@/assets/logo/logo_0.png'
 // import abc from '@/components/'
@@ -40,6 +42,7 @@ import { useRouter } from 'vue-router'
 export default {
     name: 'NoticeContent',
     components: {
+        MainConfirm
     },
     props:{
         notice:{
@@ -90,12 +93,18 @@ export default {
         },
     },
     setup(props){
+        const modalData = {
+            title: "Delete Notice",
+            message: "Your notification will delete on DB and MM server. This action cannot be undone.",
+            action: "Delete Notice",
+        }
         const router = useRouter()
         const store = useStore()
         const logo = logo_0
         const mdViewer = ref(null)
         const mdViewerWraper = ref(null)
         const state = reactive({
+            openModal: false,
             mountViewr: null,
             fileList:[],
             targetFile: 0,
@@ -227,7 +236,7 @@ export default {
         const changeFontSize = () => {
             document.getElementsByClassName("toastui-editor-contents")[0].style.fontSize = "17px";
         }
-        return { state, logo, mdViewer, mdViewerWraper, download, deleteNotice }
+        return { state, logo, mdViewer, mdViewerWraper, download, deleteNotice, modalData }
     }
 };
 </script>

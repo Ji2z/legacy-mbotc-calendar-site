@@ -191,11 +191,11 @@ export default {
                     }
                     state.teamColor.push(color)
                 });
+                initCalendar()
             })
             .catch((err)=>{
                 console.log(err)
             })
-            initCalendar()
         }
         const nextMonth = ()=>{
             state.month++

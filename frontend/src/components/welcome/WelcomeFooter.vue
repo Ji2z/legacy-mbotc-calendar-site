@@ -14,7 +14,6 @@
                     </div>
                     <br>
                     <p>©Copyright. 2021. Team. GongMoJeon</p>
-                    <p>MIT Lisence</p>
                 </div>
                 <div class="flex justify-end content-end mt-4 cursor-pointer">
                     <img :src="state.github" alt="git" class="h-8 w-8 mr-4" @click="clickLogo(0)">

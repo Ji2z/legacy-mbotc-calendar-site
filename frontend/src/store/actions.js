@@ -49,6 +49,9 @@ export function deleteUser({state}, payload){
     return $axios({
         method: 'delete',
         url: url,
+        headers:{
+            'auth':  payload.token
+        },
         data:{
             "token": payload.token,
             "url": payload.url,
