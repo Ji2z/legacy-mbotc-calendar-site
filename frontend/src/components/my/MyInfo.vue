@@ -69,10 +69,11 @@ export default {
             store.dispatch('root/deleteUser', payload)
             .then((result)=>{
                 //console.log("MbotC login")
-                console.log(result)
-                // if(result.status == 200){
-                //     router.push("/main")
-                // }
+                // console.log(result)
+                if(result.status == 200){
+                    store.commit('root/logout')
+                    router.push("/")
+                }
             })
             .catch((err)=>{
                 console.log(err)

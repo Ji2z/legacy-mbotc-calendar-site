@@ -181,10 +181,13 @@ export default {
         const hasCookie = ()=>{
             let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
             let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
-            // console.log(userId)
-            // console.log(csrf)
+            //console.log(userId)
+            //console.log(csrf)
             // console.log((userId.length>0) && (csrf.length>0))
-            return ((userId.length>0) && (csrf.length>0))
+            if(userId != null && csrf != null){
+                return ((userId.length>0) && (csrf.length>0))
+            }
+            return false
         }
         const hasToken = ()=>{
             let userData = store.getters['root/getUserData']

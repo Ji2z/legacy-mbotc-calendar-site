@@ -32,6 +32,8 @@ export function settingInit(state){
 
 export function logout(state){
     let settings = JSON.parse(localStorage.getItem("settings"))
+    settings.id = 0,
+    settings.theme = "light",
     settings.userData = {
         token: "",
         url: "",

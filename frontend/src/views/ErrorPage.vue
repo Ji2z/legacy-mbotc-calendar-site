@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen w-full p-10 bg-main text-font font-bold text-center">
+    <div class="h-screen w-full p-10 bg-blue-300 text-font font-bold text-center">
         <div class="w-1/2 mx-auto bg-panel rounded-full">
             <p class="text-9xl">OOPS!</p>
             <p class="text-4xl">Something wrong</p>
