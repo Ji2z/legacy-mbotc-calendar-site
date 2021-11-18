@@ -13,7 +13,7 @@
                     <img :src="mbotc[0]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 1s infinite;">
                 </div>
                 <div class="absolute top-30 right-52">
-                    <img :src="mbotc[4]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 0.3s infinite;">
+                    <img :src="mbotc[5]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 0.3s infinite;">
                 </div>
                 <div class="absolute top-80 left-52 animate-spin">
                     <img :src="mbotc[1]" alt="mbotc" class="h-20 w-20 transform">
@@ -22,7 +22,7 @@
                     <img :src="mbotc[0]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 0.8s infinite;">
                 </div>
                 <div class="absolute top-96 right-36">
-                    <img :src="mbotc[1]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 0.8s infinite;">
+                    <img :src="mbotc[0]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 0.8s infinite;">
                 </div>
                 <div class="absolute top-44 left-36">
                     <img :src="mbotc[2]" alt="mbotc" class="h-20 w-20 transform" style="animation: bounce 1.5s infinite;">
@@ -82,14 +82,14 @@
             </div>
             <div class="w-full h-full flex justify-end">
                 <div class="h-1/2 w-auto my-auto">
-                    <img :src="page[1]" alt="page-0" class="h-full w-full rounded-2xl">
+                    <img :src="page[0]" alt="page-0" class="h-full w-full rounded-2xl shadow-lg">
                 </div>
             </div>
         </div>
         <div id="intro3" class="grid grid-cols-2 w-full h-screen items-center relative">
             <div class="w-full h-full flex justify-start">
                 <div class="h-1/2 w-auto my-auto">
-                    <img :src="page[2]" alt="page-1" class="h-full w-full rounded-2xl">
+                    <img :src="page[1]" alt="page-1" class="h-full w-full rounded-2xl shadow-lg">
                 </div>
             </div>
             <div class="w-full h-full">
@@ -147,7 +147,7 @@
             </div>
             <div class="w-full h-full flex justify-end">
                 <div class="h-1/2 w-auto my-auto">
-                    <img :src="page[3]" alt="page-2" class="h-full w-full rounded-2xl">
+                    <img :src="page[2]" alt="page-2" class="h-full w-full rounded-2xl shadow-lg">
                 </div>
             </div>
         </div>
@@ -156,15 +156,15 @@
 <script>
 import pluginLink_0 from '@/assets/plugin.png'
 import checkBox_0 from '@/assets/checkBox.png'
-import page_0 from '@/assets/page_1.png'
-import page_1 from '@/assets/page_1.png'
-import page_2 from '@/assets/page_2.png'
-import page_3 from '@/assets/page_3.png'
+import page_1 from '@/assets/page_1.gif'
+import page_2 from '@/assets/page_2.gif'
+import page_3 from '@/assets/page_3.gif'
 import logo_0 from '@/assets/logo/logo_0.png'
 import logo_1 from '@/assets/logo/logo_1.png'
 import logo_2 from '@/assets/logo/logo_2.png'
 import logo_3 from '@/assets/logo/logo_3.png'
 import logo_4 from '@/assets/logo/logo_4.png'
+import logo_5 from '@/assets/logo/logo_5.png'
 
 export default {
     name: 'WelcomeIntroduction',
@@ -172,8 +172,8 @@ export default {
     },
 
     setup(){
-        const mbotc = [logo_0,logo_1,logo_2,logo_3,logo_4]
-        const page = [page_0, page_1, page_2, page_3]
+        const mbotc = [logo_0,logo_1,logo_2,logo_3,logo_4,logo_5]
+        const page = [page_1, page_2, page_3]
         const pluginLink = pluginLink_0
         const checkBox = checkBox_0
         return { pluginLink, checkBox,  page, mbotc }

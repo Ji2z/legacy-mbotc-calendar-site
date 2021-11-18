@@ -2,8 +2,8 @@
     <div id="top" class="grid grid-cols-2 w-full h-screen items-center relative">
         <welcome-login></welcome-login>
         <div class="w-full h-full flex justify-end">
-            <div class="h-2/3 w-auto my-auto">
-                <img :src="page" alt="page" class="h-full w-full rounded-2xl">
+            <div class="h-2/3 w-full my-auto">
+                <img :src="page" alt="page" class="my-12 rounded-2xl shadow-lg">
             </div>
         </div>
         <div class="absolute top-5 left-1/3 overflow-hidden w-2/3">
@@ -13,7 +13,7 @@
 </template>
 <script>
 import WelcomeLogin from '@/components/welcome/WelcomeLogin.vue'
-import page_0 from '@/assets/page_1.png'
+import page_0 from '@/assets/page_0.gif'
 
 export default {
     name: 'WelcomeContent',
