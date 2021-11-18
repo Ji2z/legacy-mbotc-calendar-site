@@ -19,7 +19,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import { useStore } from 'vuex'
 // import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'MainPage',
@@ -28,6 +28,7 @@ export default {
     },
 
     setup(){
+        const router = useRouter()
         const store = useStore()
         const state = reactive({
             sideDetailFlag: false,
@@ -65,6 +66,7 @@ export default {
                 title: "New Notification",
                 text: message,
                 });
+                router.push("/main")
         }
         connect()
         return { state, onClickDetail, onClickOther, connect, onClickTop }
