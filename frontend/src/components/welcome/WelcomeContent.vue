@@ -3,7 +3,7 @@
         <welcome-login></welcome-login>
         <div class="w-full h-full flex justify-end">
             <div class="h-2/3 w-full my-auto">
-                <img :src="page" alt="page" class="my-12 rounded-2xl shadow-lg">
+                <img :src="page" alt="page" class="transform md:h-40 lg:h-80 w-auto mx-auto mt-36 rounded-2xl shadow-lg hover:scale-125">
             </div>
         </div>
         <div class="absolute top-5 left-1/3 overflow-hidden w-2/3">
