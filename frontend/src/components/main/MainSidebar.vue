@@ -8,7 +8,7 @@
             <div class="h-10">
 
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[0], 'text-main':state.nav[0], 'text-back':!state.nav[0]}" @click="clickNav(0)">
+            <div class="my-2 ml-2 h-20 rounded-l-3xl" :class="{'bg-back':state.nav[0], 'text-main':state.nav[0], 'text-back':!state.nav[0]}" @click="clickNav(0)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -40,7 +40,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[1], 'text-main':state.nav[1], 'text-back':!state.nav[1]}" @click="clickNav(1)">
+            <div class="my-2 ml-2 h-20 rounded-l-3xl" :class="{'bg-back':state.nav[1], 'text-main':state.nav[1], 'text-back':!state.nav[1]}" @click="clickNav(1)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
@@ -65,7 +65,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[2], 'text-main':state.nav[2], 'text-back':!state.nav[2]}" @click="clickNav(2)">
+            <div class="my-2 ml-2 h-20 rounded-l-3xl" :class="{'bg-back':state.nav[2], 'text-main':state.nav[2], 'text-back':!state.nav[2]}" @click="clickNav(2)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <path d="M25.375 15.75C27.9277 15.75 30.3759 16.7641 32.1809 18.5691C33.9859 20.3741 35 22.8223 
@@ -90,7 +90,7 @@
                     5.6875V7H28.875V5.6875C28.875 4.87527 28.5523 4.09632 27.978 3.52199C27.4037 2.94766 26.6247 2.625 25.8125 2.625Z"/>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[3], 'text-main':state.nav[3], 'text-back':!state.nav[3]}" @click="clickNav(3)">
+            <div class="my-2 ml-2 h-20 rounded-l-3xl" :class="{'bg-back':state.nav[3], 'text-main':state.nav[3], 'text-back':!state.nav[3]}" @click="clickNav(3)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 44 44" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <path d="M31.4465 27.673H29.4591L28.7547 26.9937C31.2201 24.1258 32.7044 20.4025 32.7044 16.3522C32.7044 
@@ -100,7 +100,7 @@
                     10.0881 5.03145 16.3522 5.03145C22.6164 5.03145 27.673 10.0881 27.673 16.3522C27.673 22.6164 22.6164 27.673 16.3522 27.673Z"/>
                 </svg>
             </div>
-            <div class="my-2 ml-2 h-20 rounded-l-2xl" :class="{'bg-back':state.nav[4], 'text-main':state.nav[4], 'text-back':!state.nav[4]}" @click="clickNav(4)">
+            <div class="my-2 ml-2 h-20 rounded-l-3xl" :class="{'bg-back':state.nav[4], 'text-main':state.nav[4], 'text-back':!state.nav[4]}" @click="clickNav(4)">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35" preserveAspectRatio="xMidYMid meet"
                 class="fill-current mx-auto mt-5 cursor-pointer">
                     <path d="M17.5003 10.9378C15.6854 10.9378 13.9449 11.6292 12.6616 12.8599C11.3783 14.0907 10.6574 

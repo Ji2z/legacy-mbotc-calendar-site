@@ -33,7 +33,7 @@ export default defineComponent({
     setup(props){
         const store = useStore()
         const colorSet = [
-            ["#163172","rgba(255,255,255,0.2)"],["#000000","rgba(0,0,0,0.2)"],["#6F8788","rgba(0,0,0,0.2)"],["#019EE2","rgba(255,255,255,0.2)"],["#1C0C5B","rgba(0,0,0,0)"],["#FDD397","rgba(0,0,0,0.2)"]
+            ["#163172","rgba(255,255,255,0.2)"],["#000000","rgba(0,0,0,0.2)"],["#6F8788","rgba(0,0,0,0.2)"],["#019EE2","rgba(255,255,255,0.2)"],["#1D889C","rgba(0,0,0,0.2)"],["#FDD397","rgba(0,0,0,0.2)"]
         ]
         const chartRef = ref()
         const state = reactive({
