@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div id="welcome-page">
+        <notifications position="top right"/>
         <welcome-content/>
         <welcome-introduction/>
         <welcome-footer/>
@@ -10,7 +11,6 @@
             <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[3], 'bg-gray-400':!state.marker[3]}"></div>
             <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[4], 'bg-gray-400':!state.marker[4]}"></div>
             <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[5], 'bg-gray-400':!state.marker[5]}"></div>
-            <div class="h-4 w-4 rounded-full mx-auto" :class="{'bg-white': state.marker[6], 'bg-gray-400':!state.marker[6]}"></div>
         </div>
         <div class="transform fixed bottom-0 mx-auto inset-x-0" :class="{'rotate-180':state.reverseFlag}">
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
@@ -26,7 +26,7 @@
 import WelcomeContent from '@/components/welcome/WelcomeContent.vue'
 import WelcomeFooter from '@/components/welcome/WelcomeFooter.vue'
 import WelcomeIntroduction from '@/components/welcome/WelcomeIntroduction.vue'
-
+import { notify } from '@kyvg/vue3-notification'
 import { reactive } from 'vue'
 // import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
@@ -41,14 +41,14 @@ export default {
 
     setup(){
         const state = reactive({
-            marker:[true,false,false,false,false,false],
-            offset:["top","intro1","intro2","intro3","intro4","intro5","footer"],
+            marker:[true,false,false,false,false],
+            offset:["top","intro1","intro2","intro3","intro4","footer"],
             now:0,
             reverseFlag:false,
         })
 
         const checkMarker = () =>{
-            state.reverseFlag = (state.now==6)?true:false
+            state.reverseFlag = (state.now==5)?true:false
         }
 
         const jumpScroll = (target)=>{
@@ -71,7 +71,7 @@ export default {
             list.push(9999)
             //console.log(list)
             nowScroll += 5
-            for (let index = 0; index <= 6; index++) {
+            for (let index = 0; index <= 5; index++) {
                 if(nowScroll >= list[index] && nowScroll <= list[index+1]){
                     state.marker[state.now] = false
                     state.now = index
@@ -85,7 +85,7 @@ export default {
         const nextMarker = ()=>{
             state.marker[state.now] = false
             state.now++
-            if(state.now == 7){
+            if(state.now == 6){
                 state.now = 0
             }
             location.href = "#"+ state.offset[state.now]
@@ -101,5 +101,9 @@ export default {
 </script>
 
 <style scoped>
-
+#welcome-page{
+        background-image: url('../assets/bg/landingpage.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+}
 </style>

@@ -1,12 +1,13 @@
 <template>
-    <div class="relative inline-block h-5/6 w-48 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden">
-        <div class="overflow-hidden">
-            <span class="w-full font-bold inline-block align-bottom mr-2 overflow-hidden">{{notice.channel}}</span>
+    <div class="relative inline-block w-60 h-44 bg-panel text-font rounded-lg p-2 mr-2 overflow-hidden shadow-md">
+        <div class="h-1/6 px-3 pt-1 mb-3">
+            <div class="font-bold align-bottom mr-2 overflow-hidden">{{notice.team}}</div>
+            <div class="text-sm align-bottom overflow-hidden">{{notice.channel}}</div>
         </div>
-        <div class="text-xs overflow-y-auto whitespace-normal p-2">
-            {{notice.content}}
+        <div class="text-xs h-1/2 mt-2 px-3 py-2 pt-4 overflow-hidden">
+            <p class="whitespace-normal truncate">{{notice.content}}</p>
         </div>
-        <div class="absolute bottom-2 right-2 w-5 h-5 border-4 border-label cursor-pointer" @click.stop="check">
+        <div class="float-right w-7 h-7 border-4 border-label cursor-pointer" @click.stop="check">
             <img v-if="notice.check" class="transform scale-150" src="@/assets/check.png" alt="check">
         </div>
     </div>
@@ -24,6 +25,10 @@ export default {
     props:{
         notice:{
             title : {                
+                type: String,
+                default: " ",
+            },
+            team : {
                 type: String,
                 default: " ",
             },

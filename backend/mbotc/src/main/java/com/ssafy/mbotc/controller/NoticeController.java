@@ -168,6 +168,13 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		String subscribes = channelTokenSB.toString();
+		
+		if(subscribes.length() == 0) { // 구독 채널 없음
+			result.setNotifications(new ArrayList<Notice>());
+			result.setSubscribe("");
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+		
 		subscribes = subscribes.substring(0, subscribes.length()-1);
 		result.setSubscribe(subscribes);
 		
@@ -225,6 +232,13 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		String subscribes = channelTokenSB.toString();
+		
+		if(subscribes.length() == 0) { // 구독 채널 없음
+			result.setNotifications(new ArrayList<Notice>());
+			result.setSubscribe("");
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+		
 		subscribes = subscribes.substring(0, subscribes.length()-1);
 		result.setSubscribe(subscribes);
 		
@@ -306,14 +320,22 @@ public class NoticeController {
 			notes = "- http://localhost:8080/api/v1/notification/delete/p1\n- header : { \"auth\" : \"user's token\" }")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "SUCCESS"),
-		@ApiResponse(code = 404, message = "POST NOT FOUND, DELETE FAIL")
+		@ApiResponse(code = 404, message = "POST NOT FOUND, DELETE FAIL"),
+		@ApiResponse(code = 405, message = "YOUR NOT OWNER OF THIS POST")
 	})
 	public ResponseEntity<String> deletePost(@RequestHeader HashMap<String, String> header, @PathVariable String postId){
 		String authToken = header.get("auth");
 		Optional<User> target = userService.findByToken(authToken);
 		String mattermostUrl = target.get().getUrl();
-
+		
+		Notice post = noticeService.findByNoticeId(postId);
+		
+		if(post.getUser().getId() != target.get().getId()) {
+			throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "YOUR NOT OWNER OF THIS POST");
+		}
+		
 		String DELETE_URL= mattermostUrl + "/api/v4/posts/"+ postId;
+
 		
 		try {
 			URL url = new URL(DELETE_URL);
@@ -384,6 +406,13 @@ public class NoticeController {
 			
 		ResNoticeList result = new ResNoticeList();
 		String subscribes = channelTokenSB.toString();
+		
+		if(subscribes.length() == 0) { // 구독 채널 없음
+			result.setNotifications(new ArrayList<Notice>());
+			result.setSubscribe("");
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+		
 		subscribes = subscribes.substring(0, subscribes.length()-1);
 		result.setSubscribe(subscribes);
 

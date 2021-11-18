@@ -68,7 +68,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public void deleteByToken(String postId) {
 		Notice notice = noticeRepository.findByToken(postId);
 		noticeRepository.delete(notice);
-
+		
 	}
 
 	@Override

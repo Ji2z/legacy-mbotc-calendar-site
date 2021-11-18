@@ -1,73 +1,75 @@
 <template>
-    <div class="w-full h-screen px-32 pt-12">
-        <div class="bg-panel rounded-xl shadow-2xl p-8">
-            <div class="header flex justify-between pb-8">
-                <div class="text-font">
-                    <span class="text-4xl font-bold">{{monthList[state.month]}}</span>
-                    <span class="text-4xl p-8">{{state.year}}</span>
+    <div class="w-full overflow-y-auto no-scrollbar">
+        <div class="w-full px-32 py-12">
+            <div class="bg-panel rounded-xl shadow-2xl p-8">
+                <div class="header flex justify-between pb-8">
+                    <div class="text-font">
+                        <span class="text-5xl font-title">{{monthList[state.month]}}</span>
+                        <span class="text-5xl p-8 font-subtitle">{{state.year}}</span>
+                    </div>
+                    <div class="inline-block mr-6 mt-2">
+                        <button class="mr-6" @click="beforeMonth">							
+                            <svg class="h-8 w-8 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg> 
+                        </button>
+                        <button @click="nextMonth">
+                            <svg class="h-8 w-8 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>	
+                        </button>
+                    </div>
                 </div>
-                <div class="inline-block mr-6">
-                    <button @click="beforeMonth">							
-                        <svg class="h-6 w-6 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                        </svg> 
-                    </button>
-                    <button @click="nextMonth">
-                        <svg class="h-6 w-6 text-font inline-flex leading-none"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>	
-                    </button>
-                </div>
-            </div>
-            <table class="w-full">
-                <thead>
-                    <tr class="mx-auto text-3xl text-font">
-                        <th class="h-8 font-light text-red-600" style="width:12%">
-                            <span>Sun</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Mon</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Tue</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Wed</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Thu</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Fri</span>
-                        </th>
-                        <th class="h-8 font-light" style="width:12%">
-                            <span>Sat</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
-                        <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
-                            <div class="flex flex-col w-full h-32" @click="goDetail(day.num)">
-                                <div class="top h-4 w-full mb-2">
-                                    <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-bold">{{day.num}}</span>
-                                    <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
-                                    <span v-else class="text-gray-400">{{day.num}}</span>
-                                </div>
-                                <div class="bottom flex-grow py-1 w-full cursor-pointer overflow-auto">
-                                    <div v-for="node in day.notice" :key="node.token" class="text-sm h-6 w-full text-left text-font opacity-70" :style="{'background':node.color}">
-                                        <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
-                                        <p class="ml-2 font-bold opacity-100 overflow-hidden">{{node.title}}</p>
+                <table class="w-full">
+                    <thead>
+                        <tr class="mx-auto text-3xl text-font">
+                            <th class="h-8 font-light text-red-600" style="width:12%">
+                                <span>Sun</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Mon</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Tue</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Wed</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Thu</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Fri</span>
+                            </th>
+                            <th class="h-8 font-light" style="width:12%">
+                                <span>Sat</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="week in state.weeks" :key="week.id" class="text-center border-collapse border-0">
+                            <td v-for="(day, index) in week" :key="day.num" class="w-10 transition cursor-pointer duration-500 hover:bg-back">
+                                <div class="flex flex-col h-32" @click="goDetail(day.num)">
+                                    <div class="top h-4 mb-2">
+                                        <span v-if="state.nowFlag && state.today == day.num" class="text-blue-700 font-title">{{day.num}}</span>
+                                        <span v-else-if="index==0" class="text-red-500 font-bold">{{day.num}}</span>
+                                        <span v-else class="text-gray-400">{{day.num}}</span>
+                                    </div>
+                                    <div class="bottom flex-grow p-1 cursor-pointer overflow-auto no-scrollbar">
+                                        <div v-for="node in day.notice" :key="node.token" class="mb-1 text-sm h-7 text-left text-black opacity-100 rounded-md overflow-hidden" :style="{'background':node.color}">
+                                            <!-- <p v-if="(node.startDay == day.num)" class="ml-2 font-bold opacity-100">{{node.title}}</p> -->
+                                            <p class="ml-2 my-auto text-gray-800 font-semibold text-sm pt-1 opacity-100 overflow-clip">{{node.title}}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <main-addon class="fixed right-16 bottom-16" @click="goEdit"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <main-addon class="fixed right-8 bottom-8" @click="goEdit"/>
+            </div>
         </div>
     </div>
 </template>
@@ -112,8 +114,8 @@ export default {
                         //title: node.channel.team.name,
                         title: getTitle(node.content),
                         color: "#808080",
-                        startDay: getDayPicker(node.startTime),
-                        endDay: getDayPicker(node.endTime),
+                        startDay: getDayPicker(node.startTime, payload.month),
+                        endDay: getDayPicker(node.endTime, payload.month),
                         token: node.channel.team.token
                     }
 
@@ -189,11 +191,11 @@ export default {
                     }
                     state.teamColor.push(color)
                 });
+                initCalendar()
             })
             .catch((err)=>{
                 console.log(err)
             })
-            initCalendar()
         }
         const nextMonth = ()=>{
             state.month++

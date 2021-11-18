@@ -1,44 +1,48 @@
 <template>
-    <div class="text-center align-middle bg-white rounded-xl shadow-lg mr-10">
-        <div class="mt-10 mb-5 h-16 text-dark bold flex justify-between">
-            <div class="ml-10 h-16 items-center">
-                <p class="font-bold text-2xl">Sign in</p><br/>
-            </div>
-            <div class="mr-5 flex justify-end items-center">
-                <p class="mr-5 italic text-blue-600 text-xl text-gray">with mattermost</p>
-                <img class="w-16 h-16" src="@/assets/mattermost.png" alt="mattermost">
-            </div>
-        </div>
-        <div v-if="!state.hasCookie">
-            <div>
-                <!-- <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" disabled placeholder="  Server URL" v-model="state.url" @change="validationCheck"> -->
-                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Server URL" v-model="state.url" @change="validationCheck">
-                <input type="text" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Email" v-model="state.email" @change="validationCheck">
-                <input type="password" class="rounded w-4/5 h-10 border-2 mt-3" placeholder="  Password" v-model="state.password" @change="validationCheck">
-            </div>
-            <div class="flex justify-between p-8">
-                <div>
-                    <label for="loginToggle" class="mr-8 text-sm text-gray-700">keep me logged in.</label>
-                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                        <div>
-                            <input type="checkbox" v-model="state.loginToggle" name="loginToggle" id="loginToggle" :class="{'border-blue-400':state.loginToggle, 'right-0':state.loginToggle}" class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                            <label for="loginToggle" :class="{'bg-blue-400':state.loginToggle}" class="block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
-                        </div>
-                    </div>
+    <div class="w-full h-screen flex flex-wrap content-center">
+        <div class="w-1/2 mx-auto bg-gray-100 text-center rounded-2xl shadow-lg">
+            <div class="pt-16 text-dark bold flex justify-start">
+                <div class="ml-10 h-16 items-center">
+                    <p class="font-bold text-2xl text-blue-500">Sign in</p><br/>
                 </div>
+            </div>
+            <div v-if="!state.hasToken&&!state.hasCookie">
                 <div>
+                    <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" :disabled="state.serverLock" placeholder="Server URL" v-model="state.url" @change="validationCheck">
+                    <input type="text" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Email" v-model="state.email" @change="validationCheck">
+                    <input type="password" class="rounded w-4/5 h-10 border-2 mt-3 pl-2" placeholder="Password" v-model="state.password" @change="validationCheck" @keyup.enter="submit">
+                </div>
+                <div class="flex justify-between p-8">
+                    <div>
+                        <p v-if="!state.clickable" class="text-red-700">Please check your input.</p>
+                    </div>
                     <button class="bg-gray-200 text-white font-bold py-2 px-4 m-2 rounded" :class="{'bg-blue-500':state.clickable, 'hover:bg-blue-700':state.clickable, 'cursor-not-allowed':!state.clickable}" @click="submit">Take Me!</button>
                 </div>
             </div>
-        </div>
-        <div v-else>
-            <div class="mx-auto h-16 w-4/5 items-center">
-                <p class="text-xl">Welcome Back</p> 
-                <p class="font-bold text-2xl">{{state.userData.userName}}</p>
-                <br/>
+            <div v-else>
+                <div class="mx-auto h-16 w-4/5 items-center">
+                    <p v-if="state.hasToken" class="text-xl">Welcome Back!</p> 
+                    <p v-else-if="state.hasCookie" class="text-xl">You're already logged in Mattermost</p>
+                    <p class="font-bold text-2xl">{{state.userData.userName}}</p>
+                    <br/>
+                </div>
+                <div class="m-5">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="comeBack">Take Me!</button>
+                    <button v-if="!state.hasCookie" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="logout">Logout</button>
+                </div>
             </div>
-            <div class="m-5">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"  @click="comeBack">Take Me!</button>
+            <div>
+                <div class="text-blue-700 text-right mr-5">
+                    <p class="text-2xl">
+                        The most <br>
+                        beautiful and convenient <br>
+                        Mattermost Calendar <br>
+                    </p>
+                    <div class="my-5 flex justify-end items-center">
+                        <p class="italic text-xl mr-5">with mattermost</p>
+                        <img class="w-10 h-10" src="@/assets/mattermost.png" alt="mattermost">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -48,7 +52,8 @@
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { getServerURL } from '../../common/lib/function.js'
+import { getServerURL, getServerLock } from '../../common/lib/function.js'
+import { notify } from '@kyvg/vue3-notification'
 
 export default {
     name: 'WelcomeLogin',
@@ -62,9 +67,11 @@ export default {
             url:"",
             email:"",
             password:"",
-            loginToggle:false,
-            clickable:false,
-            hasCookie:false,
+            loginToggle: false,
+            clickable: false,
+            hasCookie: false,
+            hasToken: false,
+            serverLock: getServerLock(),
             userData:{
                 token: "",
                 url: getServerURL(),
@@ -96,21 +103,31 @@ export default {
                         userName: result.data.username,
                     }
                     store.commit('root/setUserData', userData)
-                    register(userData)
+                    register()
                 })
                 .catch((err)=>{
-
+                    console.log('------>',err)
+                    notify({
+                        title: "From MBOTC 😅",
+                        text: "Check your server URL, Email and PW",
+                        type: "warn"
+                    });
                 })
             }
         }
-        const register = (userData)=>{
+        const register = ()=>{
             //console.log("MbotC login start")
+            let userData = store.getters['root/getUserData']
             store.dispatch('root/userLogin', userData)
             .then((result)=>{
                 //console.log("MbotC login")
-                //console.log(result)
+                // console.log(result)
                 if(result.status == 200 ||  result.status == 201){
-                    router.push("/main")
+                    if(!state.hasCookie){
+                        router.push("/main")
+                    }else{
+                        store.commit('root/setToken', result.data.token)
+                    }
                 }
             })
             .catch((err)=>{
@@ -134,9 +151,9 @@ export default {
             router.push("/main")
         }
         const init = ()=>{
-            state.url = "  " + getServerURL()
+            state.url = getServerURL()
             //console.log(document.cookie)
-            if(document.cookie && hasToken()){
+            if(document.cookie && hasCookie()){
                 state.hasCookie = true
                 store.dispatch('root/getUserMM')
                 .then((result)=>{
@@ -150,20 +167,54 @@ export default {
                         userName: result.data.username,
                     }
                     store.commit('root/setUserData', state.userData)
-                    register(userData)
+                    register()
                 })
                 .catch((err)=>{
                 })
+            }else if(hasToken()){
+                state.hasToken = true
             }
+            // if(hasToken()){
+            //     state.hasToken = true
+            // }
         }
-        const hasToken = ()=>{
+        const hasCookie = ()=>{
             let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
             let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
-            return (userId && csrf)
-
+            //console.log(userId)
+            //console.log(csrf)
+            // console.log((userId.length>0) && (csrf.length>0))
+            if(userId != null && csrf != null){
+                return ((userId.length>0) && (csrf.length>0))
+            }
+            return false
+        }
+        const hasToken = ()=>{
+            let userData = store.getters['root/getUserData']
+            if(userData.token!='' && userData.url!='' && userData.userEmail!='' && userData.userId!='' && userData.userName!=''){
+                return true
+            }
+            return false
+        }
+        const logout = ()=>{
+            // if(state.hasCookie){
+            //     store.dispatch('root/userLogoutMM',store.getters['root/getToken'])
+            //     .then((result)=>{
+            //         console.log(result)
+            //     })
+            //     store.commit('root/logout')
+            //     state.hasCookie = false
+            //     state.hasToken = false
+            // }else 
+            if(state.hasToken){
+                store.commit('root/logout')
+                state.hasCookie = false
+                state.hasToken = false
+            }
+            router.push("/")
         }
         init()
-        return { state, submit, validationCheck, comeBack }
+        return { state, submit, validationCheck, comeBack, logout }
     }
 };
 </script>

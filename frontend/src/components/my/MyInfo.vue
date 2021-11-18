@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header pb-4">
-            <span class="text-4xl font-bold text-main ">Settings</span>
+            <span class="text-5xl font-title text-main ">Settings</span>
         </div>
         <div class="text-font bold flex justify-between mb-2">
             <div class="flex items-end">
@@ -13,31 +13,34 @@
             </div>
         </div>
         <div class="text-font bg-panel w-full h-1/5 rounded-xl shadow-2xl mb-2 p-8 border-l-8 border-label">
-            <div>
-                <span class="font-bold text-2xl mr-2">URL</span>
-                <span class="text-2xl">{{url}}</span>
+            <div class="flex justify-start">
+                <div class="font-bold text-2xl w-20 mr-2">URL</div>
+                <div class="text-2xl">{{url}}</div>
             </div>
             <div class="flex justify-between items-end">
-                <div>
-                    <span class="font-bold text-2xl mr-2">ID</span>
-                    <span class="text-2xl">{{id}}</span>
+                <div class="flex justify-start">
+                    <div class="font-bold text-2xl w-20 mr-2">ID</div>
+                    <div class="text-2xl">{{id}}</div>
                 </div>
                 <div>
-                    <button class="bg-back text-main font-bold border-2 border-label py-2 px-4 m-2 rounded-full hover:bg-main hover:text-back" @click="leave">Leave</button>
+                    <button class="bg-red-500 text-white font-bold border-2 border-red-600 py-1 px-4 m-2 rounded-full hover:bg-red-700" @click="state.openModal=true">Leave</button>
                 </div>
             </div>
         </div>
+        <main-confirm :modalData="modalData" v-if="state.openModal" @cancel="state.openModal=false" @action="leave"/>
     </div>
 </template>
 <script>
+import MainConfirm from '@/components/main/MainConfirm.vue'
 // import abc from '@/components/'
-// import { reactive } from 'vue'
+import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
     name: 'MyInfo',
     components: {
+        MainConfirm
     },
     props:{
         url:{
@@ -50,25 +53,34 @@ export default {
         }
     },
     setup(){
+        const modalData = {
+            title: "Leave MBotC",
+            message: "You will lose all of your data by leaving MBotC. This action cannot be undone.",
+            action: "Delete Account",
+        }
         const store = useStore()
         const router = useRouter()
+        const state = reactive({
+            openModal: false,
+        })
         const leave = ()=>{
             let payload = store.getters['root/getUserData']
 
             store.dispatch('root/deleteUser', payload)
             .then((result)=>{
                 //console.log("MbotC login")
-                console.log(result)
-                // if(result.status == 200){
-                //     router.push("/main")
-                // }
+                // console.log(result)
+                if(result.status == 200){
+                    store.commit('root/logout')
+                    router.push("/")
+                }
             })
             .catch((err)=>{
                 console.log(err)
                 // status 409 핸들링
             })
         }
-        return { leave }
+        return { modalData, state, leave }
     }
 };
 </script>

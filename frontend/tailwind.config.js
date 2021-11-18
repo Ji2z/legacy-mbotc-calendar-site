@@ -33,6 +33,10 @@ module.exports = {
       backgroundColor,
       borderColor,
     },
+    fontFamily: {
+      sans: ['Noto Sans KR','sans-serif'],
+      Montserrat: ['Montserrat','sans-serif']
+    },
   },
   variants: {
     extend: {},

@@ -2,16 +2,26 @@ import $axios from 'axios'
 import { getServerURL } from '../common/lib/function.js';
 
 // user API
+export function userLogoutMM({state}, payload){
+    const url = '/api/v4/users/logout'
+    return $axios({
+        method: 'post',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload,
+        },
+    })
+}
+
 export function userLoginMM({state}, payload){
-    const url =  '/api/v4/users/login'
+    const url = '/api/v4/users/login'
     const body = payload.loginData
-    //수정해야됨
 
     return $axios.post(url, body);
 }
 
 export function getUserMM({state}){
-    const url =  '/api/v4/users/me'
+    const url = '/api/v4/users/me'
 
     return $axios.get(url);
 }
@@ -49,6 +59,9 @@ export function deleteUser({state}, payload){
     return $axios({
         method: 'delete',
         url: url,
+        headers:{
+            'auth':  payload.token
+        },
         data:{
             "token": payload.token,
             "url": payload.url,
@@ -135,6 +148,19 @@ export function getNoticeSearch({state}, payload){
     return $axios.get(url, {headers});
 }
 
+
+export function deleteNotice({state}, payload){
+    const url = '/api/v1/notification/delete/' + payload.postId
+    //console.log(payload.notice)
+    return $axios({
+        method: 'delete',
+        url: url,
+        headers:{
+            'auth':  payload.token,
+        },
+    })
+}
+
 // export function uploadNotice({state}, payload){
 //     const url = '/api/v1/notification'
 //     const headers = {
@@ -144,9 +170,11 @@ export function getNoticeSearch({state}, payload){
 //     return $axios.post(url, {headers}, body);
 // }
 
+// bot API
+
 export function uploadNotice({state}, payload){
     const url = '/plugins/com.mattermost.plugin-mbotc/api/v1/create-notification-with-editor'
-    console.log(payload.notice)
+    //console.log(payload.notice)
     return $axios({
         method: 'post',
         url: url,
@@ -158,4 +186,39 @@ export function uploadNotice({state}, payload){
     })
 }
 
-// bot API
+export function getFile({state}, payload){
+    const url = '/api/v4/files/' + payload.fileId
+    
+    //return $axios.get(url, {headers});
+    return $axios({
+        method: 'get',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload.token,
+            "responseType": "blob"
+        }
+    })
+}
+
+export function getFileLink({state}, payload){
+    const url = '/api/v4/files/' + payload.fileId + "/link"
+    
+    //return $axios.get(url, {headers});
+    return $axios({
+        method: 'get',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload.token,
+        }
+    })
+}
+
+// export function getFileThumbnail({state}, payload){
+//     const url = '/api/v4/files/' + payload.fileId + "/thumbnail"
+//     const headers = { 
+//         "Authorization": "bearer " + payload.token, 
+//         "responseType": "arraybuffer"
+//     }
+    
+//     return $axios.get(url, {headers});
+// }

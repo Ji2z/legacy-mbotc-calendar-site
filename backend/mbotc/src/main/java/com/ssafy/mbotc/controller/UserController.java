@@ -6,10 +6,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafy.mbotc.entity.User;
+import com.ssafy.mbotc.service.RedisService;
 import com.ssafy.mbotc.service.SyncService;
 import com.ssafy.mbotc.service.UserService;
 
@@ -25,7 +34,10 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private SyncService syncservice;
+	private SyncService syncService;
+	
+	@Autowired
+	private RedisService redisService;
 	
 	// after login, user token update
 	@PatchMapping
@@ -42,7 +54,7 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
 		}
 		User userResult = userService.updateUserToken(target.get(), user.getToken());
-		syncservice.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
+		syncService.syncWithUser(userResult.getToken(), userResult.getUrl(), userResult.getUserId());
 		return ResponseEntity.status(HttpStatus.OK).body(userResult);
 	}
 	
@@ -75,24 +87,30 @@ public class UserController {
 	})
 	public ResponseEntity<User> saveUserInfo(@RequestBody User user, @CookieValue(name="MMAUTHTOKEN", required = false) String mmAuthToken) {
 		User u = new User();
+		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(user.getToken() != null && user.getToken().equals("cookie")) {
-			user.setToken(mmAuthToken);
-			u = userService.save(user);
-			syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+			if(userInfo.isPresent()) {
+				userInfo.get().setToken(mmAuthToken);
+				userInfo.get().setUserName(user.getUserName());
+				u = userService.save(userInfo.get());
+			}else {
+				user.setToken(mmAuthToken);
+				u = userService.save(user);
+			}
+			syncService.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
 			return ResponseEntity.status(HttpStatus.OK).body(u);
 		}
 		
-		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(userInfo.isPresent()) {
 			userInfo.get().setToken(user.getToken());
 			userInfo.get().setUserName(user.getUserName());
 			u = userService.save(userInfo.get());
-			syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+			syncService.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
 			return ResponseEntity.status(HttpStatus.OK).body(u);
 		}
 		
 		u = userService.save(user);		
-		syncservice.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
+		syncService.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
 		return ResponseEntity.status(HttpStatus.OK).body(u);
 	}
 	
@@ -117,6 +135,11 @@ public class UserController {
 		if(!target.get().getUserEmail().equals(user.getUserEmail())) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
 		}
+		
+		boolean success = redisService.deleteUserSettings(user.getUserId());
+		if(!success)
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		
 		userService.delete(target.get());
 		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
 	}

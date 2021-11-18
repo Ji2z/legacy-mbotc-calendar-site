@@ -47,24 +47,28 @@ const router = createRouter({
     routes,
 });
 
-// const isLoggedIn = function(){
-//     return localStorage.getItem('jwt')? true:false;
-// }
+const isLoggedIn = function(){
+    let settings = JSON.parse(localStorage.getItem("settings"))
+    if(settings.userData.token!='' && settings.userData.url!='' && settings.userData.userEmail!='' && settings.userData.userId!='' && settings.userData.userName!=''){
+        return true
+    }
+    return false
+}
 
-// router.beforeEach((to, from, next) => {
-//     if(to.meta.loginRequired){
-//         if(isLoggedIn()){
-//             next()
-//         }else{
-//             alert("로그인이 필요합니다!")
-//             const params = {
-//                 redirectUri: "https://j5a506.p.ssafy.io/oauth/kakao",
-//             };
-//             window.Kakao.Auth.authorize(params);
-//         }
-//     }else{
-//         next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    //console.log(to)
+    if(to.meta.loginRequired){
+        if(isLoggedIn()){
+        //console.log("로그인 통과")
+        next()
+        }else{
+        alert('로그인이 필요합니다!')
+        next("/")
+        }
+    }else{
+        //console.log("로그인 불필요")
+        next()
+    }
+})
 
 export default router;

@@ -2,8 +2,9 @@ const idList = {
     "light": 0,
     "dark": 1,
     "ssuk": 2,
-    "blue": 3,
-    "eclipse": 4,
+    "crayon": 3,
+    "art": 4,
+    "lilac": 5,
 }
 
 export function settingInit(state){
@@ -31,6 +32,8 @@ export function settingInit(state){
 
 export function logout(state){
     let settings = JSON.parse(localStorage.getItem("settings"))
+    settings.id = 0,
+    settings.theme = "light",
     settings.userData = {
         token: "",
         url: "",

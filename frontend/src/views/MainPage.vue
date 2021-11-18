@@ -1,9 +1,11 @@
 <template>
     <div class="flex justify-start myPage" id="socket">
         <!-- <button class="ml-10" @click="onClickTop('meeeeeesssssage')">button</button> -->
-        <notifications position="top right"/>
-        <router-view :key="$route.fullPath" class="w-full h-screen"
-        @clickDetail="onClickDetail"/>
+        <notifications/>
+        <div class="w-full ml-20">
+            <router-view :key="$route.fullPath" class="w-full h-screen pt-12"
+            @clickDetail="onClickDetail"/>
+        </div>
         <main-sidebar
         :detailFlag = "state.sideDetailFlag"
         @clickOther="onClickOther"/>
@@ -17,7 +19,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import { useStore } from 'vuex'
 // import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'MainPage',
@@ -26,6 +28,7 @@ export default {
     },
 
     setup(){
+        const router = useRouter()
         const store = useStore()
         const state = reactive({
             sideDetailFlag: false,
@@ -63,8 +66,9 @@ export default {
                 title: "New Notification",
                 text: message,
                 });
-         }
-         connect()
+                router.push("/main")
+        }
+        connect()
         return { state, onClickDetail, onClickOther, connect, onClickTop }
     }
 };
