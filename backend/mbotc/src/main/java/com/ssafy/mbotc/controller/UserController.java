@@ -87,14 +87,20 @@ public class UserController {
 	})
 	public ResponseEntity<User> saveUserInfo(@RequestBody User user, @CookieValue(name="MMAUTHTOKEN", required = false) String mmAuthToken) {
 		User u = new User();
+		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(user.getToken() != null && user.getToken().equals("cookie")) {
-			user.setToken(mmAuthToken);
-			u = userService.save(user);
+			if(userInfo.isPresent()) {
+				userInfo.get().setToken(mmAuthToken);
+				userInfo.get().setUserName(user.getUserName());
+				u = userService.save(userInfo.get());
+			}else {
+				user.setToken(mmAuthToken);
+				u = userService.save(user);
+			}
 			syncService.syncWithUser(u.getToken(), u.getUrl(), u.getUserId());
 			return ResponseEntity.status(HttpStatus.OK).body(u);
 		}
 		
-		Optional<User> userInfo = userService.findByUserEmailAndUrl(user.getUserEmail(), user.getUrl());
 		if(userInfo.isPresent()) {
 			userInfo.get().setToken(user.getToken());
 			userInfo.get().setUserName(user.getUserName());
