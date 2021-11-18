@@ -2,16 +2,26 @@ import $axios from 'axios'
 import { getServerURL } from '../common/lib/function.js';
 
 // user API
+export function userLogoutMM({state}, payload){
+    const url = '/api/v4/users/logout'
+    return $axios({
+        method: 'post',
+        url: url,
+        headers:{
+            "Authorization": "bearer " + payload,
+        },
+    })
+}
+
 export function userLoginMM({state}, payload){
-    const url =  '/api/v4/users/login'
+    const url = '/api/v4/users/login'
     const body = payload.loginData
-    //수정해야됨
 
     return $axios.post(url, body);
 }
 
 export function getUserMM({state}){
-    const url =  '/api/v4/users/me'
+    const url = '/api/v4/users/me'
 
     return $axios.get(url);
 }
