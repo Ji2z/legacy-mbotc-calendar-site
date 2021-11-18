@@ -153,7 +153,7 @@ export default {
         const init = ()=>{
             state.url = getServerURL()
             //console.log(document.cookie)
-            if(hasCookie()){
+            if(document.cookie && hasCookie()){
                 state.hasCookie = true
                 store.dispatch('root/getUserMM')
                 .then((result)=>{
