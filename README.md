@@ -1,9 +1,9 @@
 ### 오픈소스 프로젝트
 
-# 프로젝트명(미정)
-> Mattermost bot 프로젝트 🤖
+# MBotC
+> Mattermost bot calendar plugin 프로젝트 🤖
 
-프로젝트 설명
+MBotC는 Mattermost 서버에 설치된 플러그인을 이용하여 공지와 일정을 쉽게 등록, 관리, 검색하고 원하는 팀과 채널의 공지만 모아 확인하며 스케쥴을 관리 할 수 있는 서비스입니다.
 
 ---
 
@@ -12,105 +12,75 @@
 1. [주요기능](#주요기능)
 2. [세부기능](#세부기능)
 3. [아키텍처](#아키텍처)
-4. [설치](#설치)
+4. [설치 및 실행](#설치-및-실행)
 5. [사용 예시](#사용-예시)
 6. [개발 설정](#개발-설정)
 7. [팀원 역할](#팀원-역할)
 8. [릴리즈 히스토리](#릴리즈-히스토리)
-9. [기여 및 라이선스](#기여)
-10. [Convention](#Convention)
 
 ---
 
 ## 주요기능
 
-- 
-- 
-- 
-- 
-- 
+- Mattermost 공지 달력 (Mattermost calendar)
+- 일 별 공지 조회 (Daily notification)
+- Mattermost 공지 검색기능 (Search notification)
+- Markdown 에디터를 통한 공지 작성 (Markdown editor)
+- 팀, 채널 별 구독 설정 (Channel subscribe)
+- 개인 테마, 팀 컬러 커스터 마이징 (Theme customizing)
 
 ## 세부기능
-|구분|기능|설명|비고|
-|:---|:---|:---|:---|
-|1||||
-|2||||
-|3||||
-|4||||
-|5||||
+|구분|기능|설명|
+|:---|:---|:---|
+|1|Mattermost 공지 달력 (Mattermost calendar)|Mattermost 서버에 등록된 공지들을 한 눈에 모아 봄|
+|2|일 별 공지 조회 (Daily notification)|일 별로 기간에 포함되는 공지들을 확인|
+|3|Mattermost 공지 검색기능 (Search notification)|내용 기반으로 공지를 검색 가능|
+|4|Markdown 에디터를 통한 공지 작성 (Markdown editor)|TOAST Editor를 활용하여 Markdown문서를 미리보며 작성 할 수 있음|
+|5|채널 별 구독 설정 (Channel subscribe)|채널별 구독을 설정하여 필요한 공지만 확인 가능함|
+|6|개인 테마, 팀 컬러 커스터 마이징 (Theme customizing)|여러 테마를 적용하고, 공지 달력에 표시될 팀 별 생상을 커스터마이징 가능|
 
 
 ## 아키텍처
 
-## 설치
+![아키텍처](/uploads/f1223539006b18d9e9f6226f5d658bf1/캡처.JPG)
 
-```
-```
+
+## 설치 및 실행
+
+[배포 및 설치 매뉴얼](.exec/)
+
 
 ## 사용 예시
 
-## 개발 설정
+메인 달력 화면   
+![0](/uploads/8607822a3ba5564add0cc4738e3a2c2d/0.JPG)
+
+데일리 공지 화면 사용   
+![page_1](/uploads/2b2edb838534b273b9859cf708d6508e/page_1.gif)
+
+MD 에디터를 사용한 MM 공지 등록   
+![page_2](/uploads/e48b6042e67bd3a564c49fe8993159fb/page_2.gif)
+
+MM 공지 검색기능   
+![page_3](/uploads/a290eec7c038166dc6db9ca88e33f82b/page_3.gif)
+
+테마 변경기능   
+![page_theme](/uploads/8040e2b50e80f50c62a3633465cba7bf/page_theme.gif)
 
 ## 팀원 역할
 |구분|이름|역할|비고|
 |:---|:---|:---|:---|
-|**팀장**|신지예|||
-|팀원|노진혁|||
-|팀원|박서희|||
-|팀원|안영진|||
-|팀원|이진영|||
+|**팀장**|신지예|**Bot Plugin**||
+|팀원|노진혁|**Frontend**||
+|팀원|박서희|**Backend**||
+|팀원|안영진|**Bot Plugin**||
+|팀원|이진영|**Backend**||
 
 ## 릴리즈 히스토리
 
-* 0.1.0
-
-## 기여
-
-```
-```
-
-### 라이선스
-
-# Convention
-
-### Git Convention
-
-| 이름             | 설명                                                         | 종류 |
-| ---------------- | ------------------------------------------------------------ | ---- |
-| feat             | 새로운 기능 추가                                             | 기능 |
-| fix              | 버그 수정, 기능 수정                                         | 기능 |
-| docs             | 문서 수정에 대한 커밋 (READMD.md)                            | 그외 |
-| refactor         | 코드 리팩토링 (변수명 수정, 주석 추가, 코드 스타일 변경 등)  | 개선 |
-| build            | 빌드 관련 파일 수정에 대한 커밋                              | 그외 |
-| design           | CSS 등 사용자 UI 디자인 변경                                 | 기능 |
-| resource         | 이미지 리소스 등 코드와 상관없는 리소스 추가                 | 그외 |
-| test             | 테스트 코드, 리팩토링 테스트 코드 추가                       | 그외 |
-| delete           | 파일 또는 코드, 리소스 제거                                  | 그외 |
-| rename           | 파일 혹은 폴더명을 수정하거나 옮기는 작업                    | 그외 |
-| !BREAKING CHANGE | 커다란 API 변경 (API의 arguments, return 값의 변경, <br>DB 테이블 변경, 급하게 치명적인 버그를 고쳐야 하는 경우) | 기능 |
-| chore            | 그 외 자잘한 수정에 대한 커밋                                | 그외 |
-
-### Git Branch
-
-- master : 배포
-
-- develop : 기능
-
-- feature : 기능 추가 ( feature/FE-login , feature/BE-login )
-
-### Code Convention
-
-- 변수명 : Camel Case
-
-### Team Rule
-
-🛠 매주 금요일 merge develop into master
-
-🕙 데일리 스크럼(Done, Todo, Problem)
-
-🩺 Pull Request Review
-
-- LGTM: Looks Good To Me 😎
+* 0.0.1 - 2021.11.19
+    * Work in progress
     
-    ![cat](/uploads/099e4f271f922b3b702f32cadbbd79ab/cat.png)
+
+
 
