@@ -127,6 +127,27 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+  .ssafy {
+    --bg-main: #000000;
+    --bg-back: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-side: #6ccef5;
+
+    --border-label: #163172;
+
+    --text-font: #000000;
+    --text-main: #000000;
+    --text-back: #f6f6f6;
+
+    --bg-first: #e2e5ed;
+    --bg-second: #a8b2ca;
+    --bg-third: #506595;
+    --bg-most: #163172;
+
+    background-image: url("../../assets/bg/ssafy.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

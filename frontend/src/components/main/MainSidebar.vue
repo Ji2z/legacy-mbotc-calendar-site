@@ -184,6 +184,7 @@ import logo_2 from '@/assets/logo/logo_2.png'
 import logo_3 from '@/assets/logo/logo_3.png'
 import logo_4 from '@/assets/logo/logo_4.png'
 import logo_5 from '@/assets/logo/logo_5.png'
+import logo_6 from '@/assets/logo/logo_6.png'
 
 export default {
     name: 'MainSidebar',
@@ -207,7 +208,7 @@ export default {
         const state = reactive({
             nav: [true,false,false,false, false],
             theme: computed(() => store.getters['root/getThemeId']),
-            logo: [logo_0, logo_1, logo_2, logo_3, logo_4, logo_5],
+            logo: [logo_0, logo_1, logo_2, logo_3, logo_4, logo_5, logo_6],
             today: 0,
             angry: 0,
             openModal: false,
