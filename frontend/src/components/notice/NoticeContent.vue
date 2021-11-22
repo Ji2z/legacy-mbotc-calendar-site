@@ -34,7 +34,6 @@ import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import MainConfirm from '@/components/main/MainConfirm.vue'
 import Editor from "@toast-ui/editor";
 import logo_0 from '@/assets/logo/logo_0.png'
-// import abc from '@/components/'
 import { reactive, ref, onUpdated } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -118,10 +117,6 @@ export default {
             }
             state.fileList = []
             let wraperHeight = mdViewerWraper.value.clientHeight + 'px'
-            //console.log(mdViewerWraper)
-            //console.log(wraperHeight)
-            // console.log("------>")
-            // console.log(props.notice.content)
             state.mountViewer = new Editor.factory({
                 el: mdViewer.value,
                 viewer: true,
@@ -136,20 +131,9 @@ export default {
             if(props.notice.files != null){
                 let fileIds = props.notice.files.split(",")
                 fileIds.forEach(file => {
-                    // store.dispatch('root/getFileLink', payload)
-                    // .then((result)=>{
-                    //     console.log(result)
-                    //     const link = document.createElement('a');
-                    //     const url = result.data.link
-                    //     link.href = url;
-                    //     link.setAttribute('download', '');
-                    //     //link.style.cssText = 'display:none';
-                    //     document.body.appendChild(link);
-                    //     // link.click();
-                    //     // link.remove();
-                    // })
-                    // .catch((err)=>{
-                    // })
+                    // legacy to try getFile using axios and blob but fail....
+                    // Noooooooooooooo
+                    //
                     // store.dispatch('root/getFile', payload)
                     // .then((result)=>{
                     //     console.log(result)
@@ -197,11 +181,6 @@ export default {
                                     [ , fileName ] = fileNameMatch.split('=');
                             }
                             fileName = fileName.replace(new RegExp('["]','g'), '');
-
-                            console.log(fileName)
-                        
-                            //this.response is what you're looking for
-                            //console.log(this.response, typeof this.response);
                             let a = document.createElement("a");
                             let url = URL.createObjectURL(this.response)
                             a.href = url;

@@ -67,7 +67,6 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
 import { reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -103,8 +102,6 @@ export default {
             let noticeList = []
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
-                // console.log("small calendar")
-                // console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
                         startDay: getDayPicker(node.startTime, payload.month),
@@ -124,12 +121,10 @@ export default {
                     state.weeks[0].push(day)
                 }
                 for (let i = 1; i <= dayCount; i++) {
-                    //그 날의 공지갯수 새는 logic
                     let day = {
                         num : i,
-                        count : 0, // 여기에 공지갯수
+                        count : 0, 
                     }
-
                     noticeList.forEach(notice => {
                         if(notice.startDay <= day.num && day.num <= notice.endDay){
                             day.count++;
@@ -149,7 +144,6 @@ export default {
             })
         }
         const init = ()=>{
-            
             state.year = parseInt(props.date.substring(0,4))
             state.month = parseInt(props.date.substring(4,6))-1
             state.today = parseInt(props.date.substring(6,8))

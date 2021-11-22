@@ -27,7 +27,6 @@ export function getUserMM({state}){
 }
 
 export function userLogin({state}, payload){
-    //console.log("userLogin")
     const url = '/api/v1/user'
     const body = {
         "token" : payload.token,
@@ -74,7 +73,6 @@ export function deleteUser({state}, payload){
 export function userSync({state}, payload){
     const url = '/api/v1/sync'
     const headers = { "auth": payload.token }
-    //수정해야됨
 
     return $axios.get(url, {headers});
 }
@@ -88,9 +86,6 @@ export function setUserSetting({state}, payload){
         'teams' : payload.teams,
         'theme' : payload.theme
     }
-    // console.log(headers)
-    // console.log(body)
-    // return $axios.post(url, {headers}, body);
     return $axios({
         method: 'post',
         url: url,
@@ -115,7 +110,6 @@ export function getUserSetting({state}, payload){
 }
 
 // notice API
-
 export function getMonthNotice({state}, payload){
     const url = '/api/v1/notification/month?year=' + payload.year + '&month=' + payload.month
     const headers = { 
@@ -127,7 +121,6 @@ export function getMonthNotice({state}, payload){
 
 export function getDayNotice({state}, payload){
     const url = '/api/v1/notification/day?year=' + payload.year + '&month=' + payload.month + '&day=' + payload.day
-    //console.log(url)
     const headers = {
         'auth': payload.token 
     }
@@ -151,7 +144,6 @@ export function getNoticeSearch({state}, payload){
 
 export function deleteNotice({state}, payload){
     const url = '/api/v1/notification/delete/' + payload.postId
-    //console.log(payload.notice)
     return $axios({
         method: 'delete',
         url: url,
@@ -161,20 +153,10 @@ export function deleteNotice({state}, payload){
     })
 }
 
-// export function uploadNotice({state}, payload){
-//     const url = '/api/v1/notification'
-//     const headers = {
-//         'auth' : payload.token
-//     }
-//     const body = payload.notice
-//     return $axios.post(url, {headers}, body);
-// }
 
 // bot API
-
 export function uploadNotice({state}, payload){
     const url = '/plugins/com.mattermost.plugin-mbotc/api/v1/create-notification-with-editor'
-    //console.log(payload.notice)
     return $axios({
         method: 'post',
         url: url,
@@ -186,10 +168,10 @@ export function uploadNotice({state}, payload){
     })
 }
 
+
+//File API
 export function getFile({state}, payload){
     const url = '/api/v4/files/' + payload.fileId
-    
-    //return $axios.get(url, {headers});
     return $axios({
         method: 'get',
         url: url,
@@ -202,8 +184,6 @@ export function getFile({state}, payload){
 
 export function getFileLink({state}, payload){
     const url = '/api/v4/files/' + payload.fileId + "/link"
-    
-    //return $axios.get(url, {headers});
     return $axios({
         method: 'get',
         url: url,

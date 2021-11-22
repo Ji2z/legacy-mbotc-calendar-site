@@ -6,10 +6,7 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
 
 export default {
     name: 'CalendarTitle',
@@ -33,7 +30,6 @@ export default {
             state.year = parseInt(props.date.substring(0,4))
             state.month = parseInt(props.date.substring(4,6))-1
             state.day = parseInt(props.date.substring(6,8))
-            //console.log(state)
         }
         init()
         return { state, monthList }

@@ -15,7 +15,6 @@ export default {
       const state = reactive({
           theme: computed(() => store.getters['root/getTheme']),
       })
-      console.log(new Date())
 
       return { state }
     }

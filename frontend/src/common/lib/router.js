@@ -56,17 +56,14 @@ const isLoggedIn = function(){
 }
 
 router.beforeEach((to, from, next) => {
-    //console.log(to)
     if(to.meta.loginRequired){
         if(isLoggedIn()){
-        //console.log("로그인 통과")
-        next()
+            next()
         }else{
-        alert('로그인이 필요합니다!')
-        next("/")
+            alert('Login Needed!')
+            next("/")
         }
     }else{
-        //console.log("로그인 불필요")
         next()
     }
 })
