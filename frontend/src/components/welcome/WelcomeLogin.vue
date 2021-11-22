@@ -48,7 +48,6 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -93,8 +92,6 @@ export default {
                 }
                 store.dispatch('root/userLoginMM',payload)
                 .then((result)=>{
-                    // console.log("MM login")
-                    // console.log(result)
                     let userData = {
                         token: result.headers.token,
                         url: getServerURL(),
@@ -116,12 +113,9 @@ export default {
             }
         }
         const register = ()=>{
-            //console.log("MbotC login start")
             let userData = store.getters['root/getUserData']
             store.dispatch('root/userLogin', userData)
             .then((result)=>{
-                //console.log("MbotC login")
-                // console.log(result)
                 if(result.status == 200 ||  result.status == 201){
                     if(!state.hasCookie){
                         router.push("/main")
@@ -132,7 +126,6 @@ export default {
             })
             .catch((err)=>{
                 console.log(err)
-                // status 409 핸들링
             })
         }
         const validationCheck = ()=>{
@@ -152,13 +145,10 @@ export default {
         }
         const init = ()=>{
             state.url = getServerURL()
-            //console.log(document.cookie)
             if(document.cookie && hasCookie()){
                 state.hasCookie = true
                 store.dispatch('root/getUserMM')
                 .then((result)=>{
-                    //console.log("MbotC login")
-                    //console.log(result)
                     state.userData = {
                         token: "cookie",
                         url: getServerURL(),
@@ -174,16 +164,10 @@ export default {
             }else if(hasToken()){
                 state.hasToken = true
             }
-            // if(hasToken()){
-            //     state.hasToken = true
-            // }
         }
         const hasCookie = ()=>{
             let userId = document.cookie.match(new RegExp('(^| )' + "MMUSERID" + '=([^;]+)'));
             let csrf = document.cookie.match(new RegExp('(^| )' + "MMCSRF" + '=([^;]+)'));
-            //console.log(userId)
-            //console.log(csrf)
-            // console.log((userId.length>0) && (csrf.length>0))
             if(userId != null && csrf != null){
                 return ((userId.length>0) && (csrf.length>0))
             }
@@ -197,15 +181,6 @@ export default {
             return false
         }
         const logout = ()=>{
-            // if(state.hasCookie){
-            //     store.dispatch('root/userLogoutMM',store.getters['root/getToken'])
-            //     .then((result)=>{
-            //         console.log(result)
-            //     })
-            //     store.commit('root/logout')
-            //     state.hasCookie = false
-            //     state.hasToken = false
-            // }else 
             if(state.hasToken){
                 store.commit('root/logout')
                 state.hasCookie = false

@@ -58,7 +58,6 @@
 <script>
 import MyPalette from '@/components/my/MyPalette.vue'
 import { notify } from '@kyvg/vue3-notification'
-// import abc from '@/components/'
 import { reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -96,7 +95,6 @@ export default {
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
                 state.teams = []
-                //console.log(result)
                 let index = 0;
                 result.data.teams.forEach(data => {
                     let team = data
@@ -105,7 +103,6 @@ export default {
                     index++
                     state.teams.push(team)
                 }); 
-                //console.log(state.teams)
             })
             .catch((err)=>{
             })
@@ -114,7 +111,6 @@ export default {
             state.selectedTeam = id
         }
         const changeColor = (id)=>{
-            //console.log("press")
             if(!state.paletteOpen){
                 state.teams[id].open = true
                 state.paletteOpen = true
@@ -122,9 +118,7 @@ export default {
         }
         const saveColor = (data)=>{
             state.teams[data.id].color = '#' + data.color
-            //console.log(state.teams[data.id].open)
             state.teams[data.id].open = false
-            //console.log(state.teams[data.id].open)
             state.paletteOpen = false
             notify({
                 title: "From MBOTC 😉",
@@ -190,7 +184,6 @@ export default {
             })
         }
         watch(()=> props.saveFlag, ()=>{
-            console.log("테마로부터 event")
             save()
         })
         init()

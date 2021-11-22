@@ -20,11 +20,6 @@
 <script>
 import warn from '@/assets/warning.png'
 
-// import abc from '@/components/'
-// import { reactive } from 'vue'
-// import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
-
 export default {
     name: 'MainConfirm',
     components: {
