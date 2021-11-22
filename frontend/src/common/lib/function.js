@@ -1,6 +1,8 @@
+//Input your ServerData Json file location
 let serverData = require("./serverData.json");
-// 추후 json 위치 변경해줘야 함
 
+
+//Function relative serverData
 const getServerData = () =>{
     return serverData
 }
@@ -17,6 +19,9 @@ const getMbotcURL = () =>{
     return serverData.MBOTC_URL
 }
 
+
+//Functions for Data
+//get day from Date object
 const getDayPicker = (date, month)=>{
     let thisMonth = parseInt(date.substring(5,7))
     if(thisMonth < month){{
@@ -28,11 +33,9 @@ const getDayPicker = (date, month)=>{
     }
 }
 
+//replace some mattermost annotation and substring content to acceptable size
 const getTitle = (content)=>{
-    //console.log(content)
     let replaceText = content.replace(new RegExp('@here|@HERE|[#*`]|@','g'), '');
-
-    //console.log(replaceText)
     return replaceText.substring(0,20)
 }
 
@@ -44,12 +47,11 @@ const getTitleLen = (content, len)=>{
         replaceText = replaceText.substring(0, len) + " ...";
     else
         replaceText = replaceText.substring(0, len)
-    //console.log(replaceText)
     return replaceText
 }
 
+// replace Date object to SQL's time String
 const getTime = (date)=>{
-    //console.log(date)
     let replaceText = date.substring(0,10) + " " + date.substring(11,16)
     return replaceText
 }

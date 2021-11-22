@@ -93,7 +93,6 @@ export default {
             store.dispatch('root/getNoticeSearch', payload)
             .then((result) => {
                 state.notices = []
-                //console.log(result)
                 result.data.notifications.forEach(node => {
                     let notice = {
                         team : node.channel.team.name,
@@ -117,7 +116,6 @@ export default {
         }
 
         const searchOne = (postId) =>{
-            //console.log("눌렸")
             state.open = true
             let payload = {
                 "postId" :postId,
@@ -125,7 +123,6 @@ export default {
             }
             store.dispatch('root/getNoticeDetail', payload)
             .then((result) => {
-                //console.log(result)
                 let notice = {
                     team: result.data.channel.team.name,
                     channel: result.data.channel.name,
@@ -138,7 +135,6 @@ export default {
                     postId: result.data.token,
                     time: getTime(result.data.time)
                 }
-                //console.log(notice)
                 state.noticeDetail = notice;
             })
             .catch((err)=>{

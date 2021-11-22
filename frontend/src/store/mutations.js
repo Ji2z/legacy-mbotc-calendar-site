@@ -5,6 +5,7 @@ const idList = {
     "crayon": 3,
     "art": 4,
     "lilac": 5,
+    "ssafy": 6,
 }
 
 export function settingInit(state){

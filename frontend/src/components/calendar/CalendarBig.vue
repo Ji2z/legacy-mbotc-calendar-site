@@ -106,12 +106,8 @@ export default {
             let noticeList = []
             store.dispatch('root/getMonthNotice', payload)
             .then((result)=>{
-                // console.log("month list")
-                // console.log(result)
                 result.data.notifications.forEach(node => {
-                    //console.log(node.content)
                     let notice = {
-                        //title: node.channel.team.name,
                         title: getTitle(node.content),
                         color: "#808080",
                         startDay: getDayPicker(node.startTime, payload.month),
@@ -127,7 +123,6 @@ export default {
                     });
                     noticeList.push(notice)
                 });
-                //noticeList는 시작 날짜순으로 정렬해야됨
                 noticeList.sort(function(a,b){
                     return a.startDay - b.startDay
                 })
@@ -151,7 +146,7 @@ export default {
             for (let i = 1; i <= dayCount; i++) {
                 let day = {
                     num : i,
-                    notice : [], // 여기에 공지넣기
+                    notice : [], 
                 }
                 noticeList.forEach(notice => {
                     if(notice.startDay <= day.num && day.num <= notice.endDay){
@@ -178,11 +173,8 @@ export default {
                 month: state.month+1,
                 token: store.getters['root/getToken']
             }
-            //color setting 받아오기
             store.dispatch('root/getUserSetting', payload)
             .then((result)=>{
-                // console.log("user setting")
-                //console.log(result)
                 store.commit('root/setTheme', result.data.theme)
                 result.data.teams.forEach(team=> {
                     let color = {

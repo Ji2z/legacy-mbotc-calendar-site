@@ -33,6 +33,7 @@ import preview_2 from '@/assets/bg/ssuk_night_preview.png'
 import preview_3 from '@/assets/bg/crayon_preview.png'
 import preview_4 from '@/assets/bg/art_preview.png'
 import preview_5 from '@/assets/bg/lilac_preview.png'
+import preview_6 from '@/assets/bg/ssafy_preview.png'
 
 export default {
     name: 'MyTheme',
@@ -42,7 +43,7 @@ export default {
         const store = useStore()
         const state = reactive({
             selected: store.getters['root/getThemeId'],
-            preview: [preview_0, preview_1, preview_2, preview_3, preview_4, preview_5],
+            preview: [preview_0, preview_1, preview_2, preview_3, preview_4, preview_5, preview_6],
             themes:[
                 {
                     id: 0,
@@ -67,6 +68,10 @@ export default {
                 {
                     id: 5,
                     theme: "lilac",
+                },
+                {
+                    id: 6,
+                    theme: "ssafy",
                 },
             ],
         })

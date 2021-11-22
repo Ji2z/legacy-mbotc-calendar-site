@@ -12,9 +12,6 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
-// import { reactive } from 'vue'
-// import { useStore } from 'vuex'
 import error404 from '@/assets/404ERROR.png'
 import { useRouter } from 'vue-router'
 

@@ -57,7 +57,6 @@ export default {
 
         const init = ()=>{
             state.detailDate = router.currentRoute.value.params.date
-            //가져온 날짜로 공지 떙겨오는 api 위치해야됨
             let payload = {
                 year: state.detailDate.substring(0,4),
                 month: state.detailDate.substring(4,6),
@@ -66,8 +65,6 @@ export default {
             }
             store.dispatch('root/getDayNotice', payload)
             .then((result)=>{
-                // console.log("Day list")
-                // console.log(result)
                 state.notices = []
                 let index = 0
                 result.data.notifications.forEach(node => {
@@ -111,7 +108,6 @@ export default {
         }
 
         const clickNotice = (id)=>{
-            //console.log(id)
             state.choosedId = id
             state.chooseNotice = state.notices[id]
         }

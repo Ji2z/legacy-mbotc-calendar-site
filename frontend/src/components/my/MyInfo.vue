@@ -32,7 +32,6 @@
 </template>
 <script>
 import MainConfirm from '@/components/main/MainConfirm.vue'
-// import abc from '@/components/'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -68,8 +67,6 @@ export default {
 
             store.dispatch('root/deleteUser', payload)
             .then((result)=>{
-                //console.log("MbotC login")
-                // console.log(result)
                 if(result.status == 200){
                     store.commit('root/logout')
                     router.push("/")
@@ -77,7 +74,6 @@ export default {
             })
             .catch((err)=>{
                 console.log(err)
-                // status 409 핸들링
             })
         }
         return { modalData, state, leave }

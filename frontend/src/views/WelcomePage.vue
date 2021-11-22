@@ -28,8 +28,6 @@ import WelcomeFooter from '@/components/welcome/WelcomeFooter.vue'
 import WelcomeIntroduction from '@/components/welcome/WelcomeIntroduction.vue'
 import { notify } from '@kyvg/vue3-notification'
 import { reactive } from 'vue'
-// import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
 
 export default {
     name: 'WelcomePage',
@@ -56,7 +54,6 @@ export default {
             state.now = target
             state.marker[state.now] = true
             location.href = "#"+ state.offset[target]
-            //console.log(state.now)
         }
         const markerChange = ()=>{
             let nowScroll = window.pageYOffset;
@@ -69,7 +66,6 @@ export default {
                 list.push(relativeTop + nowScroll)
             })
             list.push(9999)
-            //console.log(list)
             nowScroll += 5
             for (let index = 0; index <= 5; index++) {
                 if(nowScroll >= list[index] && nowScroll <= list[index+1]){
