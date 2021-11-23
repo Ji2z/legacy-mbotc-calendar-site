@@ -245,7 +245,6 @@ export default {
         }
 
         watch(()=> props.detailFlag, (detailFlag, prevDetailFlag)=>{
-            //console.log(props)
             if(!prevDetailFlag && detailFlag){
                 state.nav = [false,true,false,false,false]
             }
