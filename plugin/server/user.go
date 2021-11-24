@@ -17,7 +17,7 @@ func checkAuthentication(p *Plugin, userId string, channelId string) error {
 
 	if resp.StatusCode == 404 {
 		var message = "Please login first to use MBotC service.\n" +
-		"[Login here](" + clientUrl + ")"
+			"[Login here](" + clientUrl + ")"
 		p.postEphemeralResponse(userId, channelId, message)
 		return errors.New("USER NOT FOUND")
 	}
@@ -43,4 +43,15 @@ func checkUserExists(p *Plugin, userId string) (*http.Response, error) {
 	defer resp.Body.Close()
 
 	return resp, err
+}
+
+func getAuthor(p *Plugin, userId string) string {
+	user, _ := p.API.GetUser(userId)
+	var author string
+	if user.Nickname != "" {
+		author = user.Nickname
+	} else {
+		author = user.Username
+	}
+	return author
 }
