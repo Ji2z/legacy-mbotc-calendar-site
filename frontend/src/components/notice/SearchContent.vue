@@ -51,7 +51,7 @@ export default {
                 type: String,
                 default: " ",
             },
-             team : {
+            team : {
                 type: String,
                 default: " ",
             },
@@ -112,11 +112,6 @@ export default {
         }
 
         onUpdated(()=>{
-            // let wraperHeight = mdViewerWraperSearch.value.clientHeight + 'px'
-            //console.log(mdViewerWraperSearch)
-            //console.log(wraperHeight)
-            // console.log("------>")
-            // console.log(props.notice.content)
             if(store.getters['root/getUserId'] === props.notice.userId){
                 state.myNoticeFlag = true
             }else{
@@ -150,9 +145,6 @@ export default {
                                     [ , fileName ] = fileNameMatch.split('=');
                             }
                             fileName = fileName.replace(new RegExp('["]','g'), '');
-
-                            console.log(fileName)
-                        
                             //this.response is what you're looking for
                             //console.log(this.response, typeof this.response);
                             let a = document.createElement("a");
