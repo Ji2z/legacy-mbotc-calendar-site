@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"sync"
-
+	"fmt"
 	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/mattermost/mattermost-server/v5/plugin"
 
@@ -39,10 +39,11 @@ type Plugin struct {
 
 // OnActivate checks if the configurations is valid and ensures the bot account exists
 func (p *Plugin) OnActivate() error {
+	fmt.Println("@@@@@@@@@@@@OnActivate 시작")
 	if p.API.GetConfig().ServiceSettings.SiteURL == nil {
 		return errors.New("We couldn't find a siteURL. Please set a siteURL and restart the plugin")
 	}
-
+	fmt.Printf("######SiteURL : %s", p.API.GetConfig().ServiceSettings.SiteURL)
 	botUserID, err := p.Helpers.EnsureBot(&model.Bot{
 		Username:    botUserName,
 		DisplayName: botDisplayName,
@@ -51,32 +52,39 @@ func (p *Plugin) OnActivate() error {
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create bot account")
+		fmt.Println("@@@@@@@@@@@@봇 계정 생성 실패")
 	}
 	p.botUserID = botUserID
-
+	fmt.Printf("######botUserID : %s", p.botUserID)
 	bundlePath, err := p.API.GetBundlePath()
 	if err != nil {
 		return errors.Wrap(err, "couldn't get bundle path")
+		fmt.Println("@@@@@@@@@@@@bundle path 가져오기 실패")
 	}
 
 	profileImage, err := ioutil.ReadFile(filepath.Join(bundlePath, "assets", "profile.png"))
 	if err != nil {
 		return errors.Wrap(err, "couldn't read profile image")
+		fmt.Println("@@@@@@@@@@@@read profile image 실패")
 	}
 
 	if appErr := p.API.SetProfileImage(botUserID, profileImage); appErr != nil {
 		return errors.Wrap(appErr, "couldn't set profile image")
+		fmt.Println("@@@@@@@@@@@@set profile image 실패")
 	}
 
 	command, err := p.getCommand()
 	if err != nil {
 		return errors.Wrap(err, "failed to get command")
+		fmt.Println("@@@@@@@@@@@@get Command 실패")
 	}
 
 	err = p.API.RegisterCommand(command)
 	if err != nil {
 		return errors.WithMessage(err, "OnActivate: failed to register command")
+		fmt.Println("@@@@@@@@@@@@Register Command 실패")
 	}
 
+	fmt.Println("@@@@@@@@@@@@OnActivate 모두 성공")
 	return nil
 }
