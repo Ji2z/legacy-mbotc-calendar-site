@@ -1,6 +1,6 @@
 {
-    "Legacy_SERVER_URL" : "http://k5a103.p.ssafy.io:8065",
-    "SERVER_URL" : "https://meeting.ssafy.com",
+    "SERVER_URL" : "http://k5a103.p.ssafy.io:8065",
+    "Legacy_SERVER_URL" : "https://meeting.ssafy.com",
     "MBOTC_URL" : "http://k5a103.p.ssafy.io:8080",
     "SERVER_LOCK" : "false"
 }
