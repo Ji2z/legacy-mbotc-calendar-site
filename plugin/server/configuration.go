@@ -64,7 +64,7 @@ func (p *Plugin) setConfiguration(configuration *configuration) {
 			return
 		}
 
-		panic("setConfiguration called with the existing configuration")
+		// panic("setConfiguration called with the existing configuration")
 	}
 
 	p.configuration = configuration

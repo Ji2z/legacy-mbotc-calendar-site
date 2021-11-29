@@ -129,7 +129,7 @@ func convertDialogForm(p *Plugin, r *http.Request) (Notification, error) {
 
 	err := json.NewDecoder(r.Body).Decode(&dialogForm)
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 
 	notification.UserId = dialogForm.UserId
@@ -231,7 +231,7 @@ func postRequestToNotificationAPI(notification Notification) (*http.Response, er
 	}
 	resp, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(notificationJSON))
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 	defer resp.Body.Close()
 	return resp, err
@@ -291,7 +291,7 @@ func getNotificationList(p *Plugin, commandArgs *model.CommandArgs) {
 	req, err := http.NewRequest("GET", requestUrl, nil)
 	if err != nil {
 		fmt.Println("NewRequest Error: ", err)
-		panic(err)
+		//panic(err)
 	}
 
 	req.Header.Add("userId", commandArgs.UserId)
@@ -300,7 +300,7 @@ func getNotificationList(p *Plugin, commandArgs *model.CommandArgs) {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("client.Do Error: ", err)
-		panic(err)
+		//panic(err)
 	}
 	defer resp.Body.Close()
 
