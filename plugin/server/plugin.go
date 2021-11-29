@@ -41,9 +41,10 @@ type Plugin struct {
 func (p *Plugin) OnActivate() error {
 	fmt.Println("@@@@@@@@@@@@OnActivate 시작")
 	if p.API.GetConfig().ServiceSettings.SiteURL == nil {
+		fmt.Println("SiteURL에서 오류")
 		return errors.New("We couldn't find a siteURL. Please set a siteURL and restart the plugin")
 	}
-	fmt.Printf("######SiteURL : %s", p.API.GetConfig().ServiceSettings.SiteURL)
+	fmt.Println(p.API.GetConfig().ServiceSettings.SiteURL)
 	botUserID, err := p.Helpers.EnsureBot(&model.Bot{
 		Username:    botUserName,
 		DisplayName: botDisplayName,
@@ -51,38 +52,38 @@ func (p *Plugin) OnActivate() error {
 	})
 
 	if err != nil {
-		return errors.Wrap(err, "failed to create bot account")
 		fmt.Println("@@@@@@@@@@@@봇 계정 생성 실패")
+		return errors.Wrap(err, "failed to create bot account")
 	}
 	p.botUserID = botUserID
 	fmt.Printf("######botUserID : %s", p.botUserID)
 	bundlePath, err := p.API.GetBundlePath()
 	if err != nil {
-		return errors.Wrap(err, "couldn't get bundle path")
 		fmt.Println("@@@@@@@@@@@@bundle path 가져오기 실패")
+		return errors.Wrap(err, "couldn't get bundle path")
 	}
 
 	profileImage, err := ioutil.ReadFile(filepath.Join(bundlePath, "assets", "profile.png"))
 	if err != nil {
-		return errors.Wrap(err, "couldn't read profile image")
 		fmt.Println("@@@@@@@@@@@@read profile image 실패")
+		return errors.Wrap(err, "couldn't read profile image")
 	}
 
 	if appErr := p.API.SetProfileImage(botUserID, profileImage); appErr != nil {
-		return errors.Wrap(appErr, "couldn't set profile image")
 		fmt.Println("@@@@@@@@@@@@set profile image 실패")
+		return errors.Wrap(appErr, "couldn't set profile image")
 	}
 
 	command, err := p.getCommand()
 	if err != nil {
-		return errors.Wrap(err, "failed to get command")
 		fmt.Println("@@@@@@@@@@@@get Command 실패")
+		return errors.Wrap(err, "failed to get command")
 	}
 
 	err = p.API.RegisterCommand(command)
 	if err != nil {
-		return errors.WithMessage(err, "OnActivate: failed to register command")
 		fmt.Println("@@@@@@@@@@@@Register Command 실패")
+		return errors.WithMessage(err, "OnActivate: failed to register command")
 	}
 
 	fmt.Println("@@@@@@@@@@@@OnActivate 모두 성공")

@@ -15,8 +15,8 @@ func (p *Plugin) getCommand() (*model.Command, error) {
 	fmt.Println("@@@@@@@@@@@@get Command 시작")
 	iconData, err := command.GetIconData(p.API, "assets/mbotc-icon.svg")
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get icon data")
 		fmt.Println("@@@@@@@@@@@@get icon data 실패")
+		return nil, errors.Wrap(err, "failed to get icon data")
 	}
 
 	fmt.Println("@@@@@@@@@@@@get Command 모두 성공")
