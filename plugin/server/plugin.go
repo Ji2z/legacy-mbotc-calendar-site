@@ -17,7 +17,7 @@ const (
 	botDescription = "Created by the MBotC plugin."
 	clientUrl      = "https://k5a103.p.ssafy.io"
 	serviceAPIUrl  = "http://k5a103.p.ssafy.io:8080"
-	pluginId       = "com.mattermost.plugin.mbotc"
+	pluginId       = "com.mattermost.plugin-mbotc"
 	timezone       = "Asia/Seoul"
 )
 
