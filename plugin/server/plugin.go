@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "io/ioutil"
-	// "path/filepath"
+	"io/ioutil"
+	"path/filepath"
 	"sync"
 	"fmt"
 	"github.com/mattermost/mattermost-server/v5/model"
