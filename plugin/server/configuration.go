@@ -2,7 +2,6 @@ package main
 
 import (
 	"reflect"
-	"fmt"
 	"github.com/pkg/errors"
 )
 
@@ -31,14 +30,12 @@ func (c *configuration) Clone() *configuration {
 // concurrently. The active configuration may change underneath the client of this method, but
 // the struct returned by this API call is considered immutable.
 func (p *Plugin) getConfiguration() *configuration {
-	fmt.Println("@@@@@@@@@@@@Get Configuration 시작")
 	p.configurationLock.RLock()
 	defer p.configurationLock.RUnlock()
 
 	if p.configuration == nil {
 		return &configuration{}
 	}
-	fmt.Println("@@@@@@@@@@@@Get Configuration 성공")
 	return p.configuration
 }
 
@@ -52,7 +49,6 @@ func (p *Plugin) getConfiguration() *configuration {
 // certainly means that the configuration was modified without being cloned and may result in
 // an unsafe access.
 func (p *Plugin) setConfiguration(configuration *configuration) {
-	fmt.Println("@@@@@@@@@@@@Set Configuration 시작")
 	p.configurationLock.Lock()
 	defer p.configurationLock.Unlock()
 
@@ -68,21 +64,17 @@ func (p *Plugin) setConfiguration(configuration *configuration) {
 	}
 
 	p.configuration = configuration
-	fmt.Println("@@@@@@@@@@@@Set Configuration 성공")
 }
 
 // OnConfigurationChange is invoked when configuration changes may have been made.
 func (p *Plugin) OnConfigurationChange() error {
-	fmt.Println("@@@@@@@@@@@@On Configuration Change 시작")
 	var configuration = new(configuration)
 
 	// Load the public configuration fields from the Mattermost server configuration.
 	if err := p.API.LoadPluginConfiguration(configuration); err != nil {
-		fmt.Println("@@@@@@@@@@@@load plugin configuration 실패")
 		return errors.Wrap(err, "failed to load plugin configuration")
 	}
 
 	p.setConfiguration(configuration)
-	fmt.Println("@@@@@@@@@@@@On Configuration Change 성공")
 	return nil
 }

@@ -267,7 +267,7 @@ func asSlackAttachment(p *Plugin, notification Notification) ([]*model.SlackAtta
 	author := getAuthor(p, notification.UserId)
 
 	fields = append(fields, &model.SlackAttachmentField{
-		Title: ":lower_left_fountain_pen: Author",
+		Title: ":fountain_pen: Author",
 		Value: author,
 		Short: false,
 	})
