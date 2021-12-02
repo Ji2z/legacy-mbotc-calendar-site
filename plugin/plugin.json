@@ -1,5 +1,5 @@
 {
-    "id": "com.mattermost.plugin.mbotc",
+    "id": "com.mattermost.plugin-mbotc",
     "name": "MBotC",
     "description": "Mattermost plugin for MBotC Calendar.",
     "homepage_url": "https://github.com/mbotc/mattermost-plugin-mbotc",

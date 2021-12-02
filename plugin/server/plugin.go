@@ -17,7 +17,7 @@ const (
 	botDescription = "Created by the MBotC plugin."
 	clientUrl      = "https://k5a103.p.ssafy.io"
 	serviceAPIUrl  = "http://k5a103.p.ssafy.io:8080"
-	pluginId       = "com.mattermost.plugin.mbotc"
+	pluginId       = "com.mattermost.plugin-mbotc"
 	timezone       = "Asia/Seoul"
 )
 
@@ -57,22 +57,22 @@ func (p *Plugin) OnActivate() error {
 	}
 	p.botUserID = botUserID
 	fmt.Printf("######botUserID : %s", p.botUserID)
-	//bundlePath, err := p.API.GetBundlePath()
+	bundlePath, err := p.API.GetBundlePath()
 	if err != nil {
 		fmt.Println("@@@@@@@@@@@@bundle path 가져오기 실패")
 		return errors.Wrap(err, "couldn't get bundle path")
 	}
 
-	// profileImage, err := ioutil.ReadFile(filepath.Join(bundlePath, "assets", "profile.png"))
-	// if err != nil {
-	// 	fmt.Println("@@@@@@@@@@@@read profile image 실패")
-	// 	return errors.Wrap(err, "couldn't read profile image")
-	// }
+	profileImage, err := ioutil.ReadFile(filepath.Join(bundlePath, "assets", "profile.png"))
+	if err != nil {
+		fmt.Println("@@@@@@@@@@@@read profile image 실패")
+		return errors.Wrap(err, "couldn't read profile image")
+	}
 
-	// if appErr := p.API.SetProfileImage(botUserID, profileImage); appErr != nil {
-	// 	fmt.Println("@@@@@@@@@@@@set profile image 실패")
-	// 	return errors.Wrap(appErr, "couldn't set profile image")
-	// }
+	if appErr := p.API.SetProfileImage(botUserID, profileImage); appErr != nil {
+		fmt.Println("@@@@@@@@@@@@set profile image 실패")
+		return errors.Wrap(appErr, "couldn't set profile image")
+	}
 
 	command, err := p.getCommand()
 	if err != nil {
