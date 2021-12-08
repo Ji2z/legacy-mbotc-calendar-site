@@ -21,6 +21,7 @@ func (p *Plugin) postEphemeralResponse(userId string, channelId string, message 
 
 // Convert multipart file to []byte
 func ConvertFileToByte(file multipart.File) ([]byte, error) {
+	fmt.Println("@@@@@@@@@@@@ ConvertFileToByte")
 	buf := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buf, file); err != nil {
 		return nil, err
@@ -30,10 +31,12 @@ func ConvertFileToByte(file multipart.File) ([]byte, error) {
 
 // Upload file to mattermost channel and return file id
 func UploadFileToMMChannel(p *Plugin, file []byte, channelId string, fileName string) string {
+	fmt.Println("@@@@@@@@@@@@UploadFileToMMChannel 시작")
 	resp, err := p.API.UploadFile(file, channelId, fileName)
 	if err != nil {
 		fmt.Println("UploadFile Error: ", err)
 	}
+	fmt.Println("@@@@@@@@@@@@UploadFileToMMChannel 끝")
 	return resp.Id
 }
 

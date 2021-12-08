@@ -60,8 +60,10 @@ func (p *Plugin) httpCreateNotificationWithCommand(w http.ResponseWriter, r *htt
 
 // Create notification with client
 func (p *Plugin) httpCreateNotificationWithEditor(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("@@@@@@@@@@@@프론트에서 메시지 받아옴")
 	notification := convertRequest(p, r)
 	p.httpCreatePost(w, notification)
+	fmt.Println("@@@@@@@@@@@@프론트에서 받아온 메시지 post함")
 }
 
 // Create notification with more action button
@@ -171,7 +173,7 @@ func getConvertErrorPost(p *Plugin, notification Notification) *model.Post {
 // convert Request form to Notification
 func convertRequest(p *Plugin, r *http.Request) Notification {
 	var notification Notification
-
+	fmt.Println("@@@@@@@@@@@@convertRequest 시작")
 	r.ParseMultipartForm(32 << 20) // maxMemory 32MB
 	notification.UserId = r.PostFormValue("user_id")
 	notification.Message = r.PostFormValue("message")
@@ -182,8 +184,11 @@ func convertRequest(p *Plugin, r *http.Request) Notification {
 	}
 	notification.ChannelId = r.PostFormValue("channel_id")
 
+	fmt.Println("@@@@@@@@@@@@file 제외한 formData 받아옴")
 	fileheaders := r.MultipartForm.File["file"]
+	fmt.Println("@@@@@@@ fileheaders len", len(fileheaders))
 	for _, fileheader := range fileheaders {
+		fmt.Println("@@@@@@ Filename", fileheader.Filename)
 		file, err := fileheader.Open()
 		if err != nil {
 			fmt.Println("fileheader.Open() Error: ", err)
@@ -192,9 +197,12 @@ func convertRequest(p *Plugin, r *http.Request) Notification {
 		if err != nil {
 			fmt.Println("ConvertRequest Error: ", err)
 		}
+		fmt.Println("@@@@@@ mm에 file 업로드 전")
 		notification.FileIds = append(notification.FileIds, UploadFileToMMChannel(p, bytefile, notification.ChannelId, fileheader.Filename))
+		fmt.Println("@@@@@@ mm에 file 업로드 후 notification.FileIds에 append")
 	}
 
+	fmt.Println("@@@@@@@@@@@@convertRequest 끝")
 	return notification
 }
 
@@ -204,6 +212,7 @@ func convertRequest(p *Plugin, r *http.Request) Notification {
 // =================================================================================
 // Create mattermost post about notification
 func (p *Plugin) httpCreatePost(w http.ResponseWriter, notification Notification) {
+	fmt.Println("@@@@@@ httpCreatePost 들어옴")
 	post := &model.Post{
 		UserId:    p.botUserID,
 		ChannelId: notification.ChannelId,
@@ -218,15 +227,18 @@ func (p *Plugin) httpCreatePost(w http.ResponseWriter, notification Notification
 
 	resPost, appErr := p.API.CreatePost(post)
 	if appErr != nil {
+		fmt.Println("@@@@@@@@@@@@CreatePost 에러")
 		http.Error(w, appErr.Error(), http.StatusInternalServerError)
 		return
 	}
 	notification.PostId = resPost.Id
 	postRequestToNotificationAPI(notification)
+	fmt.Println("@@@@@@ httpCreatePost 끝")
 }
 
 // Send Post request to API for create notification
 func postRequestToNotificationAPI(notification Notification) (*http.Response, error) {
+	fmt.Println("@@@@@@ postRequestToNotificationAPI 들어옴")
 	requestUrl := serviceAPIUrl + "/api/v1/notification"
 	notificationJSON, err := json.Marshal(notification)
 	if err != nil {
@@ -234,9 +246,11 @@ func postRequestToNotificationAPI(notification Notification) (*http.Response, er
 	}
 	resp, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(notificationJSON))
 	if err != nil {
+		fmt.Println("ServiceAPI Request Error: ", err)
 		panic(err)
 	}
 	defer resp.Body.Close()
+	fmt.Println("@@@@@@ postRequestToNotificationAPI 끝")
 	return resp, err
 }
 
