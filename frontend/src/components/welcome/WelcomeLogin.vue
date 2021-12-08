@@ -92,12 +92,13 @@ export default {
                 }
                 store.dispatch('root/userLoginMM',payload)
                 .then((result)=>{
+                    console.log(result)
                     let userData = {
                         token: result.headers.token,
                         url: getServerURL(),
                         userEmail: result.data.email,
                         userId: result.data.id,
-                        userName: result.data.username,
+                        userName: (result.data.nickname==="")?result.data.username:result.data.nickname,
                     }
                     store.commit('root/setUserData', userData)
                     register()
@@ -154,7 +155,7 @@ export default {
                         url: getServerURL(),
                         userEmail: result.data.email,
                         userId: result.data.id,
-                        userName: result.data.username,
+                        userName: (result.data.nickname==="")?result.data.username:result.data.nickname,
                     }
                     store.commit('root/setUserData', state.userData)
                     register()

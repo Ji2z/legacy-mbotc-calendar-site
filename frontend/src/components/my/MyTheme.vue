@@ -3,8 +3,8 @@
         <div class="flex items-end mt-8 mb-4 text-font">
             <p class="font-bold text-2xl">My Theme</p><br/>
         </div>
-        <div class="flex justify-between text-font bg-panel w-full h-56 rounded-xl shadow-2xl mb-2 pt-4 px-8 border-l-8 border-label">
-            <perfect-scrollbar class="m-4 overflow-x-scroll whitespace-nowrap content-end">
+        <div class="flex justify-between text-font bg-panel w-full h-64 rounded-xl shadow-2xl mb-2 p-8 border-l-8 border-label">
+            <perfect-scrollbar class="my-4 overflow-x-scroll w-5/6 whitespace-nowrap content-end">
                 <div v-for="theme in state.themes" :key="theme.id" class="relative inline-block pb-2 w-48">
                     <div class="h-32 w-48 text-font rounded-lg p-2 mr-2" @click="clickTheme(theme.id)">
                         <div class="h-24 w-40 border-green-600" :class="{'border-4':(state.selected==theme.id)}">
@@ -21,10 +21,8 @@
     </div>
 </template>
 <script>
-// import abc from '@/components/'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
 import { notify } from '@kyvg/vue3-notification'
 
 import preview_0 from '@/assets/bg/light_preview.png'
@@ -76,7 +74,6 @@ export default {
             ],
         })
         const clickTheme = (id)=>{
-            //console.log(id)
             state.selected = id
             store.commit('root/setTheme', state.themes[state.selected].theme)
             notify({
