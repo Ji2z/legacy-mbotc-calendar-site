@@ -2,7 +2,6 @@ package main
 
 import (
 	"reflect"
-
 	"github.com/pkg/errors"
 )
 
@@ -37,7 +36,6 @@ func (p *Plugin) getConfiguration() *configuration {
 	if p.configuration == nil {
 		return &configuration{}
 	}
-
 	return p.configuration
 }
 
@@ -62,7 +60,7 @@ func (p *Plugin) setConfiguration(configuration *configuration) {
 			return
 		}
 
-		panic("setConfiguration called with the existing configuration")
+		// panic("setConfiguration called with the existing configuration")
 	}
 
 	p.configuration = configuration
@@ -78,6 +76,5 @@ func (p *Plugin) OnConfigurationChange() error {
 	}
 
 	p.setConfiguration(configuration)
-
 	return nil
 }

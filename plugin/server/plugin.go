@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"sync"
-
 	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/mattermost/mattermost-server/v5/plugin"
 
@@ -17,7 +16,7 @@ const (
 	botDescription = "Created by the MBotC plugin."
 	clientUrl      = "https://k5a103.p.ssafy.io"
 	serviceAPIUrl  = "http://k5a103.p.ssafy.io:8080"
-	pluginId       = "com.mattermost.plugin.mbotc"
+	pluginId       = "com.mattermost.plugin-mbotc"
 	timezone       = "Asia/Seoul"
 )
 
@@ -53,7 +52,6 @@ func (p *Plugin) OnActivate() error {
 		return errors.Wrap(err, "failed to create bot account")
 	}
 	p.botUserID = botUserID
-
 	bundlePath, err := p.API.GetBundlePath()
 	if err != nil {
 		return errors.Wrap(err, "couldn't get bundle path")

@@ -31,7 +31,7 @@ func checkUserExists(p *Plugin, userId string) (*http.Response, error) {
 	req, err := http.NewRequest("GET", requestUrl, nil)
 	if err != nil {
 		fmt.Println("NewRequest Error: ", err)
-		panic(err)
+		//panic(err)
 	}
 	req.Header.Add("userId", userId)
 

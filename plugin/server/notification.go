@@ -131,7 +131,7 @@ func convertDialogForm(p *Plugin, r *http.Request) (Notification, error) {
 
 	err := json.NewDecoder(r.Body).Decode(&dialogForm)
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 
 	notification.UserId = dialogForm.UserId
@@ -281,7 +281,7 @@ func asSlackAttachment(p *Plugin, notification Notification) ([]*model.SlackAtta
 	author := getAuthor(p, notification.UserId)
 
 	fields = append(fields, &model.SlackAttachmentField{
-		Title: ":lower_left_fountain_pen: Author",
+		Title: ":fountain_pen: Author",
 		Value: author,
 		Short: false,
 	})
@@ -305,7 +305,7 @@ func getNotificationList(p *Plugin, commandArgs *model.CommandArgs) {
 	req, err := http.NewRequest("GET", requestUrl, nil)
 	if err != nil {
 		fmt.Println("NewRequest Error: ", err)
-		panic(err)
+		//panic(err)
 	}
 
 	req.Header.Add("userId", commandArgs.UserId)
@@ -314,7 +314,7 @@ func getNotificationList(p *Plugin, commandArgs *model.CommandArgs) {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("client.Do Error: ", err)
-		panic(err)
+		//panic(err)
 	}
 	defer resp.Body.Close()
 
